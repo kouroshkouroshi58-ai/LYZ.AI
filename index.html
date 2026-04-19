@@ -384,20 +384,98 @@
       font-size: 0.68rem; color: #555; font-family: monospace; overflow: hidden;
       white-space: nowrap;
     }
+    /* ── Preview-Mokups ── */
     .demo-preview {
       height: 200px;
       overflow: hidden;
       position: relative;
-      background: #050505;
+      font-family: 'Space Grotesk', sans-serif;
     }
-    .demo-preview iframe {
-      width: 1280px;
-      height: 900px;
-      border: none;
-      transform: scale(0.305);
-      transform-origin: top left;
-      pointer-events: none;
+    /* Restaurant */
+    .dp-restaurant { background: linear-gradient(160deg, #0d0a06 0%, #1c1408 100%); }
+    .dp-restaurant .dp-glow {
+      position: absolute; inset:0;
+      background: radial-gradient(ellipse 70% 60% at 50% 55%, rgba(200,149,42,0.1) 0%, transparent 65%);
+      pointer-events:none;
     }
+    .dp-restaurant .dp-nav {
+      background: rgba(13,10,6,0.9); border-bottom: 1px solid #2c2318;
+      padding: 7px 14px; display: flex; align-items:center; justify-content:space-between; position:relative; z-index:1;
+    }
+    .dp-restaurant .dp-nav-logo { color:#c8952a; font-weight:700; font-size:0.72rem; letter-spacing:1px; font-style:italic; }
+    .dp-restaurant .dp-nav-btn { background:#c8952a; color:#000; padding:3px 9px; border-radius:4px; font-size:0.58rem; font-weight:700; }
+    .dp-restaurant .dp-nav-links { display:flex; gap:12px; }
+    .dp-restaurant .dp-nav-links span { font-size:0.58rem; color:#9a8872; }
+    .dp-restaurant .dp-hero { padding:18px 16px; position:relative; z-index:1; }
+    .dp-restaurant .dp-eyebrow { font-size:0.5rem; color:#c8952a; letter-spacing:3px; text-transform:uppercase; margin-bottom:7px; }
+    .dp-restaurant .dp-title { font-size:1.05rem; font-weight:700; color:#f0e8d8; line-height:1.2; margin-bottom:10px; font-style:italic; }
+    .dp-restaurant .dp-title em { color:#c8952a; }
+    .dp-restaurant .dp-line { width:36px; height:1px; background:#c8952a; opacity:0.6; margin-bottom:10px; }
+    .dp-restaurant .dp-btns { display:flex; gap:7px; }
+    .dp-restaurant .dp-btn-p { background:#c8952a; color:#000; padding:5px 11px; border-radius:4px; font-size:0.6rem; font-weight:700; }
+    .dp-restaurant .dp-btn-s { border:1px solid #2c2318; color:#9a8872; padding:5px 10px; border-radius:4px; font-size:0.6rem; }
+
+    /* Friseur */
+    .dp-friseur { background:#080808; }
+    .dp-friseur .dp-nav {
+      background:rgba(8,8,8,0.95); border-bottom:1px solid #1e1e1e;
+      padding:7px 14px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .dp-friseur .dp-nav-logo { font-size:0.72rem; font-weight:700; color:#f0f0f0; }
+    .dp-friseur .dp-nav-logo span { color:#c4826e; }
+    .dp-friseur .dp-nav-btn { background:#c4826e; color:#fff; padding:3px 9px; border-radius:4px; font-size:0.58rem; font-weight:700; }
+    .dp-friseur .dp-nav-links { display:flex; gap:12px; }
+    .dp-friseur .dp-nav-links span { font-size:0.58rem; color:#666; }
+    .dp-friseur .dp-body { display:grid; grid-template-columns:1.2fr 1fr; height:calc(200px - 33px); }
+    .dp-friseur .dp-left { padding:16px 14px; }
+    .dp-friseur .dp-eyebrow { font-size:0.48rem; color:#c4826e; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px; }
+    .dp-friseur .dp-title { font-size:0.92rem; font-weight:700; color:#f0f0f0; line-height:1.2; margin-bottom:10px; }
+    .dp-friseur .dp-title em { color:#c4826e; font-style:italic; }
+    .dp-friseur .dp-btns { display:flex; gap:6px; margin-top:6px; }
+    .dp-friseur .dp-btn-p { background:#c4826e; color:#fff; padding:4px 10px; border-radius:4px; font-size:0.58rem; font-weight:700; }
+    .dp-friseur .dp-btn-s { border:1px solid #2a2a2a; color:#888; padding:4px 9px; border-radius:4px; font-size:0.58rem; }
+    .dp-friseur .dp-right {
+      background:linear-gradient(135deg,#141414,#0f0f0f); border-left:1px solid #1e1e1e;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:12px 8px;
+    }
+    .dp-friseur .dp-stat { text-align:center; }
+    .dp-friseur .dp-stat-num { font-size:0.9rem; font-weight:700; color:#c4826e; display:block; }
+    .dp-friseur .dp-stat-lbl { font-size:0.44rem; color:#555; text-transform:uppercase; letter-spacing:1px; }
+
+    /* Elektro */
+    .dp-elektro { background:#050d18; position:relative; }
+    .dp-elektro .dp-grid {
+      position:absolute; inset:0;
+      background-image:linear-gradient(rgba(20,32,48,0.35) 1px,transparent 1px),linear-gradient(90deg,rgba(20,32,48,0.35) 1px,transparent 1px);
+      background-size:18px 18px; pointer-events:none;
+    }
+    .dp-elektro .dp-alert { background:#e04040; color:#fff; text-align:center; padding:3px 10px; font-size:0.52rem; font-weight:700; position:relative; z-index:2; }
+    .dp-elektro .dp-nav {
+      background:rgba(5,13,24,0.96); border-bottom:1px solid #142030;
+      padding:6px 14px; display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2;
+    }
+    .dp-elektro .dp-logo { display:flex; align-items:center; gap:5px; }
+    .dp-elektro .dp-logo-icon { width:15px; height:15px; background:#f5c400; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:0.52rem; }
+    .dp-elektro .dp-logo-text { font-size:0.65rem; font-weight:700; color:#e8f0fa; }
+    .dp-elektro .dp-logo-text span { color:#f5c400; }
+    .dp-elektro .dp-nav-btn { background:#f5c400; color:#000; padding:3px 8px; border-radius:4px; font-size:0.55rem; font-weight:700; }
+    .dp-elektro .dp-body { padding:12px 14px; display:grid; grid-template-columns:1.2fr 0.8fr; gap:10px; position:relative; z-index:2; }
+    .dp-elektro .dp-eyebrow { font-size:0.47rem; color:#f5c400; letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:5px; }
+    .dp-elektro .dp-eyebrow::before { content:''; display:block; width:12px; height:1px; background:#f5c400; }
+    .dp-elektro .dp-title { font-size:0.85rem; font-weight:700; color:#e8f0fa; line-height:1.2; margin-bottom:7px; }
+    .dp-elektro .dp-title span { color:#f5c400; }
+    .dp-elektro .dp-btns { display:flex; gap:6px; margin-bottom:7px; }
+    .dp-elektro .dp-btn-y { background:#f5c400; color:#000; padding:4px 10px; border-radius:4px; font-size:0.56rem; font-weight:700; }
+    .dp-elektro .dp-trust { display:flex; gap:7px; flex-wrap:wrap; }
+    .dp-elektro .dp-trust-item { font-size:0.46rem; color:#7090b0; display:flex; align-items:center; gap:2px; }
+    .dp-elektro .dp-trust-item::before { content:'✓'; color:#f5c400; }
+    .dp-elektro .dp-notfall {
+      background:#080f1c; border:1.5px solid rgba(224,64,64,0.5); border-radius:7px; padding:9px 8px; text-align:center;
+    }
+    .dp-elektro .dp-nf-title { font-size:0.45rem; color:#e04040; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; font-weight:600; }
+    .dp-elektro .dp-nf-num { font-size:0.72rem; font-weight:700; color:#e8f0fa; margin-bottom:3px; }
+    .dp-elektro .dp-nf-sub { font-size:0.42rem; color:#7090b0; margin-bottom:6px; line-height:1.4; }
+    .dp-elektro .dp-nf-btn { background:#e04040; color:#fff; padding:4px 8px; border-radius:4px; font-size:0.5rem; font-weight:700; display:block; }
     .demo-info {
       padding: 20px 22px 22px;
       position: relative;
@@ -964,8 +1042,22 @@
           <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
           <div class="db-url">la-notte-ristorante.de</div>
         </div>
-        <div class="demo-preview">
-          <iframe src="demo-restaurant.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="demo-preview dp-restaurant">
+          <div class="dp-glow"></div>
+          <div class="dp-nav">
+            <span class="dp-nav-logo">La Notte</span>
+            <div class="dp-nav-links"><span>Speisekarte</span><span>Reservierung</span><span>Kontakt</span></div>
+            <span class="dp-nav-btn">Tisch reservieren</span>
+          </div>
+          <div class="dp-hero">
+            <div class="dp-eyebrow">Ristorante & Bar · Seit 2008</div>
+            <div class="dp-title">Erleben Sie den<br><em>Geschmack Italiens</em></div>
+            <div class="dp-line"></div>
+            <div class="dp-btns">
+              <span class="dp-btn-p">Tisch reservieren →</span>
+              <span class="dp-btn-s">Speisekarte</span>
+            </div>
+          </div>
         </div>
         <div class="demo-info">
           <span class="demo-tag">Restaurant & Café</span>
@@ -984,8 +1076,27 @@
           <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
           <div class="db-url">studio-elite-hamburg.de</div>
         </div>
-        <div class="demo-preview">
-          <iframe src="demo-friseur.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="demo-preview dp-friseur">
+          <div class="dp-nav">
+            <span class="dp-nav-logo">Studio <span>Élite</span></span>
+            <div class="dp-nav-links"><span>Preise</span><span>Team</span><span>Galerie</span></div>
+            <span class="dp-nav-btn">Termin buchen</span>
+          </div>
+          <div class="dp-body">
+            <div class="dp-left">
+              <div class="dp-eyebrow">Hair & Beauty · Hamburg</div>
+              <div class="dp-title">Dein Haar.<br>Dein <em>Statement.</em></div>
+              <div class="dp-btns">
+                <span class="dp-btn-p">Termin buchen →</span>
+                <span class="dp-btn-s">Preisliste</span>
+              </div>
+            </div>
+            <div class="dp-right">
+              <div class="dp-stat"><span class="dp-stat-num">8+</span><span class="dp-stat-lbl">Jahre Erfahrung</span></div>
+              <div class="dp-stat"><span class="dp-stat-num">1.200+</span><span class="dp-stat-lbl">Kunden</span></div>
+              <div class="dp-stat"><span class="dp-stat-num">4.9★</span><span class="dp-stat-lbl">Google</span></div>
+            </div>
+          </div>
         </div>
         <div class="demo-info">
           <span class="demo-tag">Friseursalon</span>
@@ -1004,8 +1115,31 @@
           <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
           <div class="db-url">blitzpro-elektro.de</div>
         </div>
-        <div class="demo-preview">
-          <iframe src="demo-elektro.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="demo-preview dp-elektro">
+          <div class="dp-grid"></div>
+          <div class="dp-alert">⚡ ELEKTRO-NOTFALL? 24/7 erreichbar: 0800 – 123 456 (kostenlos)</div>
+          <div class="dp-nav">
+            <div class="dp-logo"><div class="dp-logo-icon">⚡</div><div class="dp-logo-text">Blitz<span>Pro</span></div></div>
+            <span class="dp-nav-btn">⚡ Notfall: 0800 – 123 456</span>
+          </div>
+          <div class="dp-body">
+            <div>
+              <div class="dp-eyebrow">Ihr Elektriker · 24/7 verfügbar</div>
+              <div class="dp-title">Elektrotechnik,<br>der Sie <span>vertrauen</span> können.</div>
+              <div class="dp-btns"><span class="dp-btn-y">Kostenloses Angebot →</span></div>
+              <div class="dp-trust">
+                <span class="dp-trust-item">Meisterbetrieb</span>
+                <span class="dp-trust-item">VDE-zertifiziert</span>
+                <span class="dp-trust-item">15+ Jahre</span>
+              </div>
+            </div>
+            <div class="dp-notfall">
+              <div class="dp-nf-title">Elektro-Notfall?</div>
+              <div class="dp-nf-num">0800 – 123 456</div>
+              <div class="dp-nf-sub">Kostenlos · 24h · 7 Tage<br>Einsatz in 30–60 Min.</div>
+              <span class="dp-nf-btn">Jetzt anrufen</span>
+            </div>
+          </div>
         </div>
         <div class="demo-info">
           <span class="demo-tag">Handwerk · Elektro</span>
