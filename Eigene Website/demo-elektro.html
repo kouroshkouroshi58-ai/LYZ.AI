@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlitzPro Elektrotechnik – Ihr Elektriker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #050d18;
+      --surface:   #080f1c;
+      --surface2:  #0c1424;
+      --border:    #142030;
+      --yellow:    #f5c400;
+      --yellow-l:  #ffd83a;
+      --yellow-dim:rgba(245,196,0,0.1);
+      --yellow-glow:rgba(245,196,0,0.22);
+      --blue:      #1a6ef0;
+      --blue-dim:  rgba(26,110,240,0.12);
+      --red:       #e04040;
+      --text:      #e8f0fa;
+      --muted:     #7090b0;
+      --dim:       #2a3a4a;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; line-height: 1.6; }
+
+    /* NOTFALL BANNER */
+    .notfall-bar {
+      background: var(--red); color: #fff; text-align: center;
+      padding: 10px 20px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.3px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    }
+    .notfall-bar a { color: #fff; font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.5); }
+    .notfall-bar a:hover { border-color: #fff; }
+    .notfall-blink { animation: blink 1.4s ease-in-out infinite; display: inline-block; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 38px; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 68px;
+      background: rgba(5,13,24,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-icon { width: 36px; height: 36px; background: var(--yellow); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .nav-logo-text { font-size: 1.15rem; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+    .nav-logo-text span { color: var(--yellow); }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.87rem; font-weight: 500; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-notfall {
+      background: var(--yellow); color: #000; padding: 9px 18px; border-radius: 6px;
+      font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: all 0.3s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .nav-notfall:hover { background: var(--yellow-l); transform: translateY(-1px); box-shadow: 0 4px 16px var(--yellow-glow); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding-top: 106px; /* nav + notfall bar */
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 20% 50%, rgba(26,110,240,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 30%, rgba(245,196,0,0.06) 0%, transparent 55%),
+        #050d18;
+    }
+    .hero-grid-overlay {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(20,32,48,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(20,32,48,0.4) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index:1; max-width: 1100px; padding: 0 24px; width: 100%; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--yellow); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 30px; height: 2px; background: var(--yellow); }
+    .hero-title { font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 700; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.5px; }
+    .hero-title span { color: var(--yellow); }
+    .hero-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 32px; max-width: 480px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px; }
+    .btn-yellow {
+      background: var(--yellow); color: #000; padding: 13px 26px; border-radius: 7px;
+      font-weight: 700; font-size: 0.92rem; text-decoration: none; transition: all 0.3s; border: 2px solid var(--yellow);
+    }
+    .btn-yellow:hover { background: var(--yellow-l); transform: translateY(-2px); box-shadow: 0 8px 28px var(--yellow-glow); }
+    .btn-outline {
+      background: transparent; color: var(--text); padding: 13px 26px; border-radius: 7px;
+      font-weight: 500; font-size: 0.92rem; text-decoration: none; transition: all 0.3s; border: 2px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--yellow); color: var(--yellow); }
+    .hero-trust { display: flex; gap: 20px; flex-wrap: wrap; }
+    .trust-badge { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--muted); }
+    .trust-badge::before { content: '✓'; color: var(--yellow); font-weight: 700; }
+
+    /* NOTFALL CARD */
+    .notfall-card {
+      background: var(--surface); border: 2px solid rgba(224,64,64,0.4); border-radius: 16px;
+      padding: 32px; text-align: center; position: relative; overflow: hidden;
+    }
+    .notfall-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--red); }
+    .notfall-card-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+    .notfall-card-title { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 8px; font-weight: 600; }
+    .notfall-card-num { font-size: 1.8rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .notfall-card-num a { color: var(--text); text-decoration: none; }
+    .notfall-card-num a:hover { color: var(--yellow); }
+    .notfall-card-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+    .btn-notfall {
+      display: block; background: var(--red); color: #fff; padding: 12px 20px; border-radius: 8px;
+      font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.3s;
+    }
+    .btn-notfall:hover { background: #f05050; box-shadow: 0 6px 20px rgba(224,64,64,0.35); }
+    .notfall-features { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .nf-feat { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 8px; justify-content: center; }
+    .nf-feat::before { content: '⚡'; font-size: 0.75rem; }
+
+    /* SECTIONS */
+    section { padding: 100px 48px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .s-eyebrow { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--yellow); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .s-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--yellow); flex-shrink: 0; }
+    .s-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 14px; letter-spacing: -0.3px; }
+    .s-desc { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 520px; margin-bottom: 50px; }
+
+    /* LEISTUNGEN */
+    #leistungen { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .leist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .leist-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 26px; transition: all 0.4s; position: relative; overflow: hidden;
+    }
+    .leist-card::after { content: ''; position: absolute; top:0; left:0; right:0; height: 2px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .leist-card:hover { border-color: rgba(245,196,0,0.3); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(245,196,0,0.07); }
+    .leist-card:hover::after { transform: scaleX(1); }
+    .lc-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+    .lc-title { font-size: 0.98rem; font-weight: 600; margin-bottom: 10px; }
+    .lc-desc { color: var(--muted); font-size: 0.83rem; line-height: 1.7; margin-bottom: 14px; }
+    .lc-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .lc-items li { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 7px; }
+    .lc-items li::before { content: '→'; color: var(--yellow); font-weight: 700; flex-shrink: 0; }
+
+    /* KOSTENVORANSCHLAG */
+    #angebot { }
+    .angebot-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
+    .angebot-form { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px; }
+    .af-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+    .af-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 7px; font-weight: 500; letter-spacing: 0.3px; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 14px; color: var(--text); font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem; outline: none; transition: border-color 0.3s; appearance: none;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--yellow); }
+    .fg select option { background: #080f1c; }
+    .fg textarea { resize: vertical; min-height: 90px; }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-angebot {
+      width: 100%; background: var(--yellow); color: #000; border: none; padding: 13px;
+      border-radius: 8px; font-size: 0.92rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer; transition: all 0.3s; margin-top: 4px;
+    }
+    .btn-angebot:hover { background: var(--yellow-l); box-shadow: 0 6px 24px var(--yellow-glow); }
+    .angebot-info { }
+    .ai-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px; margin-bottom: 16px;
+    }
+    .ai-box-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
+    .ai-box-title span { font-size: 1.2rem; }
+    .ai-box p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
+    .ai-guarantee { background: var(--yellow-dim); border: 1px solid rgba(245,196,0,0.3); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .ai-guarantee-title { font-weight: 700; font-size: 0.9rem; color: var(--yellow); margin-bottom: 8px; }
+    .ai-guarantee p { color: var(--muted); font-size: 0.83rem; line-height: 1.65; }
+
+    /* ZERTIFIKATE */
+    #vertrauen { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 48px; }
+    .trust-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px 20px; text-align: center;
+    }
+    .trust-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .trust-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+    .trust-desc { color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .stat-box { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px; text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--yellow); display: block; }
+    .stat-label { color: var(--muted); font-size: 0.8rem; }
+
+    /* EINSATZGEBIET */
+    #einsatzgebiet { }
+    .eg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .eg-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .eg-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 16px; font-size: 0.87rem; display: flex; align-items: center; gap: 8px;
+      transition: all 0.3s;
+    }
+    .eg-item:hover { border-color: rgba(245,196,0,0.3); color: var(--yellow); }
+    .eg-item::before { content: '📍'; font-size: 0.8rem; }
+    .eg-info { }
+    .eg-info-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+    .ei-icon { width: 44px; height: 44px; background: var(--yellow-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ei-label { font-size: 0.77rem; color: var(--muted); margin-bottom: 3px; }
+    .ei-val { font-size: 0.9rem; font-weight: 600; }
+    .ei-val a { color: var(--yellow); text-decoration: none; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 56px 48px 32px;
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .f-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .f-logo-icon { width: 34px; height: 34px; background: var(--yellow); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .f-logo-text { font-size: 1.1rem; font-weight: 700; }
+    .f-logo-text span { color: var(--yellow); }
+    .f-desc { color: var(--muted); font-size: 0.84rem; line-height: 1.7; }
+    .f-col h4 { font-size: 0.76rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text); margin-bottom: 16px; }
+    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .f-col a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+    .f-col a:hover { color: var(--yellow); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .f-copy { color: var(--dim); font-size: 0.77rem; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      section { padding: 70px 20px; }
+      .hero-content { grid-template-columns: 1fr; }
+      .notfall-card { display: none; }
+      .angebot-grid, .eg-grid { grid-template-columns: 1fr; gap: 40px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      footer { padding: 40px 20px 24px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="notfall-bar">
+  <span class="notfall-blink">⚡</span>
+  &nbsp; ELEKTRO-NOTFALL? Wir sind 24/7 erreichbar: &nbsp;
+  <a href="tel:+49800123456">0800 – 123 456 (kostenlos)</a>
+  &nbsp; · Schnellster Einsatz in Ihrer Region
+</div>
+
+<nav>
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <div class="nav-logo-text">Blitz<span>Pro</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#angebot">Angebot</a></li>
+    <li><a href="#einsatzgebiet">Einsatzgebiet</a></li>
+    <li><a href="#einsatzgebiet">Kontakt</a></li>
+    <li><a href="tel:+49800123456" class="nav-notfall">⚡ Notfall: 0800 – 123 456</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-content">
+    <div>
+      <p class="hero-eyebrow">Ihr Elektriker · 24/7 verfügbar</p>
+      <h1 class="hero-title">Elektrotechnik,<br>der Sie <span>vertrauen</span> können.</h1>
+      <p class="hero-desc">Meisterbetrieb seit 2005. Von der Steckdose bis zur Solaranlage – wir lösen Ihr Elektroproblem, schnell, sauber und günstig.</p>
+      <div class="hero-btns">
+        <a href="#angebot" class="btn-yellow">Kostenloses Angebot →</a>
+        <a href="#leistungen" class="btn-outline">Leistungen ansehen</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-badge">Meisterbetrieb</div>
+        <div class="trust-badge">15+ Jahre Erfahrung</div>
+        <div class="trust-badge">VDE-zertifiziert</div>
+        <div class="trust-badge">4.9★ Google</div>
+      </div>
+    </div>
+    <div class="notfall-card">
+      <span class="notfall-card-icon">🚨</span>
+      <div class="notfall-card-title">Elektro-Notfall?</div>
+      <div class="notfall-card-num"><a href="tel:+49800123456">0800 – 123 456</a></div>
+      <p class="notfall-card-sub">Kostenloser Notfalldienst, 24 Stunden, 7 Tage die Woche. Einsatz in 30–60 Minuten.</p>
+      <a href="tel:+49800123456" class="btn-notfall">Jetzt anrufen – kostenlos</a>
+      <div class="notfall-features">
+        <div class="nf-feat">Einsatz in 30–60 Minuten</div>
+        <div class="nf-feat">Keine Anfahrtskosten im Notfall</div>
+        <div class="nf-feat">Festpreisgarantie vor Arbeitsbeginn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="leistungen">
+  <div class="section-inner">
+    <span class="s-eyebrow">Was wir für Sie tun</span>
+    <h2 class="s-title">Unsere Leistungen</h2>
+    <p class="s-desc">Alles aus einer Hand – vom Kleinauftrag bis zur Gewerbeinstallation. Festpreise, keine Überraschungen.</p>
+    <div class="leist-grid">
+      <div class="leist-card">
+        <span class="lc-icon">🏠</span>
+        <div class="lc-title">Hausinstallation</div>
+        <p class="lc-desc">Komplette Elektroinstallation für Neu- und Altbauten, Renovierungen.</p>
+        <ul class="lc-items">
+          <li>Steckdosen & Schalter</li>
+          <li>Unterverteilung & Sicherungskasten</li>
+          <li>Smart-Home Verdrahtung</li>
+          <li>Außenbeleuchtung</li>
+        </ul>
+      </div>
+      <div class="leist-card">
+        <span class="lc-icon">🔧</span>
+        <div class="lc-title">Reparatur & Entstörung</div>
+        <p class="lc-desc">Schnelle Fehlersuche und Reparatur – auch als Notfalleinsatz innerhalb von 60 Minuten.</p>
+        <ul class="lc-items">
+          <li>Leitungssuche & Kurzschluss</li>
+          <li>Sicherungsausfall beheben</li>
+          <li>Defekte Geräte anschließen</li>
+          <li>FI-Schutzschalter Prüfung</li>
+        </ul>
+      </div>
+      <div class="leist-card">
+        <span class="lc-icon">☀️</span>
+        <div class="lc-title">Solar & E-Mobilität</div>
+        <p class="lc-desc">Photovoltaikanlage, Wallbox und Stromspeicher – zukunftssicher und förderfähig.</p>
+        <ul class="lc-items">
+          <li>PV-Anlage inkl. Planung</li>
+          <li>Wallbox Installation</li>
+          <li>Stromspeicher & Batterie</li>
+          <li>Förderantrag inklusive</li>
+        </ul>
+      </div>
+      <div class="leist-card">
+        <span class="lc-icon">🏢</span>
+        <div class="lc-title">Gewerbe & Industrie</div>
+        <p class="lc-desc">Elektroinstallationen für Büros, Praxen, Werkstätten und Produktionsstätten.</p>
+        <ul class="lc-items">
+          <li>Drehstrom & Starkstrom</li>
+          <li>Notbeleuchtung & Sicherheit</li>
+          <li>Netzwerkverkabelung</li>
+          <li>DGUV V3 Prüfung</li>
+        </ul>
+      </div>
+      <div class="leist-card">
+        <span class="lc-icon">💡</span>
+        <div class="lc-title">Beleuchtung & Smarthome</div>
+        <p class="lc-desc">LED-Umrüstung, Lichtplanung und Smart-Home Systeme für mehr Komfort.</p>
+        <ul class="lc-items">
+          <li>LED-Komplettumrüstung</li>
+          <li>KNX / Busch-Jaeger / Gira</li>
+          <li>Rollladen & Beschattung</li>
+          <li>Sprachsteuerung (Alexa/Google)</li>
+        </ul>
+      </div>
+      <div class="leist-card">
+        <span class="lc-icon">🛡️</span>
+        <div class="lc-title">Wartung & Prüfung</div>
+        <p class="lc-desc">DGUV V3, VDE-Prüfungen und regelmäßige Wartung für Sicherheit und Versicherungskonformität.</p>
+        <ul class="lc-items">
+          <li>Elektrische Prüfungen (DGUV)</li>
+          <li>Wartungsvertrag auf Wunsch</li>
+          <li>Prüfprotokoll & Zertifikat</li>
+          <li>Blitzschutz-Inspektion</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="angebot">
+  <div class="section-inner">
+    <div class="angebot-grid">
+      <div class="angebot-form">
+        <div class="af-title">Kostenloses Angebot anfordern</div>
+        <p class="af-sub">In 24h erhalten Sie ein verbindliches Festpreisangebot – kostenlos und unverbindlich.</p>
+        <div class="fg-row">
+          <div class="fg"><label>Vorname *</label><input type="text" placeholder="Thomas"></div>
+          <div class="fg"><label>Nachname *</label><input type="text" placeholder="Müller"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Telefon *</label><input type="tel" placeholder="+49 89 123 456"></div>
+          <div class="fg"><label>PLZ / Ort *</label><input type="text" placeholder="80331 München"></div>
+        </div>
+        <div class="fg">
+          <label>Leistung / Art des Auftrags *</label>
+          <select>
+            <option value="">Bitte wählen…</option>
+            <option>Notfall (sofortiger Einsatz)</option>
+            <option>Hausinstallation / Renovierung</option>
+            <option>Reparatur / Entstörung</option>
+            <option>Solaranlage / Wallbox</option>
+            <option>Gewerbeinstallation</option>
+            <option>Beleuchtung / Smart-Home</option>
+            <option>Prüfung / Wartung (DGUV)</option>
+            <option>Sonstiges</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Kurze Beschreibung *</label>
+          <textarea placeholder="Beschreiben Sie kurz Ihr Anliegen, z.B.: 3-Zimmer-Wohnung, Steckdosen ersetzen, Baujahr 1980…"></textarea>
+        </div>
+        <div class="fg">
+          <label>Wunschtermin (optional)</label>
+          <input type="date">
+        </div>
+        <button class="btn-angebot" onclick="this.textContent='✓ Anfrage gesendet – wir melden uns!'; this.style.background='#2a8a4a'; setTimeout(()=>{this.textContent='Kostenloses Angebot anfordern →'; this.style.background='';},3000)">Kostenloses Angebot anfordern →</button>
+      </div>
+      <div class="angebot-info">
+        <span class="s-eyebrow">Warum BlitzPro?</span>
+        <h2 class="s-title">Transparenz von Anfang an</h2>
+        <p class="s-desc" style="margin-bottom:28px;">Kein Stundensatz-Roulette. Sie erhalten vor Arbeitsbeginn immer einen verbindlichen Festpreis.</p>
+        <div class="ai-guarantee">
+          <div class="ai-guarantee-title">⚡ Festpreisgarantie</div>
+          <p>Der vereinbarte Preis gilt – egal wie lange die Arbeit dauert. Keine versteckten Kosten, keine bösen Überraschungen auf der Rechnung.</p>
+        </div>
+        <div class="ai-box">
+          <div class="ai-box-title"><span>⏱️</span> Angebot in 24 Stunden</div>
+          <p>Nach Ihrer Anfrage erhalten Sie innerhalb eines Werktages ein detailliertes, verbindliches Angebot per E-Mail.</p>
+        </div>
+        <div class="ai-box">
+          <div class="ai-box-title"><span>🎓</span> Meisterbetrieb & VDE-zertifiziert</div>
+          <p>Alle Arbeiten werden von geprüften Elektrofachkräften durchgeführt. Vollständig versichert, mit Gewährleistung und Prüfprotokoll.</p>
+        </div>
+        <div class="ai-box">
+          <div class="ai-box-title"><span>♻️</span> Fördermittel-Beratung</div>
+          <p>Bei Wallbox, Solaranlage und Stromspeicher: Wir informieren Sie über alle verfügbaren Förderungen und helfen beim Antrag.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vertrauen">
+  <div class="section-inner">
+    <span class="s-eyebrow">Qualität & Vertrauen</span>
+    <h2 class="s-title">Ihr Schutz, unsere Pflicht</h2>
+    <p class="s-desc">Staatlich geprüft, versichert und zertifiziert – für Ihre Sicherheit und Ihren Versicherungsschutz.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <span class="trust-icon">🎓</span>
+        <div class="trust-title">Meisterbetrieb</div>
+        <p class="trust-desc">Eingetragener Meisterbetrieb im Elektrohandwerk, HWK München</p>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon">🏅</span>
+        <div class="trust-title">VDE-Zertifizierung</div>
+        <p class="trust-desc">Alle Installationen nach gültigen VDE-Normen und DIN-Vorschriften</p>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon">🛡️</span>
+        <div class="trust-title">Haftpflichtversichert</div>
+        <p class="trust-desc">Vollständige Betriebshaftpflicht – Sie sind bei uns immer auf der sicheren Seite</p>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon">📋</span>
+        <div class="trust-title">DGUV V3 Prüfung</div>
+        <p class="trust-desc">Zertifiziert für elektrische Prüfungen nach BGV A3 / DGUV V3</p>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-num">800+</span><div class="stat-label">abgeschlossene Projekte</div></div>
+      <div class="stat-box"><span class="stat-num">15+</span><div class="stat-label">Jahre Erfahrung</div></div>
+      <div class="stat-box"><span class="stat-num">4.9★</span><div class="stat-label">Google Bewertung</div></div>
+      <div class="stat-box"><span class="stat-num">24/7</span><div class="stat-label">Notfalldienst</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="einsatzgebiet">
+  <div class="section-inner">
+    <div class="eg-grid">
+      <div>
+        <span class="s-eyebrow">Unser Einsatzgebiet</span>
+        <h2 class="s-title">Wir kommen zu Ihnen</h2>
+        <p class="s-desc">BlitzPro ist in München und dem gesamten Großraum tätig – schnell, zuverlässig, ohne lange Wartezeiten.</p>
+        <div class="eg-list">
+          <div class="eg-item">München Mitte</div>
+          <div class="eg-item">Schwabing</div>
+          <div class="eg-item">Maxvorstadt</div>
+          <div class="eg-item">Bogenhausen</div>
+          <div class="eg-item">Pasing</div>
+          <div class="eg-item">Haar</div>
+          <div class="eg-item">Dachau</div>
+          <div class="eg-item">Unterschleißheim</div>
+          <div class="eg-item">Germering</div>
+          <div class="eg-item">Freising</div>
+          <div class="eg-item">Erding</div>
+          <div class="eg-item">+ Umgebung</div>
+        </div>
+      </div>
+      <div class="eg-info">
+        <span class="s-eyebrow">Kontakt & Erreichbarkeit</span>
+        <h2 class="s-title">Erreichen Sie uns</h2>
+        <div class="eg-info-item"><div class="ei-icon">📞</div><div><div class="ei-label">Büro (Mo–Fr 8–17 Uhr)</div><div class="ei-val"><a href="tel:+4989456789">+49 89 456 789</a></div></div></div>
+        <div class="eg-info-item"><div class="ei-icon">🚨</div><div><div class="ei-label">Notfall-Hotline (24/7 kostenlos)</div><div class="ei-val"><a href="tel:+49800123456">0800 – 123 456</a></div></div></div>
+        <div class="eg-info-item"><div class="ei-icon">✉️</div><div><div class="ei-label">E-Mail</div><div class="ei-val"><a href="mailto:info@blitzpro.de">info@blitzpro.de</a></div></div></div>
+        <div class="eg-info-item"><div class="ei-icon">📍</div><div><div class="ei-label">Adresse</div><div class="ei-val">Gewerbestr. 12 · 80807 München-Nord</div></div></div>
+        <div class="eg-info-item"><div class="ei-icon">🕒</div><div><div class="ei-label">Bürozeiten</div><div class="ei-val">Mo – Fr: 08:00 – 17:00 Uhr · Notfall: 24/7</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="f-logo"><div class="f-logo-icon">⚡</div><div class="f-logo-text">Blitz<span>Pro</span> Elektrotechnik</div></div>
+        <p class="f-desc">Ihr zuverlässiger Elektriker-Meisterbetrieb im Großraum München. VDE-zertifiziert, 24/7 Notfalldienst, Festpreisgarantie.</p>
+      </div>
+      <div class="f-col">
+        <h4>Leistungen</h4>
+        <ul>
+          <li><a href="#leistungen">Hausinstallation</a></li>
+          <li><a href="#leistungen">Reparatur & Notfall</a></li>
+          <li><a href="#leistungen">Solar & Wallbox</a></li>
+          <li><a href="#leistungen">Smart-Home</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Unternehmen</h4>
+        <ul>
+          <li><a href="#angebot">Kostenloses Angebot</a></li>
+          <li><a href="#einsatzgebiet">Einsatzgebiet</a></li>
+          <li><a href="#">Impressum</a></li>
+          <li><a href="#">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="f-copy">© 2025 BlitzPro Elektrotechnik GmbH. Alle Rechte vorbehalten.</p>
+      <p class="f-copy">Website by <span style="color:var(--yellow)">LYZ.AI</span></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
