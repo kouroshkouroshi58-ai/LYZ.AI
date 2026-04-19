@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Élite – Hair & Beauty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #080808;
+      --surface:  #0f0f0f;
+      --surface2: #141414;
+      --border:   #1e1e1e;
+      --rose:     #c4826e;
+      --rose-l:   #d99a88;
+      --rose-dim: rgba(196,130,110,0.12);
+      --rose-glow:rgba(196,130,110,0.25);
+      --text:     #f0f0f0;
+      --muted:    #888;
+      --dim:      #3a3a3a;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 70px;
+      background: rgba(8,8,8,0.94); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text); text-decoration: none; letter-spacing: 1px; }
+    .nav-logo span { color: var(--rose); }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.87rem; font-weight: 500; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-book {
+      background: var(--rose); color: #fff; padding: 9px 20px; border-radius: 6px;
+      font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.3s;
+    }
+    .nav-book:hover { background: var(--rose-l); transform: translateY(-1px); box-shadow: 0 4px 16px var(--rose-glow); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+      padding-top: 70px; overflow: hidden; position: relative;
+    }
+    .hero-left {
+      display: flex; align-items: center; padding: 60px 64px;
+      background: var(--bg);
+    }
+    .hero-right {
+      background: var(--surface);
+      position: relative; overflow: hidden;
+    }
+    .hero-right-inner {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 80% at 60% 40%, rgba(196,130,110,0.15) 0%, transparent 60%),
+        linear-gradient(135deg, #141414 0%, #0f0f0f 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-right-decor {
+      text-align: center; padding: 40px;
+    }
+    .hero-right-decor .big-letter {
+      font-family: 'Playfair Display', serif; font-size: 18rem; line-height: 1;
+      color: rgba(196,130,110,0.06); font-style: italic; user-select: none;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .hero-right-stats { position: relative; z-index:1; display: flex; flex-direction: column; gap: 24px; align-items: center; }
+    .hs-item { text-align: center; }
+    .hs-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--rose); }
+    .hs-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 5px; text-transform: uppercase; color: var(--rose); margin-bottom: 18px; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; line-height: 1.15; margin-bottom: 18px; }
+    .hero-title em { font-style: italic; color: var(--rose); }
+    .hero-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 32px; max-width: 420px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-rose {
+      background: var(--rose); color: #fff; padding: 12px 26px; border-radius: 6px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: all 0.3s; border: 1px solid var(--rose);
+    }
+    .btn-rose:hover { background: var(--rose-l); transform: translateY(-2px); box-shadow: 0 8px 24px var(--rose-glow); }
+    .btn-ghost {
+      background: transparent; color: var(--text); padding: 12px 26px; border-radius: 6px;
+      font-weight: 500; font-size: 0.9rem; text-decoration: none; transition: all 0.3s; border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* SECTIONS */
+    section { padding: 100px 48px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .s-eyebrow { font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--rose); margin-bottom: 14px; display: block; }
+    .s-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+    .s-desc { color: var(--muted); font-size: 0.93rem; line-height: 1.8; max-width: 520px; margin-bottom: 50px; }
+
+    /* BUCHUNG */
+    #buchung { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .book-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+    .book-form { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 36px; }
+    .book-form h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 24px; }
+    .fg { margin-bottom: 16px; }
+    .fg label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 7px; font-weight: 500; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 14px; color: var(--text); font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem; outline: none; transition: border-color 0.3s; appearance: none;
+    }
+    .fg input:focus, .fg select:focus { border-color: var(--rose); }
+    .fg select option { background: #141414; }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-book {
+      width: 100%; background: var(--rose); color: #fff; border: none; padding: 13px;
+      border-radius: 8px; font-size: 0.92rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer; transition: all 0.3s; margin-top: 4px;
+    }
+    .btn-book:hover { background: var(--rose-l); box-shadow: 0 6px 24px var(--rose-glow); }
+    .book-features { margin-top: 8px; }
+    .book-feature { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .bf-dot { width: 32px; height: 32px; background: var(--rose-dim); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .bf-text { font-size: 0.88rem; }
+    .bf-sub { color: var(--muted); font-size: 0.78rem; }
+
+    /* PREISLISTE */
+    #preise { }
+    .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+    .price-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 30px; transition: all 0.4s;
+    }
+    .price-card:hover { border-color: rgba(196,130,110,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(196,130,110,0.08); }
+    .pc-icon { font-size: 1.8rem; margin-bottom: 16px; display: block; }
+    .pc-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 18px; }
+    .price-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .price-item:last-child { border-bottom: none; }
+    .pi-name { color: var(--muted); }
+    .pi-price { color: var(--rose); font-weight: 600; }
+
+    /* TEAM */
+    #team { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .team-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; transition: all 0.4s;
+    }
+    .team-card:hover { border-color: rgba(196,130,110,0.3); transform: translateY(-4px); }
+    .team-avatar {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative; overflow: hidden;
+    }
+    .team-avatar-1 { background: linear-gradient(135deg, #1a1014, #2a1820); }
+    .team-avatar-2 { background: linear-gradient(135deg, #0e1420, #1a2030); }
+    .team-avatar-3 { background: linear-gradient(135deg, #141020, #201428); }
+    .team-body { padding: 20px; }
+    .team-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
+    .team-role { color: var(--rose); font-size: 0.8rem; font-weight: 500; margin-bottom: 10px; }
+    .team-spec { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+
+    /* GALERIE */
+    #galerie { }
+    .galerie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .gal-item {
+      border-radius: 10px; overflow: hidden; aspect-ratio: 3/4;
+      position: relative; cursor: pointer; transition: transform 0.4s;
+    }
+    .gal-item:hover { transform: scale(1.02); }
+    .gal-bg-1 { background: linear-gradient(160deg, #1e1214 0%, #2e1820 50%, #1a1016 100%); }
+    .gal-bg-2 { background: linear-gradient(160deg, #121820 0%, #1a2030 50%, #0e1420 100%); }
+    .gal-bg-3 { background: linear-gradient(160deg, #1a1424 0%, #241830 50%, #16102e 100%); }
+    .gal-bg-4 { background: linear-gradient(160deg, #181424 0%, #221828 50%, #161022 100%); }
+    .gal-bg-5 { background: linear-gradient(160deg, #20140e 0%, #2e1c12 50%, #1c1008 100%); }
+    .gal-bg-6 { background: linear-gradient(160deg, #101820 0%, #181e2c 50%, #0c1218 100%); }
+    .gal-label {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      font-size: 0.78rem; color: rgba(255,255,255,0.8); font-style: italic;
+    }
+    .gal-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--rose); color: #fff; font-size: 0.65rem; padding: 3px 10px; border-radius: 20px; font-weight: 600;
+    }
+    .gal-decoration {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; opacity: 0.15;
+    }
+
+    /* KONTAKT */
+    #kontakt { background: var(--surface); border-top: 1px solid var(--border); }
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+    .hours-row { display: flex; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row span:last-child { color: var(--rose); font-weight: 500; }
+    .kontakt-items { margin-top: 12px; display: flex; flex-direction: column; gap: 18px; }
+    .ki { display: flex; gap: 14px; align-items: flex-start; }
+    .ki-icon { width: 42px; height: 42px; background: var(--rose-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .ki-label { font-size: 0.76rem; color: var(--muted); margin-bottom: 3px; }
+    .ki-val { font-size: 0.9rem; font-weight: 500; }
+    .ki-val a { color: var(--rose); text-decoration: none; }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 48px; text-align: center; }
+    .f-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .f-logo span { color: var(--rose); }
+    .f-desc { color: var(--muted); font-size: 0.83rem; margin-bottom: 24px; }
+    .f-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 24px; list-style: none; }
+    .f-links a { color: var(--muted); text-decoration: none; font-size: 0.83rem; transition: color 0.3s; }
+    .f-links a:hover { color: var(--rose); }
+    .f-copy { color: var(--dim); font-size: 0.77rem; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 40px 20px; }
+      section { padding: 70px 20px; }
+      .book-grid, .kontakt-grid { grid-template-columns: 1fr; gap: 40px; }
+      .team-grid, .galerie-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">Studio <span>Élite</span></a>
+  <ul class="nav-links">
+    <li><a href="#preise">Preise</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="#buchung" class="nav-book">Termin buchen</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-left">
+    <div>
+      <p class="hero-eyebrow">Hair & Beauty Studio · Hamburg</p>
+      <h1 class="hero-title">Dein Haar.<br>Dein <em>Statement.</em></h1>
+      <p class="hero-desc">Professionelle Haarkunst, trendige Styles und persönliche Beratung – buche deinen Wunschtermin online in Sekunden.</p>
+      <div class="hero-btns">
+        <a href="#buchung" class="btn-rose">Termin buchen →</a>
+        <a href="#preise" class="btn-ghost">Preisliste ansehen</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <div class="big-letter">É</div>
+      <div class="hero-right-stats">
+        <div class="hs-item"><div class="hs-num">8+</div><div class="hs-label">Jahre Erfahrung</div></div>
+        <div class="hs-item"><div class="hs-num">1.200+</div><div class="hs-label">Zufriedene Kunden</div></div>
+        <div class="hs-item"><div class="hs-num">4.9★</div><div class="hs-label">Google Bewertung</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="buchung">
+  <div class="section-inner">
+    <div class="book-grid">
+      <div class="book-form">
+        <h3>Online-Termin buchen</h3>
+        <div class="fg">
+          <label>Leistung wählen *</label>
+          <select>
+            <option value="">Bitte wählen…</option>
+            <option>Damen Schnitt (ab 45 €)</option>
+            <option>Herren Schnitt (ab 28 €)</option>
+            <option>Colorierung (ab 65 €)</option>
+            <option>Balayage / Highlights (ab 95 €)</option>
+            <option>Tönung (ab 55 €)</option>
+            <option>Keratin-Behandlung (ab 120 €)</option>
+            <option>Braut-Styling (auf Anfrage)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Stylistin wählen</label>
+          <select>
+            <option>Keine Präferenz</option>
+            <option>Sophie M. – Color Spezialistin</option>
+            <option>Lena K. – Schnitt & Styling</option>
+            <option>Mia R. – Braut & Festlich</option>
+          </select>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Datum *</label><input type="date"></div>
+          <div class="fg"><label>Wunschzeit</label>
+            <select>
+              <option>09:00</option><option>10:00</option><option>11:00</option>
+              <option>12:00</option><option>13:00</option><option>14:00</option>
+              <option>15:00</option><option>16:00</option><option>17:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Vorname *</label><input type="text" placeholder="Lisa"></div>
+          <div class="fg"><label>Telefon *</label><input type="tel" placeholder="+49 40 123 456"></div>
+        </div>
+        <div class="fg"><label>Hinweise (optional)</label><input type="text" placeholder="z.B. Allergie, langer Haarschnitt, Ersttermin…"></div>
+        <button class="btn-book" onclick="this.textContent='✓ Terminanfrage gesendet!'; this.style.background='#2a7a4a'; setTimeout(()=>{this.textContent='Termin jetzt buchen →'; this.style.background='';},3000)">Termin jetzt buchen →</button>
+      </div>
+      <div>
+        <span class="s-eyebrow">Warum online buchen?</span>
+        <h2 class="s-title">Kein Anruf.<br>Kein Warten.</h2>
+        <p class="s-desc">Buche deinen Termin bequem von überall – 24/7, sofortige Bestätigung, erinnerst du dich automatisch.</p>
+        <div class="book-features">
+          <div class="book-feature">
+            <div class="bf-dot">📅</div>
+            <div><div class="bf-text">Sofortige Bestätigung</div><div class="bf-sub">Du erhältst direkt eine Bestätigung per SMS oder E-Mail</div></div>
+          </div>
+          <div class="book-feature">
+            <div class="bf-dot">⏰</div>
+            <div><div class="bf-text">Automatische Erinnerung</div><div class="bf-sub">24h vorher bekommst du eine Erinnerung – nie wieder vergessen</div></div>
+          </div>
+          <div class="book-feature">
+            <div class="bf-dot">🔄</div>
+            <div><div class="bf-text">Kostenlos umbuchen</div><div class="bf-sub">Pläne ändern sich – wir auch. Bis 12h vorher kostenlos stornieren</div></div>
+          </div>
+          <div class="book-feature">
+            <div class="bf-dot">💆</div>
+            <div><div class="bf-text">Stylistin aussuchen</div><div class="bf-sub">Wähle direkt deine Lieblingsfriseuse für deinen Termin</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="preise">
+  <div class="section-inner">
+    <span class="s-eyebrow">Transparente Preise</span>
+    <h2 class="s-title">Unsere Leistungen & Preise</h2>
+    <p class="s-desc">Keine versteckten Kosten. Klare Preise, faire Qualität. Der Endpreis richtet sich nach Haarlänge und Aufwand.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <span class="pc-icon">✂️</span>
+        <div class="pc-title">Schnitt & Styling</div>
+        <div class="price-item"><span class="pi-name">Damen – kurz</span><span class="pi-price">ab 45 €</span></div>
+        <div class="price-item"><span class="pi-name">Damen – mittel</span><span class="pi-price">ab 55 €</span></div>
+        <div class="price-item"><span class="pi-name">Damen – lang</span><span class="pi-price">ab 65 €</span></div>
+        <div class="price-item"><span class="pi-name">Herren</span><span class="pi-price">ab 28 €</span></div>
+        <div class="price-item"><span class="pi-name">Kinder (bis 12)</span><span class="pi-price">ab 18 €</span></div>
+      </div>
+      <div class="price-card">
+        <span class="pc-icon">🎨</span>
+        <div class="pc-title">Farbe & Tönung</div>
+        <div class="price-item"><span class="pi-name">Vollcolorierung</span><span class="pi-price">ab 65 €</span></div>
+        <div class="price-item"><span class="pi-name">Ansatzcolorierung</span><span class="pi-price">ab 45 €</span></div>
+        <div class="price-item"><span class="pi-name">Highlights (partiell)</span><span class="pi-price">ab 75 €</span></div>
+        <div class="price-item"><span class="pi-name">Balayage</span><span class="pi-price">ab 110 €</span></div>
+        <div class="price-item"><span class="pi-name">Tönung</span><span class="pi-price">ab 55 €</span></div>
+      </div>
+      <div class="price-card">
+        <span class="pc-icon">✨</span>
+        <div class="pc-title">Treatments & Pflege</div>
+        <div class="price-item"><span class="pi-name">Keratin-Glättung</span><span class="pi-price">ab 120 €</span></div>
+        <div class="price-item"><span class="pi-name">Tiefenpflege</span><span class="pi-price">ab 25 €</span></div>
+        <div class="price-item"><span class="pi-name">Kopfmassage</span><span class="pi-price">12 €</span></div>
+        <div class="price-item"><span class="pi-name">Braut-Styling</span><span class="pi-price">auf Anfrage</span></div>
+        <div class="price-item"><span class="pi-name">Hochsteckfrisur</span><span class="pi-price">ab 55 €</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="section-inner">
+    <span class="s-eyebrow">Unser Team</span>
+    <h2 class="s-title">Deine Stylistinnen</h2>
+    <p class="s-desc">Leidenschaft, Können und echtes Interesse an deinem Look – lern unser Team kennen.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar team-avatar-1">💇‍♀️</div>
+        <div class="team-body">
+          <div class="team-name">Sophie M.</div>
+          <div class="team-role">Color Spezialistin · Senior Stylistin</div>
+          <div class="team-spec">Balayage, Colorierung und Bleaching sind ihre Spezialgebiete. 10 Jahre Erfahrung, zertifiziert bei Wella & Schwarzkopf.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar team-avatar-2">✂️</div>
+        <div class="team-body">
+          <div class="team-name">Lena K.</div>
+          <div class="team-role">Schnitt & Styling · Friseurmeisterin</div>
+          <div class="team-spec">Präzise Schnitte, trendige Styles und Haarpflege-Beratung. Friseurmeisterin mit Leidenschaft für moderne Looks.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar team-avatar-3">👰</div>
+        <div class="team-body">
+          <div class="team-name">Mia R.</div>
+          <div class="team-role">Braut & Festlich · Stylistin</div>
+          <div class="team-spec">Hochzeitsstylings, Festfrisuren und Make-up sind ihr Metier. Über 200 Bräute haben ihr an ihrem großen Tag vertraut.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galerie">
+  <div class="section-inner">
+    <span class="s-eyebrow">Unsere Arbeiten</span>
+    <h2 class="s-title">Vorher · Nachher</h2>
+    <p class="s-desc">Lass dich von unseren Transformationen inspirieren.</p>
+    <div class="galerie-grid">
+      <div class="gal-item gal-bg-1"><div class="gal-decoration">💇‍♀️</div><div class="gal-tag">Balayage</div><div class="gal-label">Dunkle Wurzeln → Caramel Balayage</div></div>
+      <div class="gal-item gal-bg-2"><div class="gal-decoration">✂️</div><div class="gal-tag">Schnitt</div><div class="gal-label">Bob Transformation · Frischer Look</div></div>
+      <div class="gal-item gal-bg-3"><div class="gal-decoration">🌸</div><div class="gal-tag">Color</div><div class="gal-label">Rosé Highlights · Sanfte Tönung</div></div>
+      <div class="gal-item gal-bg-4"><div class="gal-decoration">💍</div><div class="gal-tag">Braut</div><div class="gal-label">Eleganter Braut-Hochsteck</div></div>
+      <div class="gal-item gal-bg-5"><div class="gal-decoration">✨</div><div class="gal-tag">Keratin</div><div class="gal-label">Keratin-Glättung · 4 Monate glatt</div></div>
+      <div class="gal-item gal-bg-6"><div class="gal-decoration">🎨</div><div class="gal-tag">Highlights</div><div class="gal-label">Blonde Strähnen · Natürlicher Effekt</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="section-inner">
+    <div class="kontakt-grid">
+      <div>
+        <span class="s-eyebrow">Wann wir für dich da sind</span>
+        <h2 class="s-title">Öffnungszeiten</h2>
+        <div><div class="hours-row"><span>Montag</span><span>Ruhetag</span></div>
+        <div class="hours-row"><span>Dienstag – Freitag</span><span>09:00 – 19:00</span></div>
+        <div class="hours-row"><span>Samstag</span><span>08:00 – 17:00</span></div>
+        <div class="hours-row"><span>Sonntag</span><span>Geschlossen</span></div></div>
+      </div>
+      <div>
+        <span class="s-eyebrow">Kontakt & Adresse</span>
+        <h2 class="s-title">Komm vorbei</h2>
+        <div class="kontakt-items">
+          <div class="ki"><div class="ki-icon">📍</div><div><div class="ki-label">Adresse</div><div class="ki-val">Mönckebergstraße 7 · 20095 Hamburg</div></div></div>
+          <div class="ki"><div class="ki-icon">📞</div><div><div class="ki-label">Telefon</div><div class="ki-val"><a href="tel:+4940987654">+49 40 987 654</a></div></div></div>
+          <div class="ki"><div class="ki-icon">📱</div><div><div class="ki-label">WhatsApp</div><div class="ki-val"><a href="#">Direkt schreiben</a></div></div></div>
+          <div class="ki"><div class="ki-icon">🚇</div><div><div class="ki-label">ÖPNV</div><div class="ki-val">U3 Mönckebergstraße · 1 Min. Fußweg</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">Studio <span>Élite</span></div>
+  <p class="f-desc">Hair & Beauty · Hamburg · Dein Look, dein Statement</p>
+  <ul class="f-links">
+    <li><a href="#buchung">Termin buchen</a></li>
+    <li><a href="#preise">Preise</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#">Impressum</a></li>
+    <li><a href="#">Datenschutz</a></li>
+  </ul>
+  <p class="f-copy">© 2025 Studio Élite. Alle Rechte vorbehalten. · Website by <span style="color:var(--rose)">LYZ.AI</span></p>
+</footer>
+
+</body>
+</html>
