@@ -314,31 +314,139 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== STATS STRIP ===== */
-    #stats {
+    /* ===== DEMO PROJEKTE ===== */
+    #projekte {
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 52px 40px;
+      padding: 80px 48px;
     }
-    .stats-grid {
-      max-width: 1080px;
+    .projekte-inner {
+      max-width: 1240px;
       margin: 0 auto;
+    }
+    .projekte-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+    .projekte-header .s-tag { display: block; margin-bottom: 12px; }
+    .projekte-header .s-title { margin-bottom: 10px; }
+    .projekte-header .s-sub { margin: 0 auto; text-align: center; }
+    .demos-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
     }
-    .stat-item { text-align: center; padding: 12px; }
-    .stat-number {
+    .demo-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
       display: block;
-      font-size: 2.6rem;
-      font-weight: 700;
-      color: var(--green);
-      line-height: 1;
-      margin-bottom: 6px;
-      font-variant-numeric: tabular-nums;
+      position: relative;
     }
-    .stat-label { font-size: 0.82rem; color: var(--text-muted); }
+    .demo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,179,65,0.07) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .demo-card:hover {
+      border-color: rgba(0,179,65,0.45);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(0,179,65,0.13);
+    }
+    .demo-card:hover::before { opacity: 1; }
+    .demo-browser-bar {
+      background: #181818;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #242424;
+      flex-shrink: 0;
+    }
+    .db-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .db-dot:nth-child(1) { background: #ff5f57; }
+    .db-dot:nth-child(2) { background: #ffbd2e; }
+    .db-dot:nth-child(3) { background: #28ca41; }
+    .db-url {
+      flex: 1; background: #252525; border-radius: 4px; height: 20px;
+      margin-left: 8px; display: flex; align-items: center; padding: 0 8px;
+      font-size: 0.68rem; color: #555; font-family: monospace; overflow: hidden;
+      white-space: nowrap;
+    }
+    .demo-preview {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      background: #050505;
+    }
+    .demo-preview iframe {
+      width: 1280px;
+      height: 900px;
+      border: none;
+      transform: scale(0.305);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+    .demo-info {
+      padding: 20px 22px 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .demo-tag {
+      display: inline-block;
+      background: var(--green-dim);
+      color: var(--green);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .demo-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+    .demo-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+    .demo-features li {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .demo-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .demo-cta {
+      font-size: 0.82rem;
+      color: var(--green);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    @media (max-width: 900px) {
+      .demos-grid { grid-template-columns: 1fr; }
+      #projekte { padding: 60px 24px; }
+    }
 
     /* ===== SHARED SECTION HEADER ===== */
     .s-tag {
@@ -841,24 +949,76 @@
   </div>
 </section>
 
-<!-- ========== STATS ========== -->
-<section id="stats">
-  <div class="stats-grid">
-    <div class="stat-item">
-      <span class="stat-number" data-target="50" data-suffix="+">0</span>
-      <span class="stat-label">Projekte abgeschlossen</span>
+<!-- ========== DEMO PROJEKTE ========== -->
+<section id="projekte">
+  <div class="projekte-inner">
+    <div class="projekte-header">
+      <span class="s-tag">Unsere Arbeiten</span>
+      <h2 class="s-title">Demo-Projekte</h2>
+      <p class="s-sub">Websites, die echte Probleme lösen – maßgeschneidert für jede Branche.</p>
     </div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="30" data-suffix="+">0</span>
-      <span class="stat-label">Zufriedene Kunden</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="98" data-suffix="%">0</span>
-      <span class="stat-label">Kundenzufriedenheit</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-number" data-target="24" data-suffix="/7">0</span>
-      <span class="stat-label">Support-Verfügbarkeit</span>
+    <div class="demos-grid">
+
+      <a href="demo-restaurant.html" target="_blank" class="demo-card">
+        <div class="demo-browser-bar">
+          <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
+          <div class="db-url">la-notte-ristorante.de</div>
+        </div>
+        <div class="demo-preview">
+          <iframe src="demo-restaurant.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
+        <div class="demo-info">
+          <span class="demo-tag">Restaurant & Café</span>
+          <div class="demo-name">La Notte – Ristorante & Bar</div>
+          <ul class="demo-features">
+            <li>Online-Reservierung rund um die Uhr</li>
+            <li>Digitale Speisekarte mit Preisen</li>
+            <li>Öffnungszeiten & Kontakt auf einen Blick</li>
+          </ul>
+          <div class="demo-cta">Demo ansehen →</div>
+        </div>
+      </a>
+
+      <a href="demo-friseur.html" target="_blank" class="demo-card">
+        <div class="demo-browser-bar">
+          <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
+          <div class="db-url">studio-elite-hamburg.de</div>
+        </div>
+        <div class="demo-preview">
+          <iframe src="demo-friseur.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
+        <div class="demo-info">
+          <span class="demo-tag">Friseursalon</span>
+          <div class="demo-name">Studio Élite – Hair & Beauty</div>
+          <ul class="demo-features">
+            <li>Online-Buchung mit Stylistin-Auswahl</li>
+            <li>Transparente Preisliste</li>
+            <li>Team-Vorstellung & Galerie</li>
+          </ul>
+          <div class="demo-cta">Demo ansehen →</div>
+        </div>
+      </a>
+
+      <a href="demo-elektro.html" target="_blank" class="demo-card">
+        <div class="demo-browser-bar">
+          <div class="db-dot"></div><div class="db-dot"></div><div class="db-dot"></div>
+          <div class="db-url">blitzpro-elektro.de</div>
+        </div>
+        <div class="demo-preview">
+          <iframe src="demo-elektro.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
+        <div class="demo-info">
+          <span class="demo-tag">Handwerk · Elektro</span>
+          <div class="demo-name">BlitzPro Elektrotechnik</div>
+          <ul class="demo-features">
+            <li>24/7 Notfall-Hotline prominent sichtbar</li>
+            <li>Online Kostenvoranschlag-Formular</li>
+            <li>Festpreisgarantie & Zertifikate</li>
+          </ul>
+          <div class="demo-cta">Demo ansehen →</div>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
@@ -1154,28 +1314,6 @@
   });
 })();
 
-/* ── COUNTER ── */
-(function(){
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(!e.isIntersecting) return;
-      e.target.querySelectorAll('.stat-number').forEach(el=>{
-        const target = +el.dataset.target;
-        const suffix = el.dataset.suffix||'';
-        let cur = 0;
-        const step = target/55;
-        const iv = setInterval(()=>{
-          cur += step;
-          if(cur>=target){ el.textContent=target+suffix; clearInterval(iv); }
-          else el.textContent=Math.floor(cur)+suffix;
-        },22);
-      });
-      io.unobserve(e.target);
-    });
-  },{threshold:0.4});
-  const s = document.getElementById('stats');
-  if(s) io.observe(s);
-})();
 
 /* ── NAVBAR SHADOW ── */
 window.addEventListener('scroll',()=>{
