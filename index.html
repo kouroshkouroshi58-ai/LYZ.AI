@@ -1015,10 +1015,14 @@
   // Gear spins after reaching center
   setTimeout(()=> gearSvg.classList.add('spin'), 1550);
 
-  // Split + gear exits simultaneously
+  // Fade text out before panels split
   setTimeout(()=>{
-    iText.style.transition = 'opacity 0.3s ease';
+    iText.style.transition = 'opacity 0.25s ease';
     iText.style.opacity    = '0';
+  }, 2350);
+
+  // Split + gear exits after text is already gone
+  setTimeout(()=>{
     panelTop.classList.add('split');
     panelBot.classList.add('split');
     gearPos.classList.remove('center');
