@@ -1015,9 +1015,12 @@
 
   // Fade out text
   setTimeout(()=>{
+    iText.style.opacity    = '1';   // einfrieren bevor Animation entfernt wird
     iText.style.animation  = 'none';
-    iText.style.transition = 'opacity 0.35s ease';
-    iText.style.opacity    = '0';
+    iText.style.transition = 'opacity 0.5s ease';
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{
+      iText.style.opacity = '0';
+    }));
   }, 2300);
 
   // Fade out gear
