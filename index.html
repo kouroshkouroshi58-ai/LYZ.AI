@@ -193,7 +193,7 @@
       margin-bottom: 28px;
       opacity: 0;
       transform: translateY(16px);
-      animation: fadeUp 0.7s forwards 3.6s;
+      animation: fadeUp 0.7s forwards 3.8s;
     }
     .hero-badge-dot {
       width: 6px;
@@ -215,7 +215,7 @@
       letter-spacing: -0.5px;
       opacity: 0;
       transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 3.8s;
+      animation: fadeUp 0.7s forwards 4.0s;
     }
     .hero-title .green {
       background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
@@ -234,7 +234,7 @@
       margin: 0 auto 40px;
       opacity: 0;
       transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 4.0s;
+      animation: fadeUp 0.7s forwards 4.2s;
     }
 
     .hero-btns {
@@ -244,7 +244,7 @@
       flex-wrap: wrap;
       opacity: 0;
       transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 4.2s;
+      animation: fadeUp 0.7s forwards 4.4s;
     }
 
     .btn-primary {
@@ -295,7 +295,7 @@
       align-items: center;
       gap: 8px;
       opacity: 0;
-      animation: fadeUp 0.7s forwards 4.8s;
+      animation: fadeUp 0.7s forwards 5.0s;
     }
     .hero-scroll-hint span {
       font-size: 0.7rem;
@@ -1002,12 +1002,10 @@
 
 /* ── INTRO SPLASH ── */
 (function(){
-  const intro    = document.getElementById('intro');
-  const iText    = document.getElementById('intro-text');
-  const gearPos  = document.getElementById('gear-pos');
-  const gearSvg  = document.getElementById('gear-svg');
-  const panelTop = document.querySelector('.intro-panel-top');
-  const panelBot = document.querySelector('.intro-panel-bottom');
+  const intro   = document.getElementById('intro');
+  const iText   = document.getElementById('intro-text');
+  const gearPos = document.getElementById('gear-pos');
+  const gearSvg = document.getElementById('gear-svg');
 
   // Gear slides up after text appears
   setTimeout(()=> gearPos.classList.add('center'), 750);
@@ -1015,24 +1013,27 @@
   // Gear spins after reaching center
   setTimeout(()=> gearSvg.classList.add('spin'), 1550);
 
-  // Fade text out before panels split
+  // Fade out text
   setTimeout(()=>{
     iText.style.animation  = 'none';
-    iText.style.transition = 'opacity 0.25s ease';
+    iText.style.transition = 'opacity 0.35s ease';
     iText.style.opacity    = '0';
-  }, 2350);
+  }, 2300);
 
-  // Split + gear exits – text fully hidden first
+  // Fade out gear
   setTimeout(()=>{
-    iText.style.display = 'none';
-    panelTop.classList.add('split');
-    panelBot.classList.add('split');
-    gearPos.classList.remove('center');
-    gearPos.classList.add('down');
-  }, 2650);
+    gearPos.style.transition = 'opacity 0.35s ease';
+    gearPos.style.opacity    = '0';
+  }, 2500);
 
-  // Remove intro overlay
-  setTimeout(()=> intro.remove(), 3450);
+  // Dissolve entire intro overlay
+  setTimeout(()=>{
+    intro.style.transition = 'opacity 0.9s ease';
+    intro.style.opacity    = '0';
+  }, 2700);
+
+  // Remove intro after dissolve completes
+  setTimeout(()=> intro.remove(), 3650);
 })();
 
 /* ── SCROLL ANIMATIONS ── */
