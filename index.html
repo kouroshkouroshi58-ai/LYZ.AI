@@ -1,1117 +1,986 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="LYZ.AI – Webdesign, Automatisierung & KI-Lösungen. Deine digitale Präsenz, neu gedacht.">
-  <title>LYZ.AI – Deine digitale Präsenz, neu gedacht</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salon Lumière – Ihr Friseursalon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ===== VARIABLES ===== */
-    :root {
-      --bg:          #080808;
-      --surface:     #101010;
-      --surface2:    #161616;
-      --border:      #1e1e1e;
-      --green:       #00b341;
-      --green-light: #00d44e;
-      --green-dim:   rgba(0, 179, 65, 0.12);
-      --green-glow:  rgba(0, 179, 65, 0.25);
-      --text:        #f0f0f0;
-      --text-muted:  #888;
-      --text-dim:    #444;
-    }
-
+    /* ===== RESET ===== */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+    :root {
+      --bg:      #0f0e17;
+      --surface: #17162a;
+      --gold:    #d4a853;
+      --gold-d:  rgba(212,168,83,.25);
+      --cream:   #e8d5b7;
+      --text:    #fffffe;
+      --muted:   #9a97b5;
+      --ff-h:    'Cormorant Garamond', serif;
+      --ff-b:    'Jost', sans-serif;
+      --ease:    cubic-bezier(.25,.46,.45,.94);
+    }
     html { scroll-behavior: smooth; }
+    body { font-family: var(--ff-b); background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #1e1e1e; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--green); }
-
-    /* ===== NAVIGATION ===== */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 0 48px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(8, 8, 8, 0.88);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      transition: box-shadow 0.3s;
-    }
-
-    .nav-logo {
-      font-size: 1.55rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-decoration: none;
-      color: var(--green);
-    }
-    .nav-logo span { color: var(--text); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 500;
-      letter-spacing: 0.4px;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--text); }
-
-    .nav-cta {
-      background: var(--green) !important;
-      color: #000 !important;
-      padding: 9px 22px !important;
-      border-radius: 7px !important;
-      font-weight: 600 !important;
-      transition: all 0.3s !important;
-    }
-    .nav-cta:hover {
-      background: var(--green-light) !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 4px 20px var(--green-glow) !important;
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.active span:nth-child(2) { opacity: 0; }
-    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 72px; left: 0; right: 0;
-      background: rgba(8,8,8,0.97);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      padding: 24px;
-      flex-direction: column;
-      gap: 0;
-      z-index: 999;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 1rem;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.3s;
-    }
-    .mobile-nav a:last-child { border-bottom: none; }
-    .mobile-nav a:hover, .mobile-nav a.green { color: var(--green); font-weight: 600; }
-
-    /* ===== HERO ===== */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      padding: 72px 24px 0;
-    }
-
-    #particles-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    #hero::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(0,179,65,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      max-width: 860px;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--green-dim);
-      border: 1px solid rgba(0,179,65,0.4);
-      border-radius: 50px;
-      padding: 7px 20px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--green);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.7s forwards 3.8s;
-    }
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity:1; transform:scale(1); }
-      50%      { opacity:0.4; transform:scale(1.6); }
-    }
-
-    .hero-title {
-      font-size: clamp(2.4rem, 5.5vw, 4.6rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 22px;
-      letter-spacing: -0.5px;
-      opacity: 0;
-      transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 4.0s;
-    }
-    .hero-title .green {
-      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: textShimmer 4s linear infinite 1.5s;
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-      max-width: 580px;
-      margin: 0 auto 40px;
-      opacity: 0;
-      transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 4.2s;
-    }
-
-    .hero-btns {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(24px);
-      animation: fadeUp 0.7s forwards 4.4s;
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: #000;
-      padding: 13px 30px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      border: 2px solid var(--green);
-      transition: all 0.3s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--green);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px var(--green-glow);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--text);
-      padding: 13px 30px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      text-decoration: none;
-      border: 2px solid var(--border);
-      transition: all 0.3s;
-    }
-    .btn-secondary:hover {
-      border-color: var(--green);
-      color: var(--green);
-      transform: translateY(-3px);
-    }
-
-    .hero-scroll-hint {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeUp 0.7s forwards 5.0s;
-    }
-    .hero-scroll-hint span {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .scroll-bar {
-      width: 1px;
-      height: 44px;
-      background: linear-gradient(to bottom, var(--green), transparent);
-      animation: scrollAnim 1.6s ease-in-out infinite;
-    }
-    @keyframes scrollAnim {
-      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
-      50%  { transform: scaleY(1); transform-origin: top; }
-      51%  { transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-    }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== SCROLL PROGRESS ===== */
-    #scroll-progress {
-      position: fixed; top: 0; left: 0;
-      height: 2px; width: 0%;
-      background: linear-gradient(90deg, var(--green), var(--green-light));
-      z-index: 2001;
-      box-shadow: 0 0 10px var(--green-glow);
-      transition: width 0.08s linear;
-    }
-
-    /* ===== PREMIUM ANIMATIONS ===== */
-    body { animation: pageLoad 0.5s ease both; }
-    @keyframes pageLoad { from { opacity:0; } to { opacity:1; } }
-
-    .nav-links a:not(.nav-cta) { position: relative; }
-    .nav-links a:not(.nav-cta)::after {
-      content: ''; position: absolute; bottom: -3px; left: 0;
-      width: 0; height: 1px; background: var(--green); transition: width 0.3s ease;
-    }
-    .nav-links a:not(.nav-cta):hover::after { width: 100%; }
-    .nav-logo { transition: opacity 0.3s ease; }
-    .nav-logo:hover { opacity: 0.8; }
-
-    .d1 { transition-delay: 0.10s !important; }
-    .d2 { transition-delay: 0.20s !important; }
-    .d3 { transition-delay: 0.30s !important; }
-    .d4 { transition-delay: 0.40s !important; }
-    .d5 { transition-delay: 0.50s !important; }
-
-    @keyframes textShimmer { from{background-position:0% center;} to{background-position:200% center;} }
-
-    .service-card .s-features li {
-      opacity: 0; transform: translateX(-8px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .service-card.in-view .s-features li { opacity: 1; transform: none; }
-    .service-card.in-view .s-features li:nth-child(1) { transition-delay: 0.15s; }
-    .service-card.in-view .s-features li:nth-child(2) { transition-delay: 0.25s; }
-    .service-card.in-view .s-features li:nth-child(3) { transition-delay: 0.35s; }
-    .service-card.in-view .s-features li:nth-child(4) { transition-delay: 0.45s; }
-
-    @keyframes stepPop { from{transform:scale(0.5);opacity:0;} to{transform:scale(1);opacity:1;} }
-    .process-step.visible .step-num { animation: stepPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
-    .process-step:nth-child(2).visible .step-num { animation-delay: 0.1s; }
-    .process-step:nth-child(3).visible .step-num { animation-delay: 0.2s; }
-    .process-step:nth-child(4).visible .step-num { animation-delay: 0.3s; }
-
-    .btn-primary, .btn-secondary { position: relative; overflow: hidden; }
-    .btn-primary::after, .btn-secondary::after {
-      content: ''; position: absolute; top: 50%; left: 50%;
-      width: 0; height: 0; background: rgba(255,255,255,0.12); border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease; opacity: 0;
-    }
-    .btn-primary:hover::after, .btn-secondary:hover::after { width: 260px; height: 260px; opacity: 1; }
-
-    .s-icon { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
-    .service-card:hover .s-icon { transform: scale(1.15) rotate(-4deg); }
-
-    .c-icon { transition: transform 0.3s ease, background 0.3s ease; }
-    .c-item:hover .c-icon { transform: scale(1.1); background: rgba(0,179,65,0.22); }
-
-    .f-col a { position: relative; }
-    .f-col a::after {
-      content: ''; position: absolute; bottom: -1px; left: 0;
-      width: 0; height: 1px; background: var(--green); transition: width 0.3s ease;
-    }
-    .f-col a:hover::after { width: 100%; }
-
-    /* ===== INTRO SPLASH ===== */
+    /* =====================================================
+       INTRO OVERLAY
+       ===================================================== */
     #intro {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
+      position: fixed; inset: 0; z-index: 9999;
+      background: radial-gradient(ellipse at 50% 55%, #1c1a30 0%, #0f0e17 70%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       overflow: hidden;
-      font-family: 'Space Grotesk', sans-serif;
     }
-    .intro-panel {
-      position: absolute;
-      left: 0; right: 0;
-      height: 50%;
-      background: #080808;
-      z-index: 1;
-      will-change: transform;
+    #intro.slide-out {
+      animation: introUp .95s cubic-bezier(.7,0,1,.5) .15s forwards;
     }
-    .intro-panel-top { top: 0; }
-    .intro-panel-bottom { bottom: 0; }
-    .intro-panel-top.split  { transform: translateY(-100%); transition: transform 0.7s cubic-bezier(0.76,0,0.24,1); }
-    .intro-panel-bottom.split { transform: translateY(100%);  transition: transform 0.7s cubic-bezier(0.76,0,0.24,1); }
+    @keyframes introUp {
+      to { transform: translateY(-100vh); }
+    }
 
-    #intro-text {
-      position: absolute;
-      top: 50%;
+    /* intro branding */
+    .intro-logo {
+      font-family: var(--ff-h);
+      font-size: clamp(3.5rem,10vw,8rem);
+      color: var(--gold); letter-spacing: .25em; text-transform: uppercase;
+      animation: fadeUp .9s var(--ease) .5s both;
+      position: relative; z-index: 6;
+    }
+    .intro-tagline {
+      font-size: clamp(.75rem,2vw,1rem); letter-spacing: .55em;
+      color: var(--cream); text-transform: uppercase; margin-top: .8rem;
+      animation: fadeUp .9s var(--ease) 1s both;
+      position: relative; z-index: 6;
+    }
+    .intro-lines {
+      display: flex; gap: 1rem; align-items: center; margin-top: 1.4rem;
+      position: relative; z-index: 6;
+    }
+    .intro-line  { width: 60px; height: 1px; background: var(--gold); animation: lineGrow .8s var(--ease) 1.5s both; transform-origin: center; }
+    .intro-dot   { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: .6; animation: fadeUp .8s var(--ease) 1.6s both; }
+    @keyframes fadeUp    { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes lineGrow  { from { transform:scaleX(0); opacity:0; } to { transform:scaleX(1); opacity:1; } }
+
+    /* =====================================================
+       SPRAY BOTTLE  –  horizontal, lying at bottom
+       ===================================================== */
+    #bottle-wrap {
+      position: fixed;        /* außerhalb des Intro-Flows – bewegt sich NICHT mit dem Intro */
+      bottom: 18px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 2;
+      transform: translateX(-50%) translateY(-110vh);
+      width: clamp(280px, 55vw, 460px);
+      z-index: 10003;
+      filter: drop-shadow(0 -8px 25px rgba(212,168,83,.35));
+    }
+    #bottle-wrap.drop-in {
+      animation: bottleDrop 1.35s cubic-bezier(.34,1.38,.64,1) forwards;
+    }
+    #bottle-wrap.drop-out {
+      animation: bottleFall .85s cubic-bezier(.55,0,1,.45) forwards;
+    }
+    @keyframes bottleDrop {
+      0%   { transform: translateX(-50%) translateY(-110vh); }
+      72%  { transform: translateX(-50%) translateY(0) rotate(-2deg); }
+      86%  { transform: translateX(-50%) translateY(-9px) rotate(1deg); }
+      100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    }
+    @keyframes bottleFall {
+      from { transform: translateX(-50%) translateY(0); opacity:1; }
+      to   { transform: translateX(-50%) translateY(400px); opacity:0; }
+    }
+
+    /* mist – weißer Flood-Effekt der sich von unten hocharbeitet (bewegt sich mit intro) */
+    #mist {
+      position: absolute; inset: 0; pointer-events: none; z-index: 5; opacity: 0;
+    }
+    #mist.active {
+      animation: mistFlood 1s ease forwards;
+    }
+    @keyframes mistFlood {
+      0%  { opacity:0; background: radial-gradient(ellipse 25% 20% at 50% 97%, rgba(200,215,235,.75) 0%, transparent 100%); }
+      30% { opacity:1; background: radial-gradient(ellipse 40% 55% at 50% 82%, rgba(200,215,235,.7) 0%, transparent 100%); }
+      70% { opacity:1; background: radial-gradient(ellipse 42% 92% at 50% 48%, rgba(200,215,235,.65) 0%, transparent 100%); }
+      100%{ opacity:1; background: radial-gradient(ellipse 42% 98% at 50% 42%, rgba(200,215,235,.67) 0%, transparent 100%); }
+    }
+
+    /* partikel – nur position/form hier, farbe & größe per JS */
+    .spark { position: fixed; border-radius: 50%; pointer-events: none; }
+
+    /* =====================================================
+       NAV
+       ===================================================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      padding: 1.4rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(15,14,23,.9); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--gold-d);
+      transform: translateY(-80px);
+      transition: transform .6s var(--ease);
+    }
+    nav.visible { transform: translateY(0); }
+    .nav-logo { font-family: var(--ff-h); font-size: 1.85rem; color: var(--gold); letter-spacing: .18em; text-decoration: none; }
+    .nav-links { display: flex; gap: 2.8rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: .8rem;
+      letter-spacing: .12em; text-transform: uppercase; transition: color .3s;
+      position: relative;
+    }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width .3s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-btn {
+      padding: .6rem 1.8rem; border: 1px solid var(--gold); color: var(--gold);
+      text-decoration: none; font-size: .78rem; letter-spacing: .15em;
+      text-transform: uppercase; transition: background .3s, color .3s;
+    }
+    .nav-btn:hover { background: var(--gold); color: var(--bg); }
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+    #hero {
+      height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero-rings { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(212,168,83,.08); animation: ringPulse 5s ease-in-out infinite; }
+    .ring:nth-child(1) { width:700px; height:700px; }
+    .ring:nth-child(2) { width:480px; height:480px; animation-delay:1.2s; }
+    .ring:nth-child(3) { width:260px; height:260px; animation-delay:2.4s; border-color:rgba(212,168,83,.15); }
+    @keyframes ringPulse { 0%,100%{transform:scale(1);opacity:.4;} 50%{transform:scale(1.04);opacity:1;} }
+
+    .hero-content { position: relative; z-index: 2; }
+    .hero-sup { font-size:.78rem; letter-spacing:.55em; color:var(--gold); text-transform:uppercase; margin-bottom:1.5rem; animation:fadeUp .9s var(--ease) .2s both; }
+    .hero-title { font-family:var(--ff-h); font-size:clamp(4rem,11vw,10rem); line-height:.95; animation:fadeUp .9s var(--ease) .45s both; }
+    .hero-title em { color:var(--gold); font-style:normal; display:block; }
+    .hero-desc { margin:2rem auto 2.8rem; max-width:480px; color:var(--muted); line-height:1.9; font-size:1.05rem; animation:fadeUp .9s var(--ease) .7s both; }
+    .hero-cta { animation:fadeUp .9s var(--ease) .95s both; }
+
+    .btn {
+      display: inline-block; padding: 1rem 3rem;
+      border: 1px solid var(--gold); color: var(--gold);
+      text-decoration: none; font-size: .82rem; letter-spacing: .22em;
+      text-transform: uppercase; position: relative; overflow: hidden; transition: color .4s;
+    }
+    .btn::before { content:''; position:absolute; inset:0; background:var(--gold); transform:translateX(-101%); transition:transform .4s var(--ease); z-index:0; }
+    .btn span { position: relative; z-index: 1; }
+    .btn:hover { color: var(--bg); }
+    .btn:hover::before { transform: translateX(0); }
+
+    .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.5rem; }
+    .scroll-text { font-size:.7rem; letter-spacing:.35em; color:var(--muted); text-transform:uppercase; }
+    .scroll-line { width:1px; height:50px; background:linear-gradient(to bottom, var(--gold), transparent); animation:scrollLine 1.8s ease-in-out infinite; }
+    @keyframes scrollLine { 0%,100%{transform:scaleY(1);transform-origin:top;} 50%{transform:scaleY(.4);transform-origin:top;} }
+
+    /* Flasche auf der Hauptseite – unten rechts im Hero */
+    .hero-bottle {
+      position: absolute;
+      bottom: 0;
+      right: clamp(1rem, 5vw, 7rem);
+      width: clamp(180px, 28vw, 340px);
       opacity: 0;
-      animation: iTextIn 0.55s ease forwards 0.2s;
+      transform: translateY(30px);
+      transition: opacity 1s var(--ease) .5s, transform 1s var(--ease) .5s;
+      filter: drop-shadow(0 -6px 20px rgba(212,168,83,.2));
       pointer-events: none;
-      white-space: nowrap;
     }
-    @keyframes iTextIn {
-      from { opacity:0; transform:translate(-50%, calc(-50% + 14px)); }
-      to   { opacity:1; transform:translate(-50%, -50%); }
+    .hero-bottle.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    #intro-brand {
-      font-size: clamp(2.6rem, 6vw, 4.2rem);
-      font-weight: 700;
-      letter-spacing: 4px;
-      color: #00b341;
-      line-height: 1;
-      margin-bottom: 12px;
+    /* sanftes Schwebegefühl */
+    .hero-bottle.visible svg {
+      animation: bottleFloat 4s ease-in-out infinite;
     }
-    #intro-brand em { color: #f0f0f0; font-style: normal; }
-    #intro-tagline {
-      font-size: clamp(0.78rem, 1.8vw, 0.95rem);
-      color: #666;
-      letter-spacing: 1px;
+    @keyframes bottleFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
     }
-
-    #gear-pos {
+    /* kleine Sprüh-Partikel Dekoration am Nozzle */
+    .hero-bottle .deco-spray {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      z-index: 3;
-      transform: translateX(-50%) translateY(calc(50vh + 140px));
-      will-change: transform;
+      top: 2%;
+      left: 28%;    /* Düse jetzt bei 50% - angepasst (50% - Breite/2 = 50% - 22.5%) */
+      width: 45%;
+      height: 55%;
+      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(212,168,83,.12) 0%, transparent 100%);
+      animation: decoSpray 3s ease-in-out infinite;
+      pointer-events: none;
     }
-    #gear-pos.center {
-      transform: translateX(-50%) translateY(52px);
-      transition: transform 0.75s cubic-bezier(0.34,1.56,0.64,1);
+    @keyframes decoSpray {
+      0%,100% { opacity:.5; transform: scaleY(1); }
+      50%      { opacity:1;  transform: scaleY(1.12); }
     }
-    #gear-pos.down {
-      transform: translateX(-50%) translateY(calc(50vh + 140px));
-      transition: transform 0.65s cubic-bezier(0.76,0,0.24,1);
-    }
-    #gear-svg {
-      width: 68px;
-      height: 68px;
-      color: #00b341;
-      filter: drop-shadow(0 0 18px rgba(0,179,65,0.55));
-      display: block;
-    }
-    #gear-svg.spin { animation: gearRotate 1s ease-in-out 1; }
-    @keyframes gearRotate {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
+    @media (max-width:900px) { .hero-bottle { display: none; } }
 
-    /* ===== SHARED SECTION HEADER ===== */
-    .s-tag {
-      display: inline-block;
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--green);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .s-title {
-      font-size: clamp(1.75rem, 3.5vw, 2.6rem);
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 14px;
-    }
-    .s-sub {
-      color: var(--text-muted);
-      font-size: 1rem;
-      max-width: 520px;
-      line-height: 1.75;
-      margin-bottom: 56px;
-    }
+    /* =====================================================
+       SHARED SECTION
+       ===================================================== */
+    section { padding: 8rem 4rem; }
+    .sec-wrap { max-width: 1300px; margin: 0 auto; }
+    .sec-tag  { font-size:.72rem; letter-spacing:.5em; color:var(--gold); text-transform:uppercase; margin-bottom:.9rem; }
+    .sec-title { font-family:var(--ff-h); font-size:clamp(2.4rem,5vw,4.5rem); line-height:1.05; margin-bottom:1.2rem; }
+    .sec-desc  { color:var(--muted); line-height:1.9; max-width:560px; font-size:1rem; }
+    .divider   { width:60px; height:1px; background:var(--gold); margin:2rem 0; }
 
-    /* ===== SERVICES ===== */
-    #leistungen {
-      padding: 120px 48px;
-      max-width: 1240px;
-      margin: 0 auto;
-    }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 22px;
-    }
-    .service-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 34px 30px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-      opacity: 0;
-      transform: translateY(36px);
-    }
-    .service-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--green), transparent);
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .service-card:hover {
-      border-color: rgba(0,179,65,0.35);
-      transform: translateY(-8px);
-      box-shadow: 0 24px 60px rgba(0,179,65,0.09);
-    }
-    .service-card:hover::after { opacity: 1; }
+    .reveal { opacity:0; transform:translateY(45px); transition:opacity .85s var(--ease), transform .85s var(--ease); }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:.1s; }
+    .reveal-delay-2 { transition-delay:.22s; }
+    .reveal-delay-3 { transition-delay:.34s; }
+    .reveal-delay-4 { transition-delay:.46s; }
 
-    .s-icon {
-      width: 52px;
-      height: 52px;
-      background: var(--green-dim);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 22px;
+    /* =====================================================
+       SERVICES
+       ===================================================== */
+    #services { background: var(--surface); }
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; margin-top:4rem; }
+    .svc-card {
+      border:1px solid var(--gold-d); padding:2.2rem 1.5rem;
+      text-align:center; transition:border-color .3s, transform .3s, box-shadow .3s;
+      cursor:default; background:var(--bg);
     }
-    .s-card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
-    .s-card-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin-bottom: 18px; }
-    .s-features { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .s-features li {
-      display: flex; align-items: flex-start; gap: 9px;
-      font-size: 0.83rem; color: var(--text-muted);
-    }
-    .s-features li::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .svc-card:hover { border-color:var(--gold); transform:translateY(-8px); box-shadow:0 20px 50px rgba(212,168,83,.12); }
+    .svc-icon { font-size:2.4rem; margin-bottom:1rem; }
+    .svc-name { font-family:var(--ff-h); font-size:1.45rem; margin-bottom:.4rem; }
+    .svc-price { font-size:.82rem; color:var(--gold); }
 
-    /* ===== PROCESS ===== */
-    #prozess { padding: 0 48px 120px; max-width: 1240px; margin: 0 auto; }
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0;
-      position: relative;
+    /* =====================================================
+       TEAM
+       ===================================================== */
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem; margin-top:4rem; }
+    .team-card {
+      border:1px solid var(--gold-d); background:var(--surface); overflow:hidden;
+      transition:transform .35s var(--ease), border-color .35s, box-shadow .35s;
     }
-    .process-steps::before {
-      content: '';
-      position: absolute;
-      top: 28px; left: 10%; right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--green), transparent);
-      opacity: 0.3;
+    .team-card:hover { transform:translateY(-12px); border-color:var(--gold); box-shadow:0 25px 60px rgba(212,168,83,.18); }
+    .team-avatar {
+      height:290px; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,#1c1a30 0%,#2d2445 100%); font-size:6rem;
+      position:relative; overflow:hidden;
     }
-    .process-step { text-align: center; padding: 0 20px; opacity: 0; transform: translateY(30px); }
-    .step-num {
-      width: 56px; height: 56px;
-      background: var(--green-dim);
-      border: 1px solid rgba(0,179,65,0.4);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; font-weight: 700; color: var(--green);
-      margin: 0 auto 18px;
-    }
-    .step-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
-    .step-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .team-avatar::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, transparent 50%, rgba(23,22,42,.9) 100%); }
+    .team-info { padding:1.6rem; }
+    .team-name { font-family:var(--ff-h); font-size:1.7rem; margin-bottom:.2rem; }
+    .team-role { font-size:.72rem; letter-spacing:.25em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem; }
+    .team-bio  { font-size:.9rem; color:var(--muted); line-height:1.7; }
 
-    /* ===== CONTACT ===== */
-    #kontakt { padding: 120px 48px; max-width: 1240px; margin: 0 auto; }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
-    .contact-left { opacity: 0; transform: translateX(-30px); }
-    .c-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; }
-    .c-icon {
-      width: 46px; height: 46px;
-      background: var(--green-dim); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.15rem; flex-shrink: 0;
+    /* =====================================================
+       BEFORE / AFTER
+       ===================================================== */
+    #gallery { background: var(--surface); }
+    .ba-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:2.5rem; margin-top:4rem; }
+    .ba-card { border:1px solid var(--gold-d); overflow:hidden; background:var(--bg); }
+    .ba-images { display:grid; grid-template-columns:1fr 1px 1fr; }
+    .ba-slot {
+      height:230px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:.6rem; background:linear-gradient(135deg,#1a1828 0%,#242040 100%);
+      border:2px dashed rgba(212,168,83,.18); color:var(--muted);
+      cursor:pointer; transition:border-color .3s, background .3s; position:relative; overflow:hidden;
     }
-    .c-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 3px; }
-    .c-val { color: var(--text-muted); font-size: 0.86rem; }
-    .c-val a { color: var(--green); text-decoration: none; }
-    .c-val a:hover { text-decoration: underline; }
+    .ba-slot:hover { border-color:var(--gold); background:#1f1d30; }
+    .ba-slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .slot-text { display:flex; flex-direction:column; align-items:center; gap:.5rem; z-index:1; }
+    .slot-icon  { font-size:2rem; opacity:.35; }
+    .slot-label { font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; }
+    .ba-sep { background: var(--gold); }
+    .ba-footer { padding:.8rem 1.4rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--gold-d); }
+    .ba-footer span { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+    .ba-badge { font-size:.68rem !important; letter-spacing:.15em !important; color:var(--gold) !important; border:1px solid var(--gold-d); padding:.25rem .7rem; }
 
-    .cal-btn {
-      display: inline-flex; align-items: center; gap: 9px;
-      background: var(--green-dim); border: 1px solid rgba(0,179,65,0.5);
-      color: var(--green); padding: 12px 22px; border-radius: 9px;
-      font-size: 0.88rem; font-weight: 600; text-decoration: none;
-      transition: all 0.3s; margin-top: 8px; cursor: pointer;
+    /* =====================================================
+       VIDEO
+       ===================================================== */
+    #video-sec { text-align:center; }
+    .video-wrap { max-width:820px; margin:3.5rem auto 0; }
+    .video-box {
+      width:100%; aspect-ratio:16/9; background:var(--surface);
+      border:1px dashed rgba(212,168,83,.3); display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:1.2rem;
+      color:var(--muted); position:relative; overflow:hidden; cursor:pointer;
+      transition:border-color .3s;
     }
-    .cal-btn:hover { background: var(--green); color: #000; transform: translateY(-2px); box-shadow: 0 8px 28px var(--green-glow); }
+    .video-box:hover { border-color:var(--gold); }
+    .video-box iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    .play-btn {
+      width:72px; height:72px; border-radius:50%; border:2px solid var(--gold);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.6rem; color:var(--gold); transition:background .3s, color .3s;
+    }
+    .play-btn:hover { background:var(--gold); color:var(--bg); }
+    .video-label { font-size:.78rem; letter-spacing:.25em; text-transform:uppercase; }
+    .video-note  { font-size:.75rem; color:var(--gold); opacity:.7; }
 
-    .contact-right {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 40px; opacity: 0; transform: translateX(30px);
+    /* =====================================================
+       APPOINTMENT
+       ===================================================== */
+    #appointment { background: var(--surface); }
+    .appt-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:3.5rem; }
+    .fg { display:flex; flex-direction:column; gap:.5rem; }
+    .fg.full { grid-column:1/-1; }
+    .fg label { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+    .fg input, .fg select, .fg textarea {
+      background:var(--bg); border:1px solid var(--gold-d); color:var(--text);
+      padding:.9rem 1rem; font-family:var(--ff-b); font-size:.95rem;
+      outline:none; transition:border-color .3s, box-shadow .3s; appearance:none;
     }
-    .form-heading { font-size: 1.2rem; font-weight: 600; margin-bottom: 26px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label {
-      display: block; font-size: 0.8rem; font-weight: 500;
-      color: var(--text-muted); margin-bottom: 7px; letter-spacing: 0.3px;
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,168,83,.1); }
+    .fg select { cursor:pointer; }
+    .fg select option { background:#17162a; }
+    .fg textarea { resize:vertical; min-height:120px; }
+    .appt-submit { grid-column:1/-1; text-align:center; margin-top:.8rem; }
+    .appt-submit button {
+      padding:1.1rem 4rem; background:transparent; border:1px solid var(--gold);
+      color:var(--gold); font-family:var(--ff-b); font-size:.82rem;
+      letter-spacing:.3em; text-transform:uppercase; cursor:pointer;
+      position:relative; overflow:hidden; transition:color .4s;
     }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 9px; padding: 12px 14px; color: var(--text);
-      font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem;
-      transition: all 0.3s; outline: none; appearance: none;
-    }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: var(--green); box-shadow: 0 0 0 3px var(--green-dim);
-    }
-    .form-group textarea { resize: vertical; min-height: 110px; }
-    .form-group select option { background: #111; }
+    .appt-submit button::before { content:''; position:absolute; inset:0; background:var(--gold); transform:translateX(-101%); transition:transform .4s var(--ease); z-index:0; }
+    .appt-submit button span { position:relative; z-index:1; }
+    .appt-submit button:hover { color:var(--bg); }
+    .appt-submit button:hover::before { transform:translateX(0); }
+    .appt-msg { margin-top:1rem; font-size:.85rem; color:var(--gold); min-height:1.2em; opacity:0; transition:opacity .4s; }
+    .appt-msg.show { opacity:1; }
 
-    .submit-btn {
-      width: 100%; background: var(--green); color: #000; padding: 14px;
-      border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 600;
-      font-family: 'Space Grotesk', sans-serif; cursor: pointer;
-      letter-spacing: 0.3px; transition: all 0.3s; margin-top: 4px;
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+    footer { background:#07070f; padding:4rem 4rem 2.5rem; border-top:1px solid var(--gold-d); text-align:center; }
+    .foot-logo    { font-family:var(--ff-h); font-size:2.8rem; color:var(--gold); letter-spacing:.2em; margin-bottom:.8rem; }
+    .foot-tagline { font-size:.78rem; letter-spacing:.4em; color:var(--muted); text-transform:uppercase; margin-bottom:2.5rem; }
+    .foot-links   { display:flex; gap:2.5rem; justify-content:center; list-style:none; margin-bottom:2.5rem; }
+    .foot-links a { color:var(--muted); text-decoration:none; font-size:.82rem; transition:color .3s; }
+    .foot-links a:hover { color:var(--gold); }
+    .foot-divider { width:60px; height:1px; background:var(--gold-d); margin:0 auto 1.5rem; }
+    .foot-copy    { font-size:.75rem; color:var(--muted); opacity:.6; }
+
+    /* responsive */
+    @media (max-width:900px) {
+      nav { padding:1.2rem 1.8rem; }
+      .nav-links, .nav-btn { display:none; }
+      section { padding:5rem 1.6rem; }
+      .appt-grid { grid-template-columns:1fr; }
+      .fg.full, .appt-submit { grid-column: 1 / -1; }
     }
-    .submit-btn:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 8px 28px var(--green-glow); }
-    .submit-btn:active { transform: translateY(0); }
-
-    .form-success { display: none; text-align: center; padding: 30px 16px; }
-    .success-icon { font-size: 3rem; margin-bottom: 14px; }
-    .form-success h3 { color: var(--green); font-size: 1.2rem; margin-bottom: 8px; }
-    .form-success p { color: var(--text-muted); font-size: 0.9rem; }
-
-    /* ===== FOOTER ===== */
-    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 60px 48px 32px; }
-    .footer-inner { max-width: 1240px; margin: 0 auto; }
-    .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
-    .f-logo { font-size: 1.5rem; font-weight: 700; color: var(--green); letter-spacing: 2px; margin-bottom: 12px; }
-    .f-logo span { color: var(--text); }
-    .f-desc { color: var(--text-muted); font-size: 0.86rem; line-height: 1.7; }
-    .f-col h4 { font-size: 0.78rem; font-weight: 600; color: var(--text); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px; }
-    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .f-col a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; transition: color 0.3s; }
-    .f-col a:hover { color: var(--green); }
-    .footer-bottom {
-      border-top: 1px solid var(--border); padding-top: 24px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-    }
-    .f-copy { color: var(--text-dim); font-size: 0.78rem; }
-    .f-copy a { color: var(--green); text-decoration: none; }
-
-    /* ===== ANIMATE-IN (via JS) ===== */
-    .will-animate { opacity: 0; transform: translateY(36px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .will-animate.visible { opacity: 1; transform: translateY(0); }
-    .from-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .from-left.visible { opacity: 1; transform: translateX(0); }
-    .from-right { opacity: 0; transform: translateX(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .from-right.visible { opacity: 1; transform: translateX(0); }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      #leistungen, #prozess, #kontakt { padding: 80px 24px; }
-      #prozess { padding-top: 0; }
-      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
-      footer { padding: 50px 24px 28px; }
-    }
-    @media (max-width: 560px) {
-      .hero-btns { flex-direction: column; align-items: center; }
-      .form-row { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; }
-      .hero-scroll-hint { display: none; }
+    @media (max-width:600px) {
+      .ba-images { grid-template-columns:1fr; }
+      .ba-sep { display:none; }
+      .ba-slot { height:160px; }
+      #bottle-wrap { width: 88vw; }
     }
   </style>
 </head>
 <body>
-<div id="scroll-progress"></div>
 
-<!-- ========== INTRO SPLASH ========== -->
-<div id="intro">
-  <div class="intro-panel intro-panel-top"></div>
-  <div class="intro-panel intro-panel-bottom"></div>
-  <div id="intro-text">
-    <div id="intro-brand">LYZ<em>.AI</em></div>
-    <div id="intro-tagline">Deine digitale Präsenz, neu gedacht.</div>
-  </div>
-  <div id="gear-pos">
-    <svg id="gear-svg" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58 c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94 L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29 L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58 C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32 c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84 c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32 c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6 S13.98,15.6,12,15.6z"/>
+<!-- =====================================================
+     INTRO
+     ===================================================== -->
+<div id="bottle-wrap">
+    <!--
+      Horizontal hairspray aerosol can.
+      The can body runs left-to-right.
+      The nozzle sits on TOP of the can (near the left end) and points UPWARD.
+      Spray fires straight up from the nozzle tip.
+    -->
+    <svg id="bottle-svg" viewBox="0 0 380 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+      <defs>
+        <!-- metallic body gradient (left-right shading) -->
+        <linearGradient id="gBody" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#d0d0e0"/>
+          <stop offset="22%"  stop-color="#f0f0fc"/>
+          <stop offset="55%"  stop-color="#c8c8d8"/>
+          <stop offset="100%" stop-color="#888898"/>
+        </linearGradient>
+        <!-- end caps -->
+        <linearGradient id="gCap" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#7a7a8a"/>
+          <stop offset="50%"  stop-color="#b5b5c8"/>
+          <stop offset="100%" stop-color="#7a7a8a"/>
+        </linearGradient>
+        <!-- nozzle/actuator -->
+        <linearGradient id="gNoz" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#bbbbc8"/>
+          <stop offset="100%" stop-color="#888898"/>
+        </linearGradient>
+        <!-- label background -->
+        <linearGradient id="gLabel" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#1e1c32"/>
+          <stop offset="100%" stop-color="#2d2a4a"/>
+        </linearGradient>
+        <!-- gold accent -->
+        <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#b8882a"/>
+          <stop offset="50%"  stop-color="#f0c865"/>
+          <stop offset="100%" stop-color="#b8882a"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ── MAIN CAN BODY ── -->
+      <rect x="28" y="48" width="326" height="56" rx="28" fill="url(#gBody)"/>
+
+      <!-- Left end cap (rounded) -->
+      <ellipse cx="28"  cy="76" rx="18" ry="28" fill="url(#gCap)"/>
+      <!-- Right end cap -->
+      <ellipse cx="354" cy="76" rx="18" ry="28" fill="url(#gCap)"/>
+
+      <!-- top highlight strip on can -->
+      <rect x="28" y="50" width="326" height="12" rx="6" fill="white" opacity="0.22"/>
+
+      <!-- ── GOLD ACCENT RINGS ── -->
+      <rect x="68"  y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
+      <rect x="305" y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
+
+      <!-- ── LABEL AREA ── -->
+      <rect x="82" y="52" width="218" height="48" rx="6" fill="url(#gLabel)"/>
+      <!-- Gold stripe top/bottom of label -->
+      <rect x="82" y="51"  width="218" height="4" rx="2" fill="url(#gGold)"/>
+      <rect x="82" y="96"  width="218" height="4" rx="2" fill="url(#gGold)"/>
+
+      <!-- Label text -->
+      <text x="191" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#glow)">LUMIÈRE</text>
+      <text x="191" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7"  letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
+
+      <!-- ── NOZZLE / ACTUATOR (mittig auf der Flasche – x=190) ── -->
+      <rect x="160" y="24" width="60" height="27" rx="7" fill="url(#gNoz)"/>
+      <rect x="164" y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
+      <rect x="181" y="0"  width="18" height="26" rx="9" fill="url(#gNoz)"/>
+      <ellipse cx="190" cy="2" rx="6" ry="3" fill="#555566"/>
+      <circle  cx="190" cy="2" r="2.8"          fill="#333344"/>
+      <rect x="214" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
     </svg>
   </div>
-</div>
 
-<!-- ========== NAV ========== -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">LYZ<span>.AI</span></a>
-  <ul class="nav-links">
-    <li><a href="#leistungen">Leistungen</a></li>
-    <li><a href="#prozess">Ablauf</a></li>
-    <li><a href="#kontakt">Kontakt</a></li>
-    <li><a href="#kontakt" class="nav-cta">Anfrage stellen →</a></li>
-    <li><a href="https://www.instagram.com/lyz.ai_" target="_blank" rel="noopener" style="display:flex;align-items:center;" title="Instagram">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.1" fill="currentColor" stroke-width="3"/></svg>
-    </a></li>
-  </ul>
-  <div class="hamburger" id="ham">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
+<div id="intro">
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="#leistungen"   onclick="closeNav()">Leistungen</a>
-  <a href="#prozess"      onclick="closeNav()">Ablauf</a>
-  <a href="#kontakt"      onclick="closeNav()">Kontakt</a>
-  <a href="#kontakt"      onclick="closeNav()" class="green">Anfrage stellen →</a>
-  <a href="https://www.instagram.com/lyz.ai_" target="_blank" rel="noopener">Instagram @lyz.ai_</a>
-</div>
+  <!-- Rising mist overlay -->
+  <div id="mist"></div>
 
-<!-- ========== HERO ========== -->
-<section id="hero">
-  <canvas id="particles-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      LYZ.AI – Digitale Lösungen
-    </div>
-    <h1 class="hero-title">
-      Deine digitale Präsenz,<br>
-      <span class="green">neu gedacht</span>
-    </h1>
-    <p class="hero-sub">
-      Von der perfekten Website bis zur KI-Automatisierung – wir bauen digitale Systeme,
-      die für dich arbeiten, Kunden gewinnen und dein Business skalieren.
-    </p>
-    <div class="hero-btns">
-      <a href="#kontakt" class="btn-primary">Kostenloses Erstgespräch →</a>
-      <a href="#leistungen" class="btn-secondary">Leistungen entdecken</a>
+  <!-- Salon branding (center screen) -->
+  <div style="text-align:center; z-index:6; position:relative;">
+    <div class="intro-logo">Salon Lumière</div>
+    <div class="intro-tagline">Haarsalon &amp; Beautystudio</div>
+    <div class="intro-lines">
+      <div class="intro-line"></div>
+      <div class="intro-dot"></div>
+      <div class="intro-line"></div>
     </div>
   </div>
-  <div class="hero-scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-bar"></div>
-  </div>
-</section>
 
-<!-- ========== SERVICES ========== -->
-<section id="leistungen">
-  <span class="s-tag will-animate">Was wir anbieten</span>
-  <h2 class="s-title will-animate d1">Unsere Leistungen</h2>
-  <p class="s-sub will-animate d2">Von der ersten Idee bis zum fertigen Produkt – wir begleiten dich durch jeden Schritt deiner digitalen Transformation.</p>
+</div><!-- /intro -->
 
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="s-icon">🎨</div>
-      <h3 class="s-card-title">Webdesign & Entwicklung</h3>
-      <p class="s-card-desc">Moderne Websites und Webapps, die nicht nur beeindrucken, sondern auch konvertieren und Kunden gewinnen.</p>
-      <ul class="s-features">
-        <li>Landing Pages & Unternehmenswebsites</li>
-        <li>Individuelle Webentwicklung</li>
-        <li>Mobile-First & SEO-optimiert</li>
-        <li>Blitzschnelle Ladezeiten</li>
-      </ul>
-    </div>
-    <div class="service-card">
-      <div class="s-icon">⚡</div>
-      <h3 class="s-card-title">Automatisierung</h3>
-      <p class="s-card-desc">Repetitive Prozesse automatisieren mit KI – damit dein Team Zeit für das Wesentliche hat.</p>
-      <ul class="s-features">
-        <li>KI-gestützte Workflows</li>
-        <li>Prozess-Automatisierung</li>
-        <li>API-Integrationen & Schnittstellen</li>
-        <li>E-Mail & CRM-Automatisierung</li>
-      </ul>
-    </div>
-    <div class="service-card">
-      <div class="s-icon">🛡️</div>
-      <h3 class="s-card-title">Wartung & Hosting</h3>
-      <p class="s-card-desc">Zuverlässiges Hosting und professionelle Wartung – deine Website läuft schnell, sicher und immer aktuell.</p>
-      <ul class="s-features">
-        <li>Managed Hosting & SSL-Zertifikate</li>
-        <li>Regelmäßige Updates & Backups</li>
-        <li>Sicherheitsmonitoring 24/7</li>
-        <li>Performance-Überwachung</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
-<!-- ========== PROCESS ========== -->
-<section id="prozess">
-  <span class="s-tag will-animate">So arbeiten wir</span>
-  <h2 class="s-title will-animate d1">Dein Weg zum Ergebnis</h2>
-  <p class="s-sub will-animate d2">Einfach, transparent, effizient – so sieht unsere Zusammenarbeit aus.</p>
+<!-- =====================================================
+     MAIN SITE  (hidden until intro finishes)
+     ===================================================== -->
+<div id="main-site" style="display:none;">
 
-  <div class="process-steps">
-    <div class="process-step will-animate">
-      <div class="step-num">01</div>
-      <div class="step-title">Erstgespräch</div>
-      <p class="step-desc">Wir lernen dein Business kennen und verstehen deine Ziele – kostenlos & unverbindlich.</p>
-    </div>
-    <div class="process-step will-animate" style="transition-delay:0.1s">
-      <div class="step-num">02</div>
-      <div class="step-title">Konzept & Angebot</div>
-      <p class="step-desc">Du erhältst ein individuelles Konzept mit klaren Leistungen und transparenten Preisen.</p>
-    </div>
-    <div class="process-step will-animate" style="transition-delay:0.2s">
-      <div class="step-num">03</div>
-      <div class="step-title">Umsetzung</div>
-      <p class="step-desc">Wir setzen um – schnell, präzise, mit regelmäßigen Updates für dich.</p>
-    </div>
-    <div class="process-step will-animate" style="transition-delay:0.3s">
-      <div class="step-num">04</div>
-      <div class="step-title">Launch & Support</div>
-      <p class="step-desc">Go-Live mit voller Unterstützung. Auch danach sind wir für dich da.</p>
-    </div>
-  </div>
-</section>
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#hero" class="nav-logo">Lumière</a>
+    <ul class="nav-links">
+      <li><a href="#services">Leistungen</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#video-sec">Kundenstimmen</a></li>
+      <li><a href="#appointment">Termin</a></li>
+    </ul>
+    <a href="#appointment" class="nav-btn">Termin buchen</a>
+  </nav>
 
-<!-- ========== CONTACT ========== -->
-<section id="kontakt">
-  <span class="s-tag will-animate">Kontakt aufnehmen</span>
-  <h2 class="s-title will-animate d1">Lass uns zusammenarbeiten</h2>
-  <p class="s-sub will-animate d2">Du hast ein Projekt? Melde dich – kostenloses Erstgespräch, unverbindlich, ohne Haken.</p>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-sup">Willkommen im</p>
+      <h1 class="hero-title">Salon<em>Lumière</em></h1>
+      <p class="hero-desc">Wo Eleganz auf Handwerk trifft. Wir bringen Ihre Haare zum Strahlen – mit Leidenschaft, Präzision und einem Hauch Luxus.</p>
+      <div class="hero-cta"><a href="#appointment" class="btn"><span>Termin vereinbaren</span></a></div>
+    </div>
 
-  <div class="contact-grid">
-    <div class="contact-left from-left">
-      <div class="c-item">
-        <div class="c-icon">✉️</div>
-        <div>
-          <div class="c-label">E-Mail</div>
-          <div class="c-val"><a href="mailto:lyz.aiagentur@gmail.com">lyz.aiagentur@gmail.com</a></div>
-        </div>
-      </div>
-      <div class="c-item">
-        <div class="c-icon">⏰</div>
-        <div>
-          <div class="c-label">Antwortzeit</div>
-          <div class="c-val">Innerhalb von 48 Stunden</div>
-        </div>
-      </div>
-      <div class="c-item">
-        <div class="c-icon">🌍</div>
-        <div>
-          <div class="c-label">Erreichbarkeit</div>
-          <div class="c-val">Mo – Fr &nbsp;|&nbsp; 09:00 – 18:00 Uhr</div>
-        </div>
+    <!-- Sprayflasche als Deko-Element unten rechts im Hero -->
+    <div class="hero-bottle" id="hero-bottle">
+      <div class="deco-spray"></div>
+      <svg viewBox="0 0 380 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <linearGradient id="hgBody" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#d0d0e0"/>
+            <stop offset="22%"  stop-color="#f0f0fc"/>
+            <stop offset="55%"  stop-color="#c8c8d8"/>
+            <stop offset="100%" stop-color="#888898"/>
+          </linearGradient>
+          <linearGradient id="hgCap" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#7a7a8a"/>
+            <stop offset="50%"  stop-color="#b5b5c8"/>
+            <stop offset="100%" stop-color="#7a7a8a"/>
+          </linearGradient>
+          <linearGradient id="hgNoz" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#bbbbc8"/>
+            <stop offset="100%" stop-color="#888898"/>
+          </linearGradient>
+          <linearGradient id="hgLabel" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#1e1c32"/>
+            <stop offset="100%" stop-color="#2d2a4a"/>
+          </linearGradient>
+          <linearGradient id="hgGold" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#b8882a"/>
+            <stop offset="50%"  stop-color="#f0c865"/>
+            <stop offset="100%" stop-color="#b8882a"/>
+          </linearGradient>
+          <filter id="hglow">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="28" y="48" width="326" height="56" rx="28" fill="url(#hgBody)"/>
+        <ellipse cx="28"  cy="76" rx="18" ry="28" fill="url(#hgCap)"/>
+        <ellipse cx="354" cy="76" rx="18" ry="28" fill="url(#hgCap)"/>
+        <rect x="28" y="50" width="326" height="12" rx="6" fill="white" opacity="0.22"/>
+        <rect x="68"  y="48" width="7" height="56" rx="2" fill="url(#hgGold)" opacity="0.8"/>
+        <rect x="305" y="48" width="7" height="56" rx="2" fill="url(#hgGold)" opacity="0.8"/>
+        <rect x="82" y="52" width="218" height="48" rx="6" fill="url(#hgLabel)"/>
+        <rect x="82" y="51"  width="218" height="4" rx="2" fill="url(#hgGold)"/>
+        <rect x="82" y="96"  width="218" height="4" rx="2" fill="url(#hgGold)"/>
+        <text x="191" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#hglow)">LUMIÈRE</text>
+        <text x="191" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
+        <rect x="160" y="24" width="60" height="27" rx="7" fill="url(#hgNoz)"/>
+        <rect x="164" y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
+        <rect x="181" y="0"  width="18" height="26" rx="9" fill="url(#hgNoz)"/>
+        <ellipse cx="190" cy="2" rx="6" ry="3" fill="#555566"/>
+        <circle  cx="190" cy="2" r="2.8" fill="#333344"/>
+        <rect x="214" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
+      </svg>
+    </div>
+
+    <div class="hero-scroll">
+      <span class="scroll-text">Entdecken</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Unsere Leistungen</p>
+      <h2 class="sec-title reveal">Was wir<br>für Sie tun</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Von klassischen Schnitten bis zu modernen Farbkreationen – ein vollständiges Spektrum an Friseurdiensten.</p>
+      <div class="services-grid">
+        <div class="svc-card reveal reveal-delay-1"><div class="svc-icon">✂️</div><div class="svc-name">Damenschnitt</div><div class="svc-price">ab 45 €</div></div>
+        <div class="svc-card reveal reveal-delay-2"><div class="svc-icon">💈</div><div class="svc-name">Herrenschnitt</div><div class="svc-price">ab 28 €</div></div>
+        <div class="svc-card reveal reveal-delay-3"><div class="svc-icon">🎨</div><div class="svc-name">Färben &amp; Balayage</div><div class="svc-price">ab 80 €</div></div>
+        <div class="svc-card reveal reveal-delay-1"><div class="svc-icon">💍</div><div class="svc-name">Hochzeitsstyling</div><div class="svc-price">ab 120 €</div></div>
+        <div class="svc-card reveal reveal-delay-2"><div class="svc-icon">✨</div><div class="svc-name">Keratin-Kur</div><div class="svc-price">ab 95 €</div></div>
+        <div class="svc-card reveal reveal-delay-3"><div class="svc-icon">🧔</div><div class="svc-name">Bart-Pflege</div><div class="svc-price">ab 22 €</div></div>
       </div>
     </div>
+  </section>
 
-    <div class="contact-right from-right">
-      <h3 class="form-heading">Nachricht senden</h3>
-      <div id="formContent">
-        <div class="form-group">
-          <label>Vorname *</label>
-          <input type="text" id="fFirst" placeholder="Max">
+  <!-- TEAM -->
+  <section id="team">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Unser Team</p>
+      <h2 class="sec-title reveal">Die Menschen<br>hinter dem Spiegel</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Lernen Sie unsere leidenschaftlichen Friseurmeister kennen, die mit Herzblut und Fachwissen arbeiten.</p>
+      <div class="team-grid">
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-avatar">👩‍🦱</div>
+          <div class="team-info">
+            <div class="team-name">Sophie Beaumont</div>
+            <div class="team-role">Inhaberin &amp; Master-Stylistin</div>
+            <div class="team-bio">Mit über 18 Jahren Erfahrung und einer Ausbildung in Paris bringt Sophie ein einzigartiges Gespür für Ästhetik und Stil in jeden Schnitt.</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Telefonnummer *</label>
-          <input type="tel" id="fPhone" placeholder="+49 123 456 789">
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-avatar">👩‍🦳</div>
+          <div class="team-info">
+            <div class="team-name">Lena Hofmann</div>
+            <div class="team-role">Coloristin &amp; Balayage-Expertin</div>
+            <div class="team-bio">Lenas Farbkompositionen sind Kunstwerke. Sie spezialisiert sich auf natürliche Farbverläufe und individuelle Colorationen.</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Ich interessiere mich für</label>
-          <select id="fService">
-            <option value="">Bitte wählen…</option>
-            <option>Webdesign & Entwicklung</option>
-            <option>Automatisierung</option>
-            <option>Wartung & Hosting</option>
-            <option>Mehreres / Noch unklar</option>
+        <div class="team-card reveal reveal-delay-3">
+          <div class="team-avatar">🧑‍🦲</div>
+          <div class="team-info">
+            <div class="team-name">Marco Esposito</div>
+            <div class="team-role">Herren-Haarexperte &amp; Bartpflege</div>
+            <div class="team-bio">Marco ist der Mann für den modernen Herren. Ob klassischer Schnitt oder trendiges Styling – er bringt jeden Look auf den Punkt.</div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-4">
+          <div class="team-avatar">👩</div>
+          <div class="team-info">
+            <div class="team-name">Julia Schneider</div>
+            <div class="team-role">Haarpflege &amp; Keratin-Spezialistin</div>
+            <div class="team-bio">Julia kümmert sich um die Gesundheit Ihrer Haare. Ihre Pflegebehandlungen sind bekannt für sofort spürbare Ergebnisse.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section id="gallery">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Transformationen</p>
+      <h2 class="sec-title reveal">Vorher &amp;<br>Nachher</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Sehen Sie selbst, welche Veränderungen wir bewirken können. Die Bildfelder sind bereits vorbereitet.</p>
+      <div class="ba-grid">
+        <!-- Card 1 -->
+        <div class="ba-card reveal reveal-delay-1">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Balayage &amp; Schnitt</span><span class="ba-badge">Sophie B.</span></div>
+        </div>
+        <!-- Card 2 -->
+        <div class="ba-card reveal reveal-delay-2">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Colorierung &amp; Styling</span><span class="ba-badge">Lena H.</span></div>
+        </div>
+        <!-- Card 3 -->
+        <div class="ba-card reveal reveal-delay-3">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Keratin-Behandlung</span><span class="ba-badge">Julia S.</span></div>
+        </div>
+        <!-- Card 4 -->
+        <div class="ba-card reveal reveal-delay-1">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Herrenschnitt &amp; Bart</span><span class="ba-badge">Marco E.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video-sec">
+    <div class="sec-wrap" style="max-width:900px;">
+      <p class="sec-tag reveal">Kundenstimmen</p>
+      <h2 class="sec-title reveal">Ihre Erfahrungen<br>im Video</h2>
+      <div class="divider reveal" style="margin:2rem auto;"></div>
+      <p class="sec-desc reveal" style="margin:0 auto;text-align:center;">Unsere Kunden erzählen von ihren Erlebnissen im Salon Lumière. Fügen Sie hier Ihr Kundenvideo ein.</p>
+      <div class="video-wrap reveal">
+        <div class="video-box" id="video-box">
+          <div class="play-btn">▶</div>
+          <div class="video-label">Kundenvideo einbetten</div>
+          <div class="video-note">YouTube / Vimeo URL hier einfügen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPOINTMENT -->
+  <section id="appointment">
+    <div class="sec-wrap" style="max-width:860px;">
+      <p class="sec-tag reveal">Termin</p>
+      <h2 class="sec-title reveal">Jetzt Termin<br>vereinbaren</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Füllen Sie das Formular aus – wir melden uns innerhalb von 24 Stunden. Wir freuen uns auf Sie!</p>
+      <form id="appt-form" class="appt-grid reveal" novalidate>
+        <div class="fg"><label for="a-name">Vollständiger Name *</label><input type="text" id="a-name" name="name" placeholder="Maria Mustermann" required /></div>
+        <div class="fg"><label for="a-phone">Telefon / E-Mail *</label><input type="text" id="a-phone" name="phone" placeholder="+49 123 456789" required /></div>
+        <div class="fg"><label for="a-date">Wunschdatum *</label><input type="date" id="a-date" name="date" required /></div>
+        <div class="fg">
+          <label for="a-time">Wunschuhrzeit</label>
+          <select id="a-time" name="time">
+            <option value="">-- Bitte wählen --</option>
+            <option value="09:00">09:00 Uhr</option><option value="10:00">10:00 Uhr</option><option value="11:00">11:00 Uhr</option>
+            <option value="12:00">12:00 Uhr</option><option value="13:00">13:00 Uhr</option><option value="14:00">14:00 Uhr</option>
+            <option value="15:00">15:00 Uhr</option><option value="16:00">16:00 Uhr</option><option value="17:00">17:00 Uhr</option><option value="18:00">18:00 Uhr</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Deine Nachricht *</label>
-          <textarea id="fMsg" placeholder="Beschreibe kurz dein Projekt oder deine Anforderungen…"></textarea>
+        <div class="fg">
+          <label for="a-service">Leistung *</label>
+          <select id="a-service" name="service" required>
+            <option value="">-- Bitte wählen --</option>
+            <option value="Damenschnitt">Damenschnitt</option><option value="Herrenschnitt">Herrenschnitt</option>
+            <option value="Faerben-Balayage">Färben &amp; Balayage</option><option value="Hochzeitsstyling">Hochzeitsstyling</option>
+            <option value="Keratin-Kur">Keratin-Kur</option><option value="Bart-Pflege">Bart-Pflege</option><option value="Sonstiges">Sonstiges</option>
+          </select>
         </div>
-        <button class="submit-btn" onclick="submitForm()">Anfrage jetzt absenden →</button>
-      </div>
-      <div class="form-success" id="formSuccess">
-        <div class="success-icon">✅</div>
-        <h3>Anfrage erhalten!</h3>
-        <p>Vielen Dank – wir melden uns innerhalb von 48 Stunden bei dir.</p>
-      </div>
+        <div class="fg">
+          <label for="a-stylist">Bevorzugter Stylist</label>
+          <select id="a-stylist" name="stylist">
+            <option value="">-- Kein Wunsch --</option>
+            <option value="Sophie Beaumont">Sophie Beaumont</option><option value="Lena Hofmann">Lena Hofmann</option>
+            <option value="Marco Esposito">Marco Esposito</option><option value="Julia Schneider">Julia Schneider</option>
+          </select>
+        </div>
+        <div class="fg full"><label for="a-msg">Anmerkungen</label><textarea id="a-msg" name="message" placeholder="Besondere Wünsche, Allergien oder Fragen..."></textarea></div>
+        <div class="appt-submit full">
+          <button type="submit"><span>Termin anfragen</span></button>
+          <div class="appt-msg" id="appt-msg"></div>
+        </div>
+      </form>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ========== FOOTER ========== -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="f-logo">LYZ<span>.AI</span></div>
-        <p class="f-desc">Deine digitale Präsenz, neu gedacht.<br>Wir bauen Lösungen, die für dich wachsen.</p>
-      </div>
-      <div class="f-col">
-        <h4>Leistungen</h4>
-        <ul>
-          <li><a href="#leistungen">Webdesign & Entwicklung</a></li>
-          <li><a href="#leistungen">Automatisierung</a></li>
-          <li><a href="#leistungen">Wartung & Hosting</a></li>
-        </ul>
-      </div>
-      <div class="f-col">
-        <h4>Unternehmen</h4>
-        <ul>
-          <li><a href="#kontakt">Kontakt</a></li>
-          <li><a href="#">Impressum</a></li>
-          <li><a href="#">Datenschutz</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="f-copy">© 2025 <a href="#">LYZ.AI</a>. Alle Rechte vorbehalten.</p>
-      <p class="f-copy">Gebaut mit Präzision für digitalen Erfolg</p>
-    </div>
-  </div>
-</footer>
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-logo">Salon Lumière</div>
+    <div class="foot-tagline">Haarsalon &amp; Beautystudio</div>
+    <ul class="foot-links">
+      <li><a href="#services">Leistungen</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#appointment">Termin</a></li>
+    </ul>
+    <div class="foot-divider"></div>
+    <p class="foot-copy">
+      Musterstraße 12 · 10115 Berlin &nbsp;|&nbsp; Tel: +49 30 123 45 67 &nbsp;|&nbsp; info@salon-lumiere.de<br/>
+      <span style="opacity:.5;font-size:.7rem;">© 2026 Salon Lumière – Demo Website</span>
+    </p>
+  </footer>
 
-<!-- ========== SCRIPTS ========== -->
+</div><!-- /main-site -->
+
+
 <script>
-/* ── PARTICLES ── */
-(function(){
-  const canvas = document.getElementById('particles-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, pts = [];
-  const mouse  = { x: null, y: null };
-  const COUNT  = 130;
+/* =====================================================
+   INTRO ANIMATION
+   sequence:
+   1. Bottle falls from top → lands at bottom (horizontal, lying on side)
+   2. 500ms after landing  → spray particles shoot UPWARD from nozzle tip
+   3. 400ms into spray     → intro overlay slides UP out of view
+                           → bottle slides DOWN out of view
+   4. Main site appears
+   ===================================================== */
+(function () {
+  const intro    = document.getElementById('intro');
+  const bottle   = document.getElementById('bottle-wrap');
+  const mist     = document.getElementById('mist');
+  const mainSite = document.getElementById('main-site');
+  const nav      = document.getElementById('main-nav');
 
-  function resize(){
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+  /* ---- Düsenposition berechnen ---- */
+  function getNozzlePos() {
+    const br = bottle.getBoundingClientRect();
+    /* SVG viewBox 0 0 380 115 → Düsenspitze jetzt bei cx=190 (Mitte), cy=2 */
+    const nx = br.left + (190 / 380) * br.width;  /* = br.left + br.width/2 = Bildschirmmitte */
+    const ny = br.top  + (2   / 115) * br.height;
+    return { x: nx, y: ny };
   }
-  resize();
-  window.addEventListener('resize', resize);
-  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-  function Pt(){
-    this.reset = function(){
-      this.x  = Math.random() * W;
-      this.y  = Math.random() * H;
-      this.r  = Math.random() * 1.8 + 0.4;
-      this.vx = (Math.random() - 0.5) * 0.45;
-      this.vy = (Math.random() - 0.5) * 0.45;
-      this.a  = Math.random() * 0.45 + 0.08;
-    };
-    this.reset();
-  }
-  for(let i=0;i<COUNT;i++) pts.push(new Pt());
+  /* ---- Canvas: sichtbarer Spray-Kegel ---- */
+  function drawSprayCone(ox, oy) {
+    const cvs = document.createElement('canvas');
+    cvs.style.cssText = 'position:fixed;inset:0;z-index:10001;pointer-events:none;';
+    cvs.width  = window.innerWidth;
+    cvs.height = window.innerHeight;
+    document.body.appendChild(cvs);
+    const ctx = cvs.getContext('2d');
+    const t0  = performance.now();
+    const dur  = 1300; /* ms wie lange der Kegel wächst */
 
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if(mouse.x){
-        const dx=mouse.x-p.x, dy=mouse.y-p.y, d=Math.hypot(dx,dy);
-        if(d<110){ p.x-=dx*0.018; p.y-=dy*0.018; }
-      }
-      if(p.x<0||p.x>W||p.y<0||p.y>H) p.reset();
+    function frame(now) {
+      const raw  = Math.min((now - t0) / dur, 1);
+      /* Ease-out: schnell am Anfang, langsam am Ende */
+      const ease = 1 - Math.pow(1 - raw, 2.2);
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      if (raw >= 1) { cvs.remove(); return; }
+
+      const reach  = ease * oy * 1.08;   /* Kegel reicht bis oben */
+      const spread = reach * 0.38;        /* schmal – nur mittlerer Bereich */
+      const fade   = Math.max(0, 1 - raw * 0.6);
+
+      /* Hauptkegel – gedämpfter blau-weißer Nebel */
+      const gMain = ctx.createLinearGradient(ox, oy, ox, oy - reach);
+      gMain.addColorStop(0,    `rgba(210,225,245,${0.72 * fade})`);
+      gMain.addColorStop(0.18, `rgba(215,228,248,${0.58 * fade})`);
+      gMain.addColorStop(0.55, `rgba(220,232,250,${0.35 * fade})`);
+      gMain.addColorStop(1,    'rgba(220,235,255,0)');
+
       ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,179,65,${p.a})`;
+      ctx.moveTo(ox, oy);
+      ctx.bezierCurveTo(
+        ox - spread * 0.18, oy - reach * 0.28,
+        ox - spread * 0.72, oy - reach * 0.72,
+        ox - spread,        oy - reach
+      );
+      ctx.lineTo(ox + spread, oy - reach);
+      ctx.bezierCurveTo(
+        ox + spread * 0.72, oy - reach * 0.72,
+        ox + spread * 0.18, oy - reach * 0.28,
+        ox, oy
+      );
+      ctx.fillStyle = gMain;
       ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++){
-      for(let j=i+1;j<pts.length;j++){
-        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
-        if(d<95){
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x,pts[i].y);
-          ctx.lineTo(pts[j].x,pts[j].y);
-          ctx.strokeStyle=`rgba(0,179,65,${0.14*(1-d/95)})`;
-          ctx.lineWidth=0.5;
-          ctx.stroke();
-        }
-      }
+
+      /* Kern-Strahl – gedämpft */
+      const sw    = 8 + ease * 28;
+      const gCore = ctx.createLinearGradient(ox, oy, ox, oy - reach);
+      gCore.addColorStop(0,    `rgba(225,238,255,${0.75 * fade})`);
+      gCore.addColorStop(0.35, `rgba(225,238,255,${0.50 * fade})`);
+      gCore.addColorStop(1,    'rgba(220,235,255,0)');
+
+      ctx.beginPath();
+      ctx.moveTo(ox - 6, oy);
+      ctx.lineTo(ox + 6, oy);
+      ctx.lineTo(ox + sw, oy - reach);
+      ctx.lineTo(ox - sw, oy - reach);
+      ctx.closePath();
+      ctx.fillStyle = gCore;
+      ctx.fill();
+
+      requestAnimationFrame(frame);
     }
-    requestAnimationFrame(draw);
+    requestAnimationFrame(frame);
   }
-  draw();
-})();
 
-/* ── INTRO SPLASH ── */
-(function(){
-  const intro   = document.getElementById('intro');
-  const iText   = document.getElementById('intro-text');
-  const gearPos = document.getElementById('gear-pos');
-  const gearSvg = document.getElementById('gear-svg');
+  /* ---- Ein weißes Nebel-Partikel spawnen ---- */
+  function spawnParticle(ox, oy) {
+    const p = document.createElement('div');
+    p.className = 'spark';
 
-  // Gear slides up after text appears
-  setTimeout(()=> gearPos.classList.add('center'), 750);
+    const size  = 14 + Math.random() * 38;             /* 14–52 px */
+    const angle = (Math.random() - 0.5) * 0.85;        /* schmaler Fächer ±~49° – bleibt in der Mitte */
+    const dist  = window.innerHeight * (0.4 + Math.random() * 0.65);
+    const dur   = 550 + Math.random() * 700;
+    const dx    = Math.sin(angle) * dist;
+    const dy    = -Math.abs(Math.cos(angle)) * dist;
+    const blur  = 5 + Math.random() * 12;
+    const alpha = 0.28 + Math.random() * 0.28;         /* deutlich gedämpfter */
 
-  // Gear spins after reaching center
-  setTimeout(()=> gearSvg.classList.add('spin'), 1550);
+    /* blau-weißer gedämpfter Nebel */
+    const inner = `rgba(215,228,250,${alpha})`;
+    const outer = `rgba(200,218,245,${alpha * 0.5})`;
 
-  // Fade out text
-  setTimeout(()=>{
-    iText.style.opacity    = '1';   // einfrieren bevor Animation entfernt wird
-    iText.style.animation  = 'none';
-    iText.style.transition = 'opacity 0.5s ease';
-    requestAnimationFrame(()=> requestAnimationFrame(()=>{
-      iText.style.opacity = '0';
-    }));
-  }, 2300);
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${ox - size / 2}px; top:${oy - size / 2}px;
+      z-index:10002; filter:blur(${blur}px);
+      background: radial-gradient(circle, rgba(230,240,255,${alpha + 0.15}) 0%, ${inner} 40%, ${outer} 70%, transparent 88%);
+    `;
+    document.body.appendChild(p);
 
-  // Fade out gear
-  setTimeout(()=>{
-    gearPos.style.transition = 'opacity 0.35s ease';
-    gearPos.style.opacity    = '0';
-  }, 2500);
+    p.animate([
+      { transform: 'translate(0,0) scale(1)',              opacity: 1   },
+      { transform: `translate(${dx}px,${dy}px) scale(.2)`, opacity: 0  }
+    ], { duration: dur, easing: 'ease-out', fill: 'forwards' });
 
-  // Dissolve entire intro overlay
-  setTimeout(()=>{
-    intro.style.transition = 'opacity 0.9s ease';
-    intro.style.opacity    = '0';
-  }, 2700);
+    setTimeout(() => p.remove(), dur + 60);
+  }
 
-  // Remove intro after dissolve completes
-  setTimeout(()=> intro.remove(), 3650);
-})();
+  /* ---- Spray abfeuern: Kegel + 300 Partikel ---- */
+  function fireSpray() {
+    const { x, y } = getNozzlePos();
 
-/* ── SCROLL ANIMATIONS ── */
-(function(){
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting) e.target.classList.add('visible');
-    });
-  },{threshold:0.12});
+    /* 1. Sichtbarer Spray-Kegel auf Canvas */
+    drawSprayCone(x, y);
 
-  document.querySelectorAll('.will-animate,.from-left,.from-right').forEach(el=>io.observe(el));
+    /* 2. 300 weiße Partikel – alle 4ms einer */
+    for (let i = 0; i < 300; i++) {
+      setTimeout(() => spawnParticle(x, y), i * 4);
+    }
+  }
 
-  const cardIO = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add('in-view');
-        e.target.style.opacity='1';
-        e.target.style.transform='translateY(0)';
-        e.target.style.transition='opacity 0.6s ease, transform 0.6s ease';
-        cardIO.unobserve(e.target);
+  /* ---- main sequence ---- */
+  function runIntro() {
+    /* 1. bottle falls in */
+    bottle.classList.add('drop-in');
+
+    /* 2. Spray startet nach dem Landen */
+    setTimeout(() => {
+      mist.classList.add('active');
+      fireSpray();
+
+      /* 3. Intro fliegt nach oben – Flasche bleibt stehen (sie ist fixed/außerhalb) */
+      intro.classList.add('slide-out');
+
+      /* 4. Hauptseite einblenden sobald Intro weg ist */
+      setTimeout(() => {
+        intro.style.display    = 'none';
+        mainSite.style.display = 'block';
+        nav.classList.add('visible');
+        initScrollReveal();
+        initForm();
+        /* Hero-Flasche einblenden */
+        setTimeout(() => {
+          const hb = document.getElementById('hero-bottle');
+          if (hb) hb.classList.add('visible');
+        }, 400);
+      }, 1150);
+
+      /* 5. Flasche fällt erst nach unten wenn Intro weg ist */
+      setTimeout(() => {
+        bottle.classList.remove('drop-in');
+        bottle.classList.add('drop-out');
+      }, 1400);
+    }, 1450);
+  }
+
+  window.addEventListener('load', () => setTimeout(runIntro, 350));
+
+  /* =====================================================
+     SCROLL REVEAL
+     ===================================================== */
+  function initScrollReveal() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+
+  /* =====================================================
+     APPOINTMENT FORM
+     ===================================================== */
+  function initForm() {
+    const form = document.getElementById('appt-form');
+    const msg  = document.getElementById('appt-msg');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name    = document.getElementById('a-name').value.trim();
+      const contact = document.getElementById('a-phone').value.trim();
+      const date    = document.getElementById('a-date').value;
+      const service = document.getElementById('a-service').value;
+
+      if (!name || !contact || !date || !service) {
+        msg.textContent = '⚠ Bitte füllen Sie alle Pflichtfelder (*) aus.';
+        msg.style.color = '#e87575';
+        msg.classList.add('show');
+        return;
       }
+      msg.textContent = '✓ Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns bald!';
+      msg.style.color = 'var(--gold)';
+      msg.classList.add('show');
+      form.reset();
+      setTimeout(() => msg.classList.remove('show'), 6000);
     });
-  },{threshold:0.1});
-
-  document.querySelectorAll('.service-card').forEach((el,i)=>{
-    el.style.transitionDelay = (i%3)*0.12+'s';
-    cardIO.observe(el);
-  });
-
-  const stepIO = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('visible'); stepIO.unobserve(e.target); }
-    });
-  },{threshold:0.3});
-  document.querySelectorAll('.process-step').forEach(el=>stepIO.observe(el));
-})();
-
-/* ── NAVBAR SHADOW + SCROLL PROGRESS ── */
-const scrollProgress = document.getElementById('scroll-progress');
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').style.boxShadow =
-    scrollY>40 ? '0 4px 32px rgba(0,0,0,0.6)' : 'none';
-  const docH = document.documentElement.scrollHeight - window.innerHeight;
-  scrollProgress.style.width = (scrollY / docH * 100) + '%';
-});
-
-/* ── HAMBURGER ── */
-const ham     = document.getElementById('ham');
-const mobileN = document.getElementById('mobileNav');
-ham.addEventListener('click',()=>{
-  ham.classList.toggle('active');
-  mobileN.classList.toggle('open');
-});
-function closeNav(){
-  ham.classList.remove('active');
-  mobileN.classList.remove('open');
-}
-
-/* ── SMOOTH SCROLL ── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const t = document.querySelector(a.getAttribute('href'));
-    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); closeNav(); }
-  });
-});
-
-/* ── FORM SUBMIT ── */
-function submitForm(){
-  const first = document.getElementById('fFirst').value.trim();
-  const phone = document.getElementById('fPhone').value.trim();
-  const msg   = document.getElementById('fMsg').value.trim();
-  if(!first || !phone || !msg){
-    [['fFirst',first],['fPhone',phone],['fMsg',msg]].forEach(([id,v])=>{
-      const el = document.getElementById(id);
-      if(!v){ el.style.borderColor='#e05252'; el.addEventListener('input',()=>el.style.borderColor='',{once:true}); }
-    });
-    return;
   }
-  document.getElementById('formContent').style.display='none';
-  document.getElementById('formSuccess').style.display='block';
-}
+
+})();
 </script>
 </body>
 </html>
