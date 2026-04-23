@@ -69,10 +69,10 @@
        SPRAY BOTTLE  –  horizontal, lying at bottom
        ===================================================== */
     #bottle-wrap {
-      position: fixed;        /* außerhalb des Intro-Flows – bewegt sich NICHT mit dem Intro */
+      position: fixed;
       bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-110vh);
+      /* left wird per JS gesetzt (Düse landet auf Bildschirmmitte) */
+      transform: translateY(-110vh);
       width: clamp(280px, 55vw, 460px);
       z-index: 10003;
       filter: drop-shadow(0 -8px 25px rgba(212,168,83,.35));
@@ -84,14 +84,14 @@
       animation: bottleFall .85s cubic-bezier(.55,0,1,.45) forwards;
     }
     @keyframes bottleDrop {
-      0%   { transform: translateX(-50%) translateY(-110vh); }
-      72%  { transform: translateX(-50%) translateY(0) rotate(-2deg); }
-      86%  { transform: translateX(-50%) translateY(-9px) rotate(1deg); }
-      100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+      0%   { transform: translateY(-110vh); }
+      72%  { transform: translateY(0) rotate(-2deg); }
+      86%  { transform: translateY(-9px) rotate(1deg); }
+      100% { transform: translateY(0) rotate(0deg); }
     }
     @keyframes bottleFall {
-      from { transform: translateX(-50%) translateY(0); opacity:1; }
-      to   { transform: translateX(-50%) translateY(400px); opacity:0; }
+      from { transform: translateY(0); opacity:1; }
+      to   { transform: translateY(400px); opacity:0; }
     }
 
     /* mist – weißer Flood-Effekt der sich von unten hocharbeitet (bewegt sich mit intro) */
@@ -436,27 +436,27 @@
       <!-- top highlight strip on can -->
       <rect x="28" y="50" width="326" height="12" rx="6" fill="white" opacity="0.22"/>
 
+      <!-- ── NOZZLE / ACTUATOR (links auf der Flasche – cx=90, Düse per JS auf Bildschirmmitte) ── -->
+      <rect x="60"  y="24" width="60" height="27" rx="7" fill="url(#gNoz)"/>
+      <rect x="64"  y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
+      <rect x="81"  y="0"  width="18" height="26" rx="9" fill="url(#gNoz)"/>
+      <ellipse cx="90" cy="2" rx="6" ry="3" fill="#555566"/>
+      <circle  cx="90" cy="2" r="2.8"          fill="#333344"/>
+      <rect x="114" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
+
       <!-- ── GOLD ACCENT RINGS ── -->
-      <rect x="68"  y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
+      <rect x="125" y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
       <rect x="305" y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
 
       <!-- ── LABEL AREA ── -->
-      <rect x="82" y="52" width="218" height="48" rx="6" fill="url(#gLabel)"/>
+      <rect x="140" y="52" width="160" height="48" rx="6" fill="url(#gLabel)"/>
       <!-- Gold stripe top/bottom of label -->
-      <rect x="82" y="51"  width="218" height="4" rx="2" fill="url(#gGold)"/>
-      <rect x="82" y="96"  width="218" height="4" rx="2" fill="url(#gGold)"/>
+      <rect x="140" y="51"  width="160" height="4" rx="2" fill="url(#gGold)"/>
+      <rect x="140" y="96"  width="160" height="4" rx="2" fill="url(#gGold)"/>
 
       <!-- Label text -->
-      <text x="191" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#glow)">LUMIÈRE</text>
-      <text x="191" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7"  letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
-
-      <!-- ── NOZZLE / ACTUATOR (mittig auf der Flasche – x=190) ── -->
-      <rect x="160" y="24" width="60" height="27" rx="7" fill="url(#gNoz)"/>
-      <rect x="164" y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
-      <rect x="181" y="0"  width="18" height="26" rx="9" fill="url(#gNoz)"/>
-      <ellipse cx="190" cy="2" rx="6" ry="3" fill="#555566"/>
-      <circle  cx="190" cy="2" r="2.8"          fill="#333344"/>
-      <rect x="214" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
+      <text x="220" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#glow)">LUMIÈRE</text>
+      <text x="220" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7"  letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
     </svg>
   </div>
 
@@ -779,11 +779,17 @@
   const mainSite = document.getElementById('main-site');
   const nav      = document.getElementById('main-nav');
 
+  /* ---- Flasche so positionieren dass Düse (cx=90/380) auf Bildschirmmitte liegt ---- */
+  function positionBottle() {
+    const nozzleOffset = (90 / 380) * bottle.offsetWidth;
+    bottle.style.left = (window.innerWidth / 2 - nozzleOffset) + 'px';
+  }
+
   /* ---- Düsenposition berechnen ---- */
   function getNozzlePos() {
     const br = bottle.getBoundingClientRect();
-    /* SVG viewBox 0 0 380 115 → Düsenspitze jetzt bei cx=190 (Mitte), cy=2 */
-    const nx = br.left + (190 / 380) * br.width;  /* = br.left + br.width/2 = Bildschirmmitte */
+    /* SVG viewBox 0 0 380 115 → Düsenspitze bei cx=90 (links), cy=2 */
+    const nx = br.left + (90  / 380) * br.width;
     const ny = br.top  + (2   / 115) * br.height;
     return { x: nx, y: ny };
   }
@@ -806,15 +812,15 @@
       ctx.clearRect(0, 0, cvs.width, cvs.height);
       if (raw >= 1) { cvs.remove(); return; }
 
-      const reach  = ease * oy * 1.08;   /* Kegel reicht bis oben */
-      const spread = reach * 0.38;        /* schmal – nur mittlerer Bereich */
-      const fade   = Math.max(0, 1 - raw * 0.6);
+      const reach   = ease * oy * 1.08;
+      const spread  = reach * 0.55;        /* breiterer Nebel-Fächer */
+      const fade    = Math.max(0, 1 - raw * 0.55);
 
-      /* Hauptkegel – gedämpfter blau-weißer Nebel */
+      /* Innerer Hauptkegel – dichter Nebel */
       const gMain = ctx.createLinearGradient(ox, oy, ox, oy - reach);
-      gMain.addColorStop(0,    `rgba(210,225,245,${0.72 * fade})`);
-      gMain.addColorStop(0.18, `rgba(215,228,248,${0.58 * fade})`);
-      gMain.addColorStop(0.55, `rgba(220,232,250,${0.35 * fade})`);
+      gMain.addColorStop(0,    `rgba(210,225,245,${0.90 * fade})`);
+      gMain.addColorStop(0.18, `rgba(215,228,248,${0.72 * fade})`);
+      gMain.addColorStop(0.55, `rgba(220,232,250,${0.50 * fade})`);
       gMain.addColorStop(1,    'rgba(220,235,255,0)');
 
       ctx.beginPath();
@@ -833,20 +839,27 @@
       ctx.fillStyle = gMain;
       ctx.fill();
 
-      /* Kern-Strahl – gedämpft */
-      const sw    = 8 + ease * 28;
-      const gCore = ctx.createLinearGradient(ox, oy, ox, oy - reach);
-      gCore.addColorStop(0,    `rgba(225,238,255,${0.75 * fade})`);
-      gCore.addColorStop(0.35, `rgba(225,238,255,${0.50 * fade})`);
-      gCore.addColorStop(1,    'rgba(220,235,255,0)');
+      /* Äußerer breiter Nebel-Mantel */
+      const spread2 = reach * 0.85;
+      const gOuter  = ctx.createLinearGradient(ox, oy, ox, oy - reach);
+      gOuter.addColorStop(0,   `rgba(200,218,245,${0.45 * fade})`);
+      gOuter.addColorStop(0.4, `rgba(205,222,248,${0.25 * fade})`);
+      gOuter.addColorStop(1,   'rgba(210,228,255,0)');
 
       ctx.beginPath();
-      ctx.moveTo(ox - 6, oy);
-      ctx.lineTo(ox + 6, oy);
-      ctx.lineTo(ox + sw, oy - reach);
-      ctx.lineTo(ox - sw, oy - reach);
-      ctx.closePath();
-      ctx.fillStyle = gCore;
+      ctx.moveTo(ox, oy);
+      ctx.bezierCurveTo(
+        ox - spread2 * 0.18, oy - reach * 0.28,
+        ox - spread2 * 0.72, oy - reach * 0.72,
+        ox - spread2,        oy - reach
+      );
+      ctx.lineTo(ox + spread2, oy - reach);
+      ctx.bezierCurveTo(
+        ox + spread2 * 0.72, oy - reach * 0.72,
+        ox + spread2 * 0.18, oy - reach * 0.28,
+        ox, oy
+      );
+      ctx.fillStyle = gOuter;
       ctx.fill();
 
       requestAnimationFrame(frame);
@@ -859,14 +872,14 @@
     const p = document.createElement('div');
     p.className = 'spark';
 
-    const size  = 14 + Math.random() * 38;             /* 14–52 px */
-    const angle = (Math.random() - 0.5) * 0.85;        /* schmaler Fächer ±~49° – bleibt in der Mitte */
-    const dist  = window.innerHeight * (0.4 + Math.random() * 0.65);
-    const dur   = 550 + Math.random() * 700;
+    const size  = 22 + Math.random() * 55;             /* 22–77 px – größere Nebel-Bällchen */
+    const angle = (Math.random() - 0.5) * 1.1;         /* breiterer Fächer */
+    const dist  = window.innerHeight * (0.45 + Math.random() * 0.65);
+    const dur   = 600 + Math.random() * 800;
     const dx    = Math.sin(angle) * dist;
     const dy    = -Math.abs(Math.cos(angle)) * dist;
-    const blur  = 5 + Math.random() * 12;
-    const alpha = 0.28 + Math.random() * 0.28;         /* deutlich gedämpfter */
+    const blur  = 7 + Math.random() * 18;
+    const alpha = 0.45 + Math.random() * 0.38;         /* kräftiger Nebel */
 
     /* blau-weißer gedämpfter Nebel */
     const inner = `rgba(215,228,250,${alpha})`;
@@ -895,9 +908,9 @@
     /* 1. Sichtbarer Spray-Kegel auf Canvas */
     drawSprayCone(x, y);
 
-    /* 2. 300 weiße Partikel – alle 4ms einer */
-    for (let i = 0; i < 300; i++) {
-      setTimeout(() => spawnParticle(x, y), i * 4);
+    /* 2. 500 Nebel-Partikel – alle 3ms einer */
+    for (let i = 0; i < 500; i++) {
+      setTimeout(() => spawnParticle(x, y), i * 3);
     }
   }
 
@@ -936,7 +949,8 @@
     }, 1450);
   }
 
-  window.addEventListener('load', () => setTimeout(runIntro, 350));
+  window.addEventListener('load', () => { positionBottle(); setTimeout(runIntro, 350); });
+  window.addEventListener('resize', positionBottle);
 
   /* =====================================================
      SCROLL REVEAL
