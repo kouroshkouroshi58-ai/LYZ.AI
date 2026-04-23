@@ -75,14 +75,7 @@
       to   { transform: translateY(400px); opacity:0; }
     }
 
-    #mist { position: absolute; inset: 0; pointer-events: none; z-index: 5; opacity: 0; }
-    #mist.active { animation: mistFlood 1s ease forwards; }
-    @keyframes mistFlood {
-      0%  { opacity:0; background: radial-gradient(ellipse 25% 20% at 50% 97%, rgba(200,215,235,.75) 0%, transparent 100%); }
-      30% { opacity:1; background: radial-gradient(ellipse 40% 55% at 50% 82%, rgba(200,215,235,.7)  0%, transparent 100%); }
-      70% { opacity:1; background: radial-gradient(ellipse 42% 92% at 50% 48%, rgba(200,215,235,.65) 0%, transparent 100%); }
-      100%{ opacity:1; background: radial-gradient(ellipse 42% 98% at 50% 42%, rgba(200,215,235,.67) 0%, transparent 100%); }
-    }
+    #mist { display: none; }
 
     .spark { position: fixed; border-radius: 50%; pointer-events: none; }
 
@@ -608,7 +601,7 @@
     const dx    = Math.sin(angle) * dist;
     const dy    = -Math.abs(Math.cos(angle)) * dist;
     const blur  = 12 + Math.random() * 22;
-    const alpha = 0.12 + Math.random() * 0.16;
+    const alpha = 0.18 + Math.random() * 0.22;
     const inner = `rgba(215,228,250,${alpha})`;
     const outer = `rgba(200,218,245,${alpha * 0.4})`;
     p.style.cssText = `
@@ -627,7 +620,7 @@
 
   function fireSpray() {
     const { x, y } = getNozzlePos();
-    for (let i = 0; i < 220; i++) {
+    for (let i = 0; i < 300; i++) {
       setTimeout(() => spawnParticle(x, y), i * 5);
     }
   }
