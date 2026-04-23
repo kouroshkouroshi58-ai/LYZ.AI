@@ -794,123 +794,46 @@
     return { x: nx, y: ny };
   }
 
-  /* ---- Canvas: sichtbarer Spray-Kegel ---- */
-  function drawSprayCone(ox, oy) {
-    const cvs = document.createElement('canvas');
-    cvs.style.cssText = 'position:fixed;inset:0;z-index:10001;pointer-events:none;';
-    cvs.width  = window.innerWidth;
-    cvs.height = window.innerHeight;
-    document.body.appendChild(cvs);
-    const ctx = cvs.getContext('2d');
-    const t0  = performance.now();
-    const dur  = 1300; /* ms wie lange der Kegel wächst */
-
-    function frame(now) {
-      const raw  = Math.min((now - t0) / dur, 1);
-      /* Ease-out: schnell am Anfang, langsam am Ende */
-      const ease = 1 - Math.pow(1 - raw, 2.2);
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
-      if (raw >= 1) { cvs.remove(); return; }
-
-      const reach   = ease * oy * 1.08;
-      const spread  = reach * 0.55;        /* breiterer Nebel-Fächer */
-      const fade    = Math.max(0, 1 - raw * 0.55);
-
-      /* Innerer Hauptkegel – dichter Nebel */
-      const gMain = ctx.createLinearGradient(ox, oy, ox, oy - reach);
-      gMain.addColorStop(0,    `rgba(210,225,245,${0.90 * fade})`);
-      gMain.addColorStop(0.18, `rgba(215,228,248,${0.72 * fade})`);
-      gMain.addColorStop(0.55, `rgba(220,232,250,${0.50 * fade})`);
-      gMain.addColorStop(1,    'rgba(220,235,255,0)');
-
-      ctx.beginPath();
-      ctx.moveTo(ox, oy);
-      ctx.bezierCurveTo(
-        ox - spread * 0.18, oy - reach * 0.28,
-        ox - spread * 0.72, oy - reach * 0.72,
-        ox - spread,        oy - reach
-      );
-      ctx.lineTo(ox + spread, oy - reach);
-      ctx.bezierCurveTo(
-        ox + spread * 0.72, oy - reach * 0.72,
-        ox + spread * 0.18, oy - reach * 0.28,
-        ox, oy
-      );
-      ctx.fillStyle = gMain;
-      ctx.fill();
-
-      /* Äußerer breiter Nebel-Mantel */
-      const spread2 = reach * 0.85;
-      const gOuter  = ctx.createLinearGradient(ox, oy, ox, oy - reach);
-      gOuter.addColorStop(0,   `rgba(200,218,245,${0.45 * fade})`);
-      gOuter.addColorStop(0.4, `rgba(205,222,248,${0.25 * fade})`);
-      gOuter.addColorStop(1,   'rgba(210,228,255,0)');
-
-      ctx.beginPath();
-      ctx.moveTo(ox, oy);
-      ctx.bezierCurveTo(
-        ox - spread2 * 0.18, oy - reach * 0.28,
-        ox - spread2 * 0.72, oy - reach * 0.72,
-        ox - spread2,        oy - reach
-      );
-      ctx.lineTo(ox + spread2, oy - reach);
-      ctx.bezierCurveTo(
-        ox + spread2 * 0.72, oy - reach * 0.72,
-        ox + spread2 * 0.18, oy - reach * 0.28,
-        ox, oy
-      );
-      ctx.fillStyle = gOuter;
-      ctx.fill();
-
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  }
-
-  /* ---- Ein weißes Nebel-Partikel spawnen ---- */
+  /* ---- Ein Nebel-Partikel spawnen ---- */
   function spawnParticle(ox, oy) {
     const p = document.createElement('div');
     p.className = 'spark';
 
-    const size  = 22 + Math.random() * 55;             /* 22–77 px – größere Nebel-Bällchen */
-    const angle = (Math.random() - 0.5) * 1.1;         /* breiterer Fächer */
-    const dist  = window.innerHeight * (0.45 + Math.random() * 0.65);
-    const dur   = 600 + Math.random() * 800;
+    const size  = 30 + Math.random() * 60;           /* 30–90 px – weiche Nebel-Wolken */
+    const angle = (Math.random() - 0.5) * 1.3;       /* breiter Fächer */
+    const dist  = window.innerHeight * (0.3 + Math.random() * 0.55);
+    const dur   = 700 + Math.random() * 900;
     const dx    = Math.sin(angle) * dist;
     const dy    = -Math.abs(Math.cos(angle)) * dist;
-    const blur  = 7 + Math.random() * 18;
-    const alpha = 0.45 + Math.random() * 0.38;         /* kräftiger Nebel */
+    const blur  = 12 + Math.random() * 22;
+    const alpha = 0.12 + Math.random() * 0.16;       /* dezent – Schrift bleibt lesbar */
 
-    /* blau-weißer gedämpfter Nebel */
     const inner = `rgba(215,228,250,${alpha})`;
-    const outer = `rgba(200,218,245,${alpha * 0.5})`;
+    const outer = `rgba(200,218,245,${alpha * 0.4})`;
 
     p.style.cssText = `
       width:${size}px; height:${size}px;
       left:${ox - size / 2}px; top:${oy - size / 2}px;
       z-index:10002; filter:blur(${blur}px);
-      background: radial-gradient(circle, rgba(230,240,255,${alpha + 0.15}) 0%, ${inner} 40%, ${outer} 70%, transparent 88%);
+      background: radial-gradient(circle, rgba(235,242,255,${alpha + 0.08}) 0%, ${inner} 45%, ${outer} 75%, transparent 90%);
     `;
     document.body.appendChild(p);
 
     p.animate([
-      { transform: 'translate(0,0) scale(1)',              opacity: 1   },
-      { transform: `translate(${dx}px,${dy}px) scale(.2)`, opacity: 0  }
+      { transform: 'translate(0,0) scale(1)',               opacity: 1 },
+      { transform: `translate(${dx}px,${dy}px) scale(.15)`, opacity: 0 }
     ], { duration: dur, easing: 'ease-out', fill: 'forwards' });
 
     setTimeout(() => p.remove(), dur + 60);
   }
 
-  /* ---- Spray abfeuern: Kegel + 300 Partikel ---- */
+  /* ---- Spray abfeuern: nur Nebel-Partikel, kein Kegel ---- */
   function fireSpray() {
     const { x, y } = getNozzlePos();
 
-    /* 1. Sichtbarer Spray-Kegel auf Canvas */
-    drawSprayCone(x, y);
-
-    /* 2. 500 Nebel-Partikel – alle 3ms einer */
-    for (let i = 0; i < 500; i++) {
-      setTimeout(() => spawnParticle(x, y), i * 3);
+    /* 220 Partikel – alle 5ms einer */
+    for (let i = 0; i < 220; i++) {
+      setTimeout(() => spawnParticle(x, y), i * 5);
     }
   }
 
