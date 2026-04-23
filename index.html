@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salon Lumière – Ihr Friseursalon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:      #0f0e17;
+      --surface: #17162a;
+      --gold:    #d4a853;
+      --gold-d:  rgba(212,168,83,.25);
+      --cream:   #e8d5b7;
+      --text:    #fffffe;
+      --muted:   #9a97b5;
+      --ff-h:    'Cormorant Garamond', serif;
+      --ff-b:    'Jost', sans-serif;
+      --ease:    cubic-bezier(.25,.46,.45,.94);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff-b); background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    #intro {
+      position: fixed; inset: 0; z-index: 9999;
+      background: radial-gradient(ellipse at 50% 55%, #1c1a30 0%, #0f0e17 70%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #intro.slide-out { animation: introUp .95s cubic-bezier(.7,0,1,.5) .15s forwards; }
+    @keyframes introUp { to { transform: translateY(-100vh); } }
+
+    .intro-logo {
+      font-family: var(--ff-h);
+      font-size: clamp(3.5rem,10vw,8rem);
+      color: var(--gold); letter-spacing: .25em; text-transform: uppercase;
+      animation: fadeUp .9s var(--ease) .5s both;
+      position: relative; z-index: 6;
+    }
+    .intro-tagline {
+      font-size: clamp(.75rem,2vw,1rem); letter-spacing: .55em;
+      color: var(--cream); text-transform: uppercase; margin-top: .8rem;
+      animation: fadeUp .9s var(--ease) 1s both;
+      position: relative; z-index: 6;
+    }
+    .intro-lines { display: flex; gap: 1rem; align-items: center; margin-top: 1.4rem; position: relative; z-index: 6; }
+    .intro-line  { width: 60px; height: 1px; background: var(--gold); animation: lineGrow .8s var(--ease) 1.5s both; transform-origin: center; }
+    .intro-dot   { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: .6; animation: fadeUp .8s var(--ease) 1.6s both; }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes lineGrow { from { transform:scaleX(0); opacity:0; } to { transform:scaleX(1); opacity:1; } }
+
+    #bottle-wrap {
+      position: fixed;
+      bottom: 18px;
+      /* left wird per JS gesetzt */
+      transform: translateY(-110vh);
+      width: clamp(280px, 55vw, 460px);
+      z-index: 10003;
+      filter: drop-shadow(0 -8px 25px rgba(212,168,83,.35));
+    }
+    #bottle-wrap.drop-in  { animation: bottleDrop 1.35s cubic-bezier(.34,1.38,.64,1) forwards; }
+    #bottle-wrap.drop-out { animation: bottleFall .85s cubic-bezier(.55,0,1,.45) forwards; }
+    @keyframes bottleDrop {
+      0%   { transform: translateY(-110vh); }
+      72%  { transform: translateY(0) rotate(-2deg); }
+      86%  { transform: translateY(-9px) rotate(1deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    @keyframes bottleFall {
+      from { transform: translateY(0); opacity:1; }
+      to   { transform: translateY(400px); opacity:0; }
+    }
+
+    #mist { display: none; }
+
+    .spark { position: fixed; border-radius: 50%; pointer-events: none; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      padding: 1.4rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(15,14,23,.9); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--gold-d);
+      transform: translateY(-80px);
+      transition: transform .6s var(--ease);
+    }
+    nav.visible { transform: translateY(0); }
+    .nav-logo { font-family: var(--ff-h); font-size: 1.85rem; color: var(--gold); letter-spacing: .18em; text-decoration: none; }
+    .nav-links { display: flex; gap: 2.8rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; transition: color .3s; position: relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width .3s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-btn { padding: .6rem 1.8rem; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: .78rem; letter-spacing: .15em; text-transform: uppercase; transition: background .3s, color .3s; }
+    .nav-btn:hover { background: var(--gold); color: var(--bg); }
+
+    #hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
+    .hero-rings { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(212,168,83,.08); animation: ringPulse 5s ease-in-out infinite; }
+    .ring:nth-child(1) { width:700px; height:700px; }
+    .ring:nth-child(2) { width:480px; height:480px; animation-delay:1.2s; }
+    .ring:nth-child(3) { width:260px; height:260px; animation-delay:2.4s; border-color:rgba(212,168,83,.15); }
+    @keyframes ringPulse { 0%,100%{transform:scale(1);opacity:.4;} 50%{transform:scale(1.04);opacity:1;} }
+
+    .hero-content { position: relative; z-index: 2; }
+    .hero-sup  { font-size:.78rem; letter-spacing:.55em; color:var(--gold); text-transform:uppercase; margin-bottom:1.5rem; animation:fadeUp .9s var(--ease) .2s both; }
+    .hero-title { font-family:var(--ff-h); font-size:clamp(4rem,11vw,10rem); line-height:.95; animation:fadeUp .9s var(--ease) .45s both; }
+    .hero-title em { color:var(--gold); font-style:normal; display:block; }
+    .hero-desc { margin:2rem auto 2.8rem; max-width:480px; color:var(--muted); line-height:1.9; font-size:1.05rem; animation:fadeUp .9s var(--ease) .7s both; }
+    .hero-cta  { animation:fadeUp .9s var(--ease) .95s both; }
+
+    .btn { display: inline-block; padding: 1rem 3rem; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: .82rem; letter-spacing: .22em; text-transform: uppercase; position: relative; overflow: hidden; transition: color .4s; }
+    .btn::before { content:''; position:absolute; inset:0; background:var(--gold); transform:translateX(-101%); transition:transform .4s var(--ease); z-index:0; }
+    .btn span { position: relative; z-index: 1; }
+    .btn:hover { color: var(--bg); }
+    .btn:hover::before { transform: translateX(0); }
+
+    .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:.5rem; }
+    .scroll-text { font-size:.7rem; letter-spacing:.35em; color:var(--muted); text-transform:uppercase; }
+    .scroll-line { width:1px; height:50px; background:linear-gradient(to bottom, var(--gold), transparent); animation:scrollLine 1.8s ease-in-out infinite; }
+    @keyframes scrollLine { 0%,100%{transform:scaleY(1);transform-origin:top;} 50%{transform:scaleY(.4);transform-origin:top;} }
+
+    .hero-bottle { position: absolute; bottom: 0; right: clamp(1rem, 5vw, 7rem); width: clamp(180px, 28vw, 340px); opacity: 0; transform: translateY(30px); transition: opacity 1s var(--ease) .5s, transform 1s var(--ease) .5s; filter: drop-shadow(0 -6px 20px rgba(212,168,83,.2)); pointer-events: none; }
+    .hero-bottle.visible { opacity: 1; transform: translateY(0); }
+    .hero-bottle.visible svg { animation: bottleFloat 4s ease-in-out infinite; }
+    @keyframes bottleFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .hero-bottle .deco-spray { position: absolute; top: 2%; left: 28%; width: 45%; height: 55%; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(212,168,83,.12) 0%, transparent 100%); animation: decoSpray 3s ease-in-out infinite; pointer-events: none; }
+    @keyframes decoSpray { 0%,100% { opacity:.5; transform: scaleY(1); } 50% { opacity:1; transform: scaleY(1.12); } }
+    @media (max-width:900px) { .hero-bottle { display: none; } }
+
+    section { padding: 8rem 4rem; }
+    .sec-wrap  { max-width: 1300px; margin: 0 auto; }
+    .sec-tag   { font-size:.72rem; letter-spacing:.5em; color:var(--gold); text-transform:uppercase; margin-bottom:.9rem; }
+    .sec-title { font-family:var(--ff-h); font-size:clamp(2.4rem,5vw,4.5rem); line-height:1.05; margin-bottom:1.2rem; }
+    .sec-desc  { color:var(--muted); line-height:1.9; max-width:560px; font-size:1rem; }
+    .divider   { width:60px; height:1px; background:var(--gold); margin:2rem 0; }
+
+    .reveal { opacity:0; transform:translateY(45px); transition:opacity .85s var(--ease), transform .85s var(--ease); }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:.1s; }
+    .reveal-delay-2 { transition-delay:.22s; }
+    .reveal-delay-3 { transition-delay:.34s; }
+    .reveal-delay-4 { transition-delay:.46s; }
+
+    #services { background: var(--surface); }
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; margin-top:4rem; }
+    .svc-card { border:1px solid var(--gold-d); padding:2.2rem 1.5rem; text-align:center; transition:border-color .3s, transform .3s, box-shadow .3s; cursor:default; background:var(--bg); }
+    .svc-card:hover { border-color:var(--gold); transform:translateY(-8px); box-shadow:0 20px 50px rgba(212,168,83,.12); }
+    .svc-icon  { font-size:2.4rem; margin-bottom:1rem; }
+    .svc-name  { font-family:var(--ff-h); font-size:1.45rem; margin-bottom:.4rem; }
+    .svc-price { font-size:.82rem; color:var(--gold); }
+
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem; margin-top:4rem; }
+    .team-card { border:1px solid var(--gold-d); background:var(--surface); overflow:hidden; transition:transform .35s var(--ease), border-color .35s, box-shadow .35s; }
+    .team-card:hover { transform:translateY(-12px); border-color:var(--gold); box-shadow:0 25px 60px rgba(212,168,83,.18); }
+    .team-avatar { height:290px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1c1a30 0%,#2d2445 100%); font-size:6rem; position:relative; overflow:hidden; }
+    .team-avatar::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, transparent 50%, rgba(23,22,42,.9) 100%); }
+    .team-info { padding:1.6rem; }
+    .team-name { font-family:var(--ff-h); font-size:1.7rem; margin-bottom:.2rem; }
+    .team-role { font-size:.72rem; letter-spacing:.25em; color:var(--gold); text-transform:uppercase; margin-bottom:1rem; }
+    .team-bio  { font-size:.9rem; color:var(--muted); line-height:1.7; }
+
+    #gallery { background: var(--surface); }
+    .ba-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:2.5rem; margin-top:4rem; }
+    .ba-card { border:1px solid var(--gold-d); overflow:hidden; background:var(--bg); }
+    .ba-images { display:grid; grid-template-columns:1fr 1px 1fr; }
+    .ba-slot { height:230px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; background:linear-gradient(135deg,#1a1828 0%,#242040 100%); border:2px dashed rgba(212,168,83,.18); color:var(--muted); cursor:pointer; transition:border-color .3s, background .3s; position:relative; overflow:hidden; }
+    .ba-slot:hover { border-color:var(--gold); background:#1f1d30; }
+    .ba-slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .slot-text  { display:flex; flex-direction:column; align-items:center; gap:.5rem; z-index:1; }
+    .slot-icon  { font-size:2rem; opacity:.35; }
+    .slot-label { font-size:.68rem; letter-spacing:.3em; text-transform:uppercase; }
+    .ba-sep { background: var(--gold); }
+    .ba-footer { padding:.8rem 1.4rem; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--gold-d); }
+    .ba-footer span { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+    .ba-badge { font-size:.68rem !important; letter-spacing:.15em !important; color:var(--gold) !important; border:1px solid var(--gold-d); padding:.25rem .7rem; }
+
+    #video-sec { text-align:center; }
+    .video-wrap { max-width:820px; margin:3.5rem auto 0; }
+    .video-box { width:100%; aspect-ratio:16/9; background:var(--surface); border:1px dashed rgba(212,168,83,.3); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.2rem; color:var(--muted); position:relative; overflow:hidden; cursor:pointer; transition:border-color .3s; }
+    .video-box:hover { border-color:var(--gold); }
+    .video-box iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+    .play-btn { width:72px; height:72px; border-radius:50%; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:var(--gold); transition:background .3s, color .3s; }
+    .play-btn:hover { background:var(--gold); color:var(--bg); }
+    .video-label { font-size:.78rem; letter-spacing:.25em; text-transform:uppercase; }
+    .video-note  { font-size:.75rem; color:var(--gold); opacity:.7; }
+
+    #appointment { background: var(--surface); }
+    .appt-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:3.5rem; }
+    .fg { display:flex; flex-direction:column; gap:.5rem; }
+    .fg.full { grid-column:1/-1; }
+    .fg label { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+    .fg input, .fg select, .fg textarea { background:var(--bg); border:1px solid var(--gold-d); color:var(--text); padding:.9rem 1rem; font-family:var(--ff-b); font-size:.95rem; outline:none; transition:border-color .3s, box-shadow .3s; appearance:none; }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,168,83,.1); }
+    .fg select { cursor:pointer; }
+    .fg select option { background:#17162a; }
+    .fg textarea { resize:vertical; min-height:120px; }
+    .appt-submit { grid-column:1/-1; text-align:center; margin-top:.8rem; }
+    .appt-submit button { padding:1.1rem 4rem; background:transparent; border:1px solid var(--gold); color:var(--gold); font-family:var(--ff-b); font-size:.82rem; letter-spacing:.3em; text-transform:uppercase; cursor:pointer; position:relative; overflow:hidden; transition:color .4s; }
+    .appt-submit button::before { content:''; position:absolute; inset:0; background:var(--gold); transform:translateX(-101%); transition:transform .4s var(--ease); z-index:0; }
+    .appt-submit button span { position:relative; z-index:1; }
+    .appt-submit button:hover { color:var(--bg); }
+    .appt-submit button:hover::before { transform:translateX(0); }
+    .appt-msg { margin-top:1rem; font-size:.85rem; color:var(--gold); min-height:1.2em; opacity:0; transition:opacity .4s; }
+    .appt-msg.show { opacity:1; }
+
+    footer { background:#07070f; padding:4rem 4rem 2.5rem; border-top:1px solid var(--gold-d); text-align:center; }
+    .foot-logo    { font-family:var(--ff-h); font-size:2.8rem; color:var(--gold); letter-spacing:.2em; margin-bottom:.8rem; }
+    .foot-tagline { font-size:.78rem; letter-spacing:.4em; color:var(--muted); text-transform:uppercase; margin-bottom:2.5rem; }
+    .foot-links   { display:flex; gap:2.5rem; justify-content:center; list-style:none; margin-bottom:2.5rem; }
+    .foot-links a { color:var(--muted); text-decoration:none; font-size:.82rem; transition:color .3s; }
+    .foot-links a:hover { color:var(--gold); }
+    .foot-divider { width:60px; height:1px; background:var(--gold-d); margin:0 auto 1.5rem; }
+    .foot-copy    { font-size:.75rem; color:var(--muted); opacity:.6; }
+
+    @media (max-width:900px) {
+      nav { padding:1.2rem 1.8rem; }
+      .nav-links, .nav-btn { display:none; }
+      section { padding:5rem 1.6rem; }
+      .appt-grid { grid-template-columns:1fr; }
+      .fg.full, .appt-submit { grid-column: 1 / -1; }
+    }
+    @media (max-width:600px) {
+      .ba-images { grid-template-columns:1fr; }
+      .ba-sep { display:none; }
+      .ba-slot { height:160px; }
+      #bottle-wrap { width: 88vw; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="bottle-wrap">
+  <svg id="bottle-svg" viewBox="0 0 380 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+    <defs>
+      <linearGradient id="gBody" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#d0d0e0"/>
+        <stop offset="22%"  stop-color="#f0f0fc"/>
+        <stop offset="55%"  stop-color="#c8c8d8"/>
+        <stop offset="100%" stop-color="#888898"/>
+      </linearGradient>
+      <linearGradient id="gCap" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="#7a7a8a"/>
+        <stop offset="50%"  stop-color="#b5b5c8"/>
+        <stop offset="100%" stop-color="#7a7a8a"/>
+      </linearGradient>
+      <linearGradient id="gNoz" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#bbbbc8"/>
+        <stop offset="100%" stop-color="#888898"/>
+      </linearGradient>
+      <linearGradient id="gLabel" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#1e1c32"/>
+        <stop offset="100%" stop-color="#2d2a4a"/>
+      </linearGradient>
+      <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%"   stop-color="#b8882a"/>
+        <stop offset="50%"  stop-color="#f0c865"/>
+        <stop offset="100%" stop-color="#b8882a"/>
+      </linearGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <rect x="28" y="48" width="326" height="56" rx="28" fill="url(#gBody)"/>
+    <ellipse cx="28"  cy="76" rx="18" ry="28" fill="url(#gCap)"/>
+    <ellipse cx="354" cy="76" rx="18" ry="28" fill="url(#gCap)"/>
+    <rect x="28" y="50" width="326" height="12" rx="6" fill="white" opacity="0.22"/>
+
+    <!-- Düse links (cx=90) -->
+    <rect x="60"  y="24" width="60" height="27" rx="7" fill="url(#gNoz)"/>
+    <rect x="64"  y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
+    <rect x="81"  y="0"  width="18" height="26" rx="9" fill="url(#gNoz)"/>
+    <ellipse cx="90" cy="2" rx="6" ry="3" fill="#555566"/>
+    <circle  cx="90" cy="2" r="2.8" fill="#333344"/>
+    <rect x="114" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
+
+    <rect x="125" y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
+    <rect x="305" y="48" width="7" height="56" rx="2" fill="url(#gGold)" opacity="0.8"/>
+
+    <rect x="140" y="52" width="160" height="48" rx="6" fill="url(#gLabel)"/>
+    <rect x="140" y="51" width="160" height="4"  rx="2" fill="url(#gGold)"/>
+    <rect x="140" y="96" width="160" height="4"  rx="2" fill="url(#gGold)"/>
+
+    <text x="220" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#glow)">LUMIÈRE</text>
+    <text x="220" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
+  </svg>
+</div>
+
+<div id="intro">
+  <div id="mist"></div>
+  <div style="text-align:center; z-index:6; position:relative;">
+    <div class="intro-logo">Salon Lumière</div>
+    <div class="intro-tagline">Haarsalon &amp; Beautystudio</div>
+    <div class="intro-lines">
+      <div class="intro-line"></div>
+      <div class="intro-dot"></div>
+      <div class="intro-line"></div>
+    </div>
+  </div>
+</div>
+
+<div id="main-site" style="display:none;">
+
+  <nav id="main-nav">
+    <a href="#hero" class="nav-logo">Lumière</a>
+    <ul class="nav-links">
+      <li><a href="#services">Leistungen</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#video-sec">Kundenstimmen</a></li>
+      <li><a href="#appointment">Termin</a></li>
+    </ul>
+    <a href="#appointment" class="nav-btn">Termin buchen</a>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-rings">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-sup">Willkommen im</p>
+      <h1 class="hero-title">Salon<em>Lumière</em></h1>
+      <p class="hero-desc">Wo Eleganz auf Handwerk trifft. Wir bringen Ihre Haare zum Strahlen – mit Leidenschaft, Präzision und einem Hauch Luxus.</p>
+      <div class="hero-cta"><a href="#appointment" class="btn"><span>Termin vereinbaren</span></a></div>
+    </div>
+    <div class="hero-bottle" id="hero-bottle">
+      <div class="deco-spray"></div>
+      <svg viewBox="0 0 380 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <linearGradient id="hgBody" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#d0d0e0"/>
+            <stop offset="22%"  stop-color="#f0f0fc"/>
+            <stop offset="55%"  stop-color="#c8c8d8"/>
+            <stop offset="100%" stop-color="#888898"/>
+          </linearGradient>
+          <linearGradient id="hgCap" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#7a7a8a"/>
+            <stop offset="50%"  stop-color="#b5b5c8"/>
+            <stop offset="100%" stop-color="#7a7a8a"/>
+          </linearGradient>
+          <linearGradient id="hgNoz" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#bbbbc8"/>
+            <stop offset="100%" stop-color="#888898"/>
+          </linearGradient>
+          <linearGradient id="hgLabel" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#1e1c32"/>
+            <stop offset="100%" stop-color="#2d2a4a"/>
+          </linearGradient>
+          <linearGradient id="hgGold" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#b8882a"/>
+            <stop offset="50%"  stop-color="#f0c865"/>
+            <stop offset="100%" stop-color="#b8882a"/>
+          </linearGradient>
+          <filter id="hglow">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <rect x="28" y="48" width="326" height="56" rx="28" fill="url(#hgBody)"/>
+        <ellipse cx="28"  cy="76" rx="18" ry="28" fill="url(#hgCap)"/>
+        <ellipse cx="354" cy="76" rx="18" ry="28" fill="url(#hgCap)"/>
+        <rect x="28" y="50" width="326" height="12" rx="6" fill="white" opacity="0.22"/>
+        <rect x="68"  y="48" width="7" height="56" rx="2" fill="url(#hgGold)" opacity="0.8"/>
+        <rect x="305" y="48" width="7" height="56" rx="2" fill="url(#hgGold)" opacity="0.8"/>
+        <rect x="82"  y="52" width="218" height="48" rx="6" fill="url(#hgLabel)"/>
+        <rect x="82"  y="51" width="218" height="4"  rx="2" fill="url(#hgGold)"/>
+        <rect x="82"  y="96" width="218" height="4"  rx="2" fill="url(#hgGold)"/>
+        <text x="191" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#d4a853" font-style="italic" filter="url(#hglow)">LUMIÈRE</text>
+        <text x="191" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" letter-spacing="3" fill="#9a97b5">PROFESSIONAL HAIR SPRAY</text>
+        <rect x="160" y="24" width="60" height="27" rx="7" fill="url(#hgNoz)"/>
+        <rect x="164" y="21" width="52" height="8"  rx="4" fill="#c5c5d5"/>
+        <rect x="181" y="0"  width="18" height="26" rx="9" fill="url(#hgNoz)"/>
+        <ellipse cx="190" cy="2" rx="6" ry="3" fill="#555566"/>
+        <circle  cx="190" cy="2" r="2.8" fill="#333344"/>
+        <rect x="214" y="27" width="4" height="16" rx="2" fill="#aaaabc"/>
+      </svg>
+    </div>
+    <div class="hero-scroll">
+      <span class="scroll-text">Entdecken</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Unsere Leistungen</p>
+      <h2 class="sec-title reveal">Was wir<br>für Sie tun</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Von klassischen Schnitten bis zu modernen Farbkreationen – ein vollständiges Spektrum an Friseurdiensten.</p>
+      <div class="services-grid">
+        <div class="svc-card reveal reveal-delay-1"><div class="svc-icon">✂️</div><div class="svc-name">Damenschnitt</div><div class="svc-price">ab 45 €</div></div>
+        <div class="svc-card reveal reveal-delay-2"><div class="svc-icon">💈</div><div class="svc-name">Herrenschnitt</div><div class="svc-price">ab 28 €</div></div>
+        <div class="svc-card reveal reveal-delay-3"><div class="svc-icon">🎨</div><div class="svc-name">Färben &amp; Balayage</div><div class="svc-price">ab 80 €</div></div>
+        <div class="svc-card reveal reveal-delay-1"><div class="svc-icon">💍</div><div class="svc-name">Hochzeitsstyling</div><div class="svc-price">ab 120 €</div></div>
+        <div class="svc-card reveal reveal-delay-2"><div class="svc-icon">✨</div><div class="svc-name">Keratin-Kur</div><div class="svc-price">ab 95 €</div></div>
+        <div class="svc-card reveal reveal-delay-3"><div class="svc-icon">🧔</div><div class="svc-name">Bart-Pflege</div><div class="svc-price">ab 22 €</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Unser Team</p>
+      <h2 class="sec-title reveal">Die Menschen<br>hinter dem Spiegel</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Lernen Sie unsere leidenschaftlichen Friseurmeister kennen, die mit Herzblut und Fachwissen arbeiten.</p>
+      <div class="team-grid">
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-avatar">👩‍🦱</div>
+          <div class="team-info">
+            <div class="team-name">Sophie Beaumont</div>
+            <div class="team-role">Inhaberin &amp; Master-Stylistin</div>
+            <div class="team-bio">Mit über 18 Jahren Erfahrung und einer Ausbildung in Paris bringt Sophie ein einzigartiges Gespür für Ästhetik und Stil in jeden Schnitt.</div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-avatar">👩‍🦳</div>
+          <div class="team-info">
+            <div class="team-name">Lena Hofmann</div>
+            <div class="team-role">Coloristin &amp; Balayage-Expertin</div>
+            <div class="team-bio">Lenas Farbkompositionen sind Kunstwerke. Sie spezialisiert sich auf natürliche Farbverläufe und individuelle Colorationen.</div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-3">
+          <div class="team-avatar">🧑‍🦲</div>
+          <div class="team-info">
+            <div class="team-name">Marco Esposito</div>
+            <div class="team-role">Herren-Haarexperte &amp; Bartpflege</div>
+            <div class="team-bio">Marco ist der Mann für den modernen Herren. Ob klassischer Schnitt oder trendiges Styling – er bringt jeden Look auf den Punkt.</div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-4">
+          <div class="team-avatar">👩</div>
+          <div class="team-info">
+            <div class="team-name">Julia Schneider</div>
+            <div class="team-role">Haarpflege &amp; Keratin-Spezialistin</div>
+            <div class="team-bio">Julia kümmert sich um die Gesundheit Ihrer Haare. Ihre Pflegebehandlungen sind bekannt für sofort spürbare Ergebnisse.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="sec-wrap">
+      <p class="sec-tag reveal">Transformationen</p>
+      <h2 class="sec-title reveal">Vorher &amp;<br>Nachher</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Sehen Sie selbst, welche Veränderungen wir bewirken können.</p>
+      <div class="ba-grid">
+        <div class="ba-card reveal reveal-delay-1">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Balayage &amp; Schnitt</span><span class="ba-badge">Sophie B.</span></div>
+        </div>
+        <div class="ba-card reveal reveal-delay-2">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Colorierung &amp; Styling</span><span class="ba-badge">Lena H.</span></div>
+        </div>
+        <div class="ba-card reveal reveal-delay-3">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Keratin-Behandlung</span><span class="ba-badge">Julia S.</span></div>
+        </div>
+        <div class="ba-card reveal reveal-delay-1">
+          <div class="ba-images">
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Vorher</span></div></div>
+            <div class="ba-sep"></div>
+            <div class="ba-slot"><div class="slot-text"><span class="slot-icon">📷</span><span class="slot-label">Nachher</span></div></div>
+          </div>
+          <div class="ba-footer"><span>Herrenschnitt &amp; Bart</span><span class="ba-badge">Marco E.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="video-sec">
+    <div class="sec-wrap" style="max-width:900px;">
+      <p class="sec-tag reveal">Kundenstimmen</p>
+      <h2 class="sec-title reveal">Ihre Erfahrungen<br>im Video</h2>
+      <div class="divider reveal" style="margin:2rem auto;"></div>
+      <p class="sec-desc reveal" style="margin:0 auto;text-align:center;">Unsere Kunden erzählen von ihren Erlebnissen im Salon Lumière.</p>
+      <div class="video-wrap reveal">
+        <div class="video-box" id="video-box">
+          <div class="play-btn">▶</div>
+          <div class="video-label">Kundenvideo einbetten</div>
+          <div class="video-note">YouTube / Vimeo URL hier einfügen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appointment">
+    <div class="sec-wrap" style="max-width:860px;">
+      <p class="sec-tag reveal">Termin</p>
+      <h2 class="sec-title reveal">Jetzt Termin<br>vereinbaren</h2>
+      <div class="divider reveal"></div>
+      <p class="sec-desc reveal">Füllen Sie das Formular aus – wir melden uns innerhalb von 24 Stunden.</p>
+      <form id="appt-form" class="appt-grid reveal" novalidate>
+        <div class="fg"><label for="a-name">Vollständiger Name *</label><input type="text" id="a-name" name="name" placeholder="Maria Mustermann" required /></div>
+        <div class="fg"><label for="a-phone">Telefon / E-Mail *</label><input type="text" id="a-phone" name="phone" placeholder="+49 123 456789" required /></div>
+        <div class="fg"><label for="a-date">Wunschdatum *</label><input type="date" id="a-date" name="date" required /></div>
+        <div class="fg">
+          <label for="a-time">Wunschuhrzeit</label>
+          <select id="a-time" name="time">
+            <option value="">-- Bitte wählen --</option>
+            <option>09:00 Uhr</option><option>10:00 Uhr</option><option>11:00 Uhr</option>
+            <option>12:00 Uhr</option><option>13:00 Uhr</option><option>14:00 Uhr</option>
+            <option>15:00 Uhr</option><option>16:00 Uhr</option><option>17:00 Uhr</option><option>18:00 Uhr</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="a-service">Leistung *</label>
+          <select id="a-service" name="service" required>
+            <option value="">-- Bitte wählen --</option>
+            <option>Damenschnitt</option><option>Herrenschnitt</option>
+            <option>Färben &amp; Balayage</option><option>Hochzeitsstyling</option>
+            <option>Keratin-Kur</option><option>Bart-Pflege</option><option>Sonstiges</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="a-stylist">Bevorzugter Stylist</label>
+          <select id="a-stylist" name="stylist">
+            <option value="">-- Kein Wunsch --</option>
+            <option>Sophie Beaumont</option><option>Lena Hofmann</option>
+            <option>Marco Esposito</option><option>Julia Schneider</option>
+          </select>
+        </div>
+        <div class="fg full"><label for="a-msg">Anmerkungen</label><textarea id="a-msg" name="message" placeholder="Besondere Wünsche, Allergien oder Fragen..."></textarea></div>
+        <div class="appt-submit full">
+          <button type="submit"><span>Termin anfragen</span></button>
+          <div class="appt-msg" id="appt-msg"></div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-logo">Salon Lumière</div>
+    <div class="foot-tagline">Haarsalon &amp; Beautystudio</div>
+    <ul class="foot-links">
+      <li><a href="#services">Leistungen</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#appointment">Termin</a></li>
+    </ul>
+    <div class="foot-divider"></div>
+    <p class="foot-copy">
+      Musterstraße 12 · 10115 Berlin &nbsp;|&nbsp; Tel: +49 30 123 45 67 &nbsp;|&nbsp; info@salon-lumiere.de<br/>
+      <span style="opacity:.5;font-size:.7rem;">© 2026 Salon Lumière – Demo Website</span>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const intro    = document.getElementById('intro');
+  const bottle   = document.getElementById('bottle-wrap');
+  const mist     = document.getElementById('mist');
+  const mainSite = document.getElementById('main-site');
+  const nav      = document.getElementById('main-nav');
+
+  /* Flasche positionieren: Düse (cx=90/380) auf Bildschirmmitte */
+  function positionBottle() {
+    const nozzleOffset = (90 / 380) * bottle.offsetWidth;
+    bottle.style.left = (window.innerWidth / 2 - nozzleOffset) + 'px';
+  }
+
+  function getNozzlePos() {
+    const br = bottle.getBoundingClientRect();
+    return {
+      x: br.left + (90  / 380) * br.width,
+      y: br.top  + (2   / 115) * br.height
+    };
+  }
+
+  function spawnParticle(ox, oy) {
+    const p     = document.createElement('div');
+    p.className = 'spark';
+    const size  = 30 + Math.random() * 60;
+    const angle = (Math.random() - 0.5) * 1.3;
+    const dist  = window.innerHeight * (0.3 + Math.random() * 0.55);
+    const dur   = 700 + Math.random() * 900;
+    const dx    = Math.sin(angle) * dist;
+    const dy    = -Math.abs(Math.cos(angle)) * dist;
+    const blur  = 12 + Math.random() * 22;
+    const alpha = 0.18 + Math.random() * 0.22;
+    const inner = `rgba(215,228,250,${alpha})`;
+    const outer = `rgba(200,218,245,${alpha * 0.4})`;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${ox - size/2}px; top:${oy - size/2}px;
+      z-index:10002; filter:blur(${blur}px);
+      background:radial-gradient(circle,rgba(235,242,255,${alpha+0.08}) 0%,${inner} 45%,${outer} 75%,transparent 90%);
+    `;
+    document.body.appendChild(p);
+    p.animate([
+      { transform:'translate(0,0) scale(1)',               opacity:1 },
+      { transform:`translate(${dx}px,${dy}px) scale(.15)`, opacity:0 }
+    ], { duration:dur, easing:'ease-out', fill:'forwards' });
+    setTimeout(() => p.remove(), dur + 60);
+  }
+
+  function fireSpray() {
+    const { x, y } = getNozzlePos();
+    for (let i = 0; i < 300; i++) {
+      setTimeout(() => spawnParticle(x, y), i * 5);
+    }
+  }
+
+  function runIntro() {
+    bottle.classList.add('drop-in');
+    setTimeout(() => {
+      mist.classList.add('active');
+      fireSpray();
+      intro.classList.add('slide-out');
+      setTimeout(() => {
+        intro.style.display    = 'none';
+        mainSite.style.display = 'block';
+        nav.classList.add('visible');
+        initScrollReveal();
+        initForm();
+        setTimeout(() => {
+          const hb = document.getElementById('hero-bottle');
+          if (hb) hb.classList.add('visible');
+        }, 400);
+      }, 1150);
+      setTimeout(() => {
+        bottle.classList.remove('drop-in');
+        bottle.classList.add('drop-out');
+      }, 1400);
+    }, 1450);
+  }
+
+  window.addEventListener('load', () => { positionBottle(); setTimeout(runIntro, 350); });
+  window.addEventListener('resize', positionBottle);
+
+  function initScrollReveal() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+
+  function initForm() {
+    const form = document.getElementById('appt-form');
+    const msg  = document.getElementById('appt-msg');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name    = document.getElementById('a-name').value.trim();
+      const contact = document.getElementById('a-phone').value.trim();
+      const date    = document.getElementById('a-date').value;
+      const service = document.getElementById('a-service').value;
+      if (!name || !contact || !date || !service) {
+        msg.textContent = '⚠ Bitte füllen Sie alle Pflichtfelder (*) aus.';
+        msg.style.color = '#e87575';
+        msg.classList.add('show');
+        return;
+      }
+      msg.textContent = '✓ Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns bald!';
+      msg.style.color = 'var(--gold)';
+      msg.classList.add('show');
+      form.reset();
+      setTimeout(() => msg.classList.remove('show'), 6000);
+    });
+  }
+})();
+</script>
+</body>
+</html>
