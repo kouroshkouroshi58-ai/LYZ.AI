@@ -973,28 +973,31 @@
   setTimeout(()=> gearPos.classList.add('center'), 750);
   setTimeout(()=> gearSvg.classList.add('spin'), 1550);
 
-  // panels split + gear exits
+  // 1. Zahnrad verschwindet
   setTimeout(()=>{
-    panelTop.classList.add('split');
-    panelBot.classList.add('split');
     gearPos.classList.remove('center');
     gearPos.classList.add('down');
-    intro.style.pointerEvents = 'none';
   }, 2650);
 
-  // text fades out 700ms after gear exits
-  // animation muss erst gestoppt werden damit transition funktioniert
+  // 2. Text faded 700ms nach dem Zahnrad aus
   setTimeout(()=>{
     iText.style.animation = 'none';
     iText.style.transform = 'translate(-50%, -50%)';
     iText.style.opacity = '1';
-    void iText.offsetHeight; // reflow erzwingen
+    void iText.offsetHeight;
     iText.style.transition = 'opacity 0.5s ease';
     iText.style.opacity = '0';
   }, 3350);
 
-  // remove intro
-  setTimeout(()=> intro.remove(), 4000);
+  // 3. Panels öffnen sich erst NACHDEM Text weg ist — kein Überlappen mehr
+  setTimeout(()=>{
+    panelTop.classList.add('split');
+    panelBot.classList.add('split');
+    intro.style.pointerEvents = 'none';
+  }, 3900);
+
+  // 4. Intro komplett entfernen
+  setTimeout(()=> intro.remove(), 4700);
 })();
 
 /* SCROLL ANIMATIONS */
