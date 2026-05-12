@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="LYZ.AI – Webdesign, Automatisierung & KI-Lösungen. Deine digitale Präsenz, neu gedacht.">
   <title>LYZ.AI – Deine digitale Präsenz, neu gedacht</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>emailjs.init('eg-HTOd8sOJ2Gp6iU');</script>
   <style>
@@ -981,13 +978,22 @@
 
 <script>
 /* COOKIE BANNER */
+function loadGoogleFonts(){
+  if(document.getElementById('gfonts-link')) return;
+  const l1 = document.createElement('link'); l1.rel='preconnect'; l1.href='https://fonts.googleapis.com'; document.head.appendChild(l1);
+  const l2 = document.createElement('link'); l2.rel='preconnect'; l2.href='https://fonts.gstatic.com'; l2.crossOrigin=''; document.head.appendChild(l2);
+  const l3 = document.createElement('link'); l3.id='gfonts-link'; l3.rel='stylesheet'; l3.href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'; document.head.appendChild(l3);
+}
 (function(){
   const banner = document.getElementById('cookie-banner');
-  if(localStorage.getItem('cookie-consent')) banner.classList.add('hidden');
+  const consent = localStorage.getItem('cookie-consent');
+  if(consent) banner.classList.add('hidden');
+  if(consent === 'accepted') loadGoogleFonts();
 })();
 function cookieAccept(){
   localStorage.setItem('cookie-consent','accepted');
   document.getElementById('cookie-banner').classList.add('hidden');
+  loadGoogleFonts();
 }
 function cookieDecline(){
   localStorage.setItem('cookie-consent','declined');
