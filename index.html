@@ -887,7 +887,7 @@
         </div>
         <div>
           <div class="c-label">Antwortzeit</div>
-          <div class="c-val">Innerhalb von 24 Stunden</div>
+          <div class="c-val">Innerhalb von 48 Stunden</div>
         </div>
       </div>
       <div class="c-item">
@@ -908,14 +908,6 @@
             <label>Vorname *</label>
             <input type="text" id="fFirst" placeholder="Max">
           </div>
-          <div class="form-group">
-            <label>Nachname</label>
-            <input type="text" id="fLast" placeholder="Mustermann">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>E-Mail *</label>
-          <input type="email" id="fEmail" placeholder="max@beispiel.de">
         </div>
         <div class="form-group">
           <label>Telefonnummer *</label>
@@ -1140,14 +1132,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 /* FORM */
 function submitForm(){
   const first = document.getElementById('fFirst').value.trim();
-  const last  = document.getElementById('fLast').value.trim();
-  const email = document.getElementById('fEmail').value.trim();
   const phone = document.getElementById('fPhone').value.trim();
   const service = document.getElementById('fService').value;
   const msg   = document.getElementById('fMsg').value.trim();
 
-  if(!first||!email||!phone||!msg){
-    [['fFirst',first],['fEmail',email],['fPhone',phone],['fMsg',msg]].forEach(([id,v])=>{
+  if(!first||!phone||!msg){
+    [['fFirst',first],['fPhone',phone],['fMsg',msg]].forEach(([id,v])=>{
       const el=document.getElementById(id);
       if(!v){ el.style.borderColor='#e05252'; el.addEventListener('input',()=>el.style.borderColor='',{once:true}); }
     });
@@ -1159,9 +1149,8 @@ function submitForm(){
   btn.disabled = true;
 
   emailjs.send('service_iap347w', 'template_ynylkcj', {
-    from_name: first + (last ? ' ' + last : ''),
-    name:      first + (last ? ' ' + last : ''),
-    email:     email,
+    from_name: first,
+    name:      first,
     phone:     phone,
     service:   service || 'Nicht angegeben',
     message:   msg
