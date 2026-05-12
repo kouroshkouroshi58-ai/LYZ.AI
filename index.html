@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init('eg-HTOd8sOJ2Gp6iU');</script>
   <style>
     :root {
       --bg:          #080808;
@@ -505,32 +507,34 @@
     .intro-panel { position:absolute; left:0; right:0; height:50%; background:#080808; z-index:1; will-change:transform; }
     .intro-panel-top { top:0; }
     .intro-panel-bottom { bottom:0; }
-    .intro-panel-top.split  { transform:translateY(-100%); transition:transform 0.7s cubic-bezier(0.76,0,0.24,1); }
-    .intro-panel-bottom.split { transform:translateY(100%);  transition:transform 0.7s cubic-bezier(0.76,0,0.24,1); }
+    .intro-panel-top.split  { transform:translateY(-100%); transition:transform 0.75s cubic-bezier(0.76,0,0.24,1); }
+    .intro-panel-bottom.split { transform:translateY(100%);  transition:transform 0.75s cubic-bezier(0.76,0,0.24,1); }
+
+    /* Gemeinsamer Container — Text + Zahnrad bewegen sich als Einheit */
+    #intro-group {
+      position:absolute; left:50%; top:50%; z-index:3;
+      transform:translateX(-50%) translateY(calc(50vh + 220px));
+      will-change:transform;
+      display:flex; flex-direction:column; align-items:center; gap:20px;
+    }
+    #intro-group.g-enter {
+      transform:translateX(-50%) translateY(-50%);
+      transition:transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    #intro-group.g-exit {
+      transform:translateX(-50%) translateY(calc(50vh + 220px));
+      transition:transform 0.65s cubic-bezier(0.76,0,0.24,1);
+    }
 
     #intro-text {
-      position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      text-align:center; z-index:2;
-      opacity:0; animation:iTextIn 0.55s ease forwards 0.2s;
-      pointer-events:none; white-space:nowrap;
+      text-align:center; pointer-events:none; white-space:nowrap;
+      opacity:0; transition:opacity 0.5s ease;
     }
-    #intro-text.fade-out { opacity:0 !important; transition:opacity 0.5s ease !important; }
-    @keyframes iTextIn {
-      from{opacity:0;transform:translate(-50%,calc(-50% + 14px))}
-      to  {opacity:1;transform:translate(-50%,-50%)}
-    }
-    #intro-brand { font-size:clamp(2.6rem,6vw,4.2rem); font-weight:700; letter-spacing:4px; color:#00b341; line-height:1; margin-bottom:12px; }
+    #intro-text.t-show { opacity:1; }
+    #intro-brand { font-size:clamp(2.6rem,6vw,4.2rem); font-weight:700; letter-spacing:4px; color:#00b341; line-height:1; margin-bottom:10px; }
     #intro-brand em { color:#f0f0f0; font-style:normal; }
     #intro-tagline { font-size:clamp(0.78rem,1.8vw,0.95rem); color:#666; letter-spacing:1px; }
 
-    #gear-pos {
-      position:absolute; left:50%; top:50%; z-index:3;
-      transform:translateX(-50%) translateY(calc(50vh + 140px));
-      will-change:transform;
-    }
-    #gear-pos.center { transform:translateX(-50%) translateY(52px); transition:transform 0.75s cubic-bezier(0.34,1.56,0.64,1); }
-    #gear-pos.down   { transform:translateX(-50%) translateY(calc(50vh + 140px)); transition:transform 0.65s cubic-bezier(0.76,0,0.24,1); }
     #gear-svg { width:68px; height:68px; color:#00b341; filter:drop-shadow(0 0 18px rgba(0,179,65,0.55)); display:block; }
     #gear-svg.spin { animation:gearRotate 1s ease-in-out 1; }
     @keyframes gearRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
@@ -582,11 +586,11 @@
 <div id="intro">
   <div class="intro-panel intro-panel-top"></div>
   <div class="intro-panel intro-panel-bottom"></div>
-  <div id="intro-text">
-    <div id="intro-brand">LYZ<em>.AI</em></div>
-    <div id="intro-tagline">Deine digitale Präsenz, neu gedacht.</div>
-  </div>
-  <div id="gear-pos">
+  <div id="intro-group">
+    <div id="intro-text">
+      <div id="intro-brand">LYZ<em>.AI</em></div>
+      <div id="intro-tagline">Deine digitale Präsenz, neu gedacht.</div>
+    </div>
     <svg id="gear-svg" viewBox="0 0 24 24" fill="currentColor">
       <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
     </svg>
@@ -856,6 +860,10 @@
           </div>
         </div>
         <div class="form-group">
+          <label>E-Mail *</label>
+          <input type="email" id="fEmail" placeholder="max@beispiel.de">
+        </div>
+        <div class="form-group">
           <label>Telefonnummer *</label>
           <input type="tel" id="fPhone" placeholder="+49 123 456 789">
         </div>
@@ -961,43 +969,39 @@
   draw();
 })();
 
-/* INTRO — gear exits first, text fades 700ms later */
+/* INTRO — Text + Zahnrad als Einheit */
 (function(){
   const intro    = document.getElementById('intro');
+  const group    = document.getElementById('intro-group');
   const iText    = document.getElementById('intro-text');
-  const gearPos  = document.getElementById('gear-pos');
   const gearSvg  = document.getElementById('gear-svg');
   const panelTop = document.querySelector('.intro-panel-top');
   const panelBot = document.querySelector('.intro-panel-bottom');
 
-  setTimeout(()=> gearPos.classList.add('center'), 750);
-  setTimeout(()=> gearSvg.classList.add('spin'), 1550);
+  // 1. Gruppe fährt von unten rein
+  setTimeout(()=> group.classList.add('g-enter'), 300);
 
-  // 1. Zahnrad verschwindet
+  // 2. Text blendet ein sobald Gruppe ankommt
+  setTimeout(()=> iText.classList.add('t-show'), 1000);
+
+  // 3. Zahnrad dreht sich einmal
+  setTimeout(()=> gearSvg.classList.add('spin'), 1250);
+
+  // 4. Gruppe fährt gemeinsam (Text + Zahnrad) nach unten raus
   setTimeout(()=>{
-    gearPos.classList.remove('center');
-    gearPos.classList.add('down');
-  }, 2650);
+    group.classList.remove('g-enter');
+    group.classList.add('g-exit');
+  }, 2200);
 
-  // 2. Text faded 700ms nach dem Zahnrad aus
-  setTimeout(()=>{
-    iText.style.animation = 'none';
-    iText.style.transform = 'translate(-50%, -50%)';
-    iText.style.opacity = '1';
-    void iText.offsetHeight;
-    iText.style.transition = 'opacity 0.5s ease';
-    iText.style.opacity = '0';
-  }, 3350);
-
-  // 3. Panels öffnen sich erst NACHDEM Text weg ist — kein Überlappen mehr
+  // 5. Panels öffnen sich
   setTimeout(()=>{
     panelTop.classList.add('split');
     panelBot.classList.add('split');
     intro.style.pointerEvents = 'none';
-  }, 3900);
+  }, 2950);
 
-  // 4. Intro komplett entfernen
-  setTimeout(()=> intro.remove(), 4700);
+  // 6. Intro entfernen
+  setTimeout(()=> intro.remove(), 3750);
 })();
 
 /* SCROLL ANIMATIONS */
@@ -1068,18 +1072,43 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 
 /* FORM */
 function submitForm(){
-  const first=document.getElementById('fFirst').value.trim();
-  const phone=document.getElementById('fPhone').value.trim();
-  const msg=document.getElementById('fMsg').value.trim();
-  if(!first||!phone||!msg){
-    [['fFirst',first],['fPhone',phone],['fMsg',msg]].forEach(([id,v])=>{
+  const first = document.getElementById('fFirst').value.trim();
+  const last  = document.getElementById('fLast').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const phone = document.getElementById('fPhone').value.trim();
+  const service = document.getElementById('fService').value;
+  const msg   = document.getElementById('fMsg').value.trim();
+
+  if(!first||!email||!phone||!msg){
+    [['fFirst',first],['fEmail',email],['fPhone',phone],['fMsg',msg]].forEach(([id,v])=>{
       const el=document.getElementById(id);
       if(!v){ el.style.borderColor='#e05252'; el.addEventListener('input',()=>el.style.borderColor='',{once:true}); }
     });
     return;
   }
-  document.getElementById('formContent').style.display='none';
-  document.getElementById('formSuccess').style.display='block';
+
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Wird gesendet…';
+  btn.disabled = true;
+
+  emailjs.send('service_iap347w', 'template_ynylkcj', {
+    from_name: first + (last ? ' ' + last : ''),
+    name:      first + (last ? ' ' + last : ''),
+    email:     email,
+    phone:     phone,
+    service:   service || 'Nicht angegeben',
+    message:   msg
+  })
+  .then(()=>{
+    document.getElementById('formContent').style.display='none';
+    document.getElementById('formSuccess').style.display='block';
+  })
+  .catch(()=>{
+    btn.textContent = 'Anfrage jetzt absenden →';
+    btn.disabled = false;
+    btn.style.background = '#e05252';
+    setTimeout(()=>{ btn.style.background=''; }, 2000);
+  });
 }
 </script>
 </body>
