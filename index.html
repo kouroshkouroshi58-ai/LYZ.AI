@@ -550,6 +550,44 @@
     .d2 { transition-delay:0.20s !important; }
     .d3 { transition-delay:0.30s !important; }
 
+    /* COOKIE BANNER */
+    #cookie-banner {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 8000; width: calc(100% - 48px); max-width: 720px;
+      background: rgba(12,12,12,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      animation: fadeUp 0.5s ease both 0.5s;
+    }
+    #cookie-banner.hidden { display: none; }
+    .cookie-text { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+    .cookie-text a { color: var(--green); text-decoration: none; }
+    .cookie-text a:hover { text-decoration: underline; }
+    .cookie-btns { display: flex; gap: 10px; flex-shrink: 0; }
+    .cookie-accept {
+      background: var(--green); color: #000;
+      border: none; border-radius: 8px; padding: 9px 20px;
+      font-size: 0.85rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer; transition: background 0.25s;
+      white-space: nowrap;
+    }
+    .cookie-accept:hover { background: var(--green-light); }
+    .cookie-decline {
+      background: transparent; color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 20px;
+      font-size: 0.85rem; font-weight: 500; font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer; transition: all 0.25s; white-space: nowrap;
+    }
+    .cookie-decline:hover { border-color: var(--green); color: var(--green); }
+    @media (max-width: 600px) {
+      #cookie-banner { flex-direction: column; align-items: flex-start; }
+      .cookie-btns { width: 100%; }
+      .cookie-accept, .cookie-decline { flex: 1; text-align: center; }
+    }
+
     /* REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
@@ -581,6 +619,18 @@
 </head>
 <body>
 <div id="scroll-progress"></div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <p class="cookie-text">
+    Wir nutzen Google Fonts & Cookies um dir die beste Erfahrung zu bieten.
+    Mehr dazu in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.
+  </p>
+  <div class="cookie-btns">
+    <button class="cookie-decline" onclick="cookieDecline()">Ablehnen</button>
+    <button class="cookie-accept" onclick="cookieAccept()">Akzeptieren</button>
+  </div>
+</div>
 
 <!-- INTRO -->
 <div id="intro">
@@ -912,8 +962,8 @@
         <h4>Unternehmen</h4>
         <ul>
           <li><a href="#kontakt">Kontakt</a></li>
-          <li><a href="#">Impressum</a></li>
-          <li><a href="#">Datenschutz</a></li>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
         </ul>
       </div>
     </div>
@@ -925,6 +975,20 @@
 </footer>
 
 <script>
+/* COOKIE BANNER */
+(function(){
+  const banner = document.getElementById('cookie-banner');
+  if(localStorage.getItem('cookie-consent')) banner.classList.add('hidden');
+})();
+function cookieAccept(){
+  localStorage.setItem('cookie-consent','accepted');
+  document.getElementById('cookie-banner').classList.add('hidden');
+}
+function cookieDecline(){
+  localStorage.setItem('cookie-consent','declined');
+  document.getElementById('cookie-banner').classList.add('hidden');
+}
+
 /* PARTICLES */
 (function(){
   const canvas = document.getElementById('particles-canvas');
