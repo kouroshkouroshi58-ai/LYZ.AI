@@ -623,6 +623,12 @@
       .footer-top { grid-template-columns:1fr; }
       .hero-scroll-hint { display:none; }
     }
+    @media (max-width: 768px) {
+      .hero-badge, .hero-title, .hero-sub, .hero-btns {
+        opacity:1 !important; transform:none !important;
+        animation:none !important;
+      }
+    }
   </style>
 </head>
 <body>
