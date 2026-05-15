@@ -9,8 +9,9 @@
   <title>LYZ.AI – Deine digitale Präsenz, neu gedacht</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=space-grotesk:300,400,500,600,700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>emailjs.init('eg-HTOd8sOJ2Gp6iU');</script>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script>window.addEventListener('DOMContentLoaded',()=>emailjs.init('eg-HTOd8sOJ2Gp6iU'));</script>
   <style>
     :root {
       --bg:          #080808;
@@ -47,11 +48,13 @@
 
     /* SCROLL PROGRESS */
     #scroll-progress {
-      position: fixed; top:0; left:0; height:2px; width:0%;
+      position: fixed; top:0; left:0; height:2px; width:100%;
       background: linear-gradient(90deg, var(--green), var(--green-light));
       z-index: 2001;
       box-shadow: 0 0 10px var(--green-glow);
-      transition: width 0.08s linear;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.08s linear;
     }
 
     /* NAV — floating pill */
@@ -1009,7 +1012,7 @@ function cookieDecline(){
   const ctx = canvas.getContext('2d');
   let W, H, pts = [];
   const mouse = {x:null,y:null};
-  const COUNT = 130;
+  const COUNT = window.innerWidth < 768 ? 40 : 130;
   function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
@@ -1055,6 +1058,13 @@ function cookieDecline(){
   const gearSvg  = document.getElementById('gear-svg');
   const panelTop = document.querySelector('.intro-panel-top');
   const panelBot = document.querySelector('.intro-panel-bottom');
+
+  // Intro bei Wiederbesuchern überspringen
+  if(sessionStorage.getItem('intro-seen')){
+    intro.remove();
+    return;
+  }
+  sessionStorage.setItem('intro-seen','1');
 
   // 1. Gruppe fährt von unten rein
   setTimeout(()=> group.classList.add('g-enter'), 300);
@@ -1117,7 +1127,7 @@ const scrollProgress = document.getElementById('scroll-progress');
 window.addEventListener('scroll',()=>{
   document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
   const docH = document.documentElement.scrollHeight - window.innerHeight;
-  scrollProgress.style.width = (scrollY/docH*100)+'%';
+  scrollProgress.style.transform = `scaleX(${scrollY/docH})`;
 });
 
 /* HAMBURGER */
