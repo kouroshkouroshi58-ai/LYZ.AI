@@ -8,7 +8,8 @@
   <meta name="google-site-verification" content="gGs1jZXRFQb-M5Q-aHjKMzeNBtrGtCyIqSTxh-fSRyg" />
   <title>LYZ.AI – Deine digitale Präsenz, neu gedacht</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
-  <link href="https://fonts.bunny.net/css?family=space-grotesk:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.bunny.net/css?family=space-grotesk:300,400,500,600,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.bunny.net/css?family=space-grotesk:300,400,500,600,700&display=swap"></noscript>
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
   <script>window.addEventListener('DOMContentLoaded',()=>emailjs.init('eg-HTOd8sOJ2Gp6iU'));</script>
@@ -37,9 +38,7 @@
       font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
       line-height: 1.6;
-      animation: pageLoad 0.5s ease both;
     }
-    @keyframes pageLoad { from{opacity:0} to{opacity:1} }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -1012,7 +1011,8 @@ function cookieDecline(){
   const ctx = canvas.getContext('2d');
   let W, H, pts = [];
   const mouse = {x:null,y:null};
-  const COUNT = window.innerWidth < 768 ? 40 : 130;
+  if(window.innerWidth < 768){ canvas.style.display='none'; return; }
+  const COUNT = 130;
   function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
@@ -1059,8 +1059,8 @@ function cookieDecline(){
   const panelTop = document.querySelector('.intro-panel-top');
   const panelBot = document.querySelector('.intro-panel-bottom');
 
-  // Intro bei Wiederbesuchern überspringen
-  if(sessionStorage.getItem('intro-seen')){
+  // Intro auf Mobile und bei Wiederbesuchern überspringen
+  if(window.innerWidth < 768 || sessionStorage.getItem('intro-seen')){
     intro.remove();
     return;
   }
